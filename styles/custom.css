@@ -1582,7 +1582,7 @@ p {
         margin-bottom: var(--spacing-xs);
     }
 }
-/* Investments Page Styles */
+/* Peer-to-peer Page Styles */
 .waitlist-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1608,7 +1608,7 @@ p {
     margin-bottom: var(--spacing-2xl);
 }
 
-.investment-form {
+.peer-to-peer-form {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-lg);
@@ -1721,7 +1721,7 @@ p {
     line-height: 1.5;
 }
 
-.investment-info {
+.peer-to-peer-info {
     text-align: center;
 }
 
