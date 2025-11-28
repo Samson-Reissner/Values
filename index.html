@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Value - Moving Towards Financial Balance</title>
     <link rel="stylesheet" href="styles/custom.css">
+    <link rel="stylesheet" href="styles/hero-styles.css">
 </head>
 <body>
     <!-- Navigation -->
 <nav class="navbar">
     <div class="nav-container">
         <a href="index.html" class="logo">
+            <!-- REPLACE: Logo image should go here -->
             <div class="logo-icon">V</div>
             <div class="logo-text">Value</div>
         </a>
@@ -55,40 +57,45 @@
 </nav>
 
     <!-- Hero Section - Money when you need it -->
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-content">
-                <h1>Money when you need it</h1>
-                <p class="hero-subtitle">Manage payments, secure loans, and invest smartly</p>
-                <p>Get the app</p>
-                <div class="hero-actions" style="margin-top: 2rem;">
-                    <a href="apply.html" class="btn-primary">Get Instant Cash</a>
-                </div>
-            </div>
-            <div class="hero-image">
-                App Preview Image
+<section class="hero" style="background-image: url('images/indexPics.jpg'); background-size: cover; background-position: center; height: px;">
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1>Money when you need it</h1>
+            <p class="hero-subtitle">Manage payments, secure loans, and invest smartly</p>
+            <p>Get the app</p>
+            <div class="hero-actions" style="margin-top: 2rem;">
+                <a href="apply.html" class="btn-primary">Get Instant Cash</a>
             </div>
         </div>
-    </section>
-
+    </div>
+</section>
     <!-- Quick Services -->
     <section class="services">
         <div class="container">
             <div class="services-grid">
                 <div class="service-card">
-                    <h3>Borrow</h3>
-                    <p>Access instant and flexible loans made for you.</p>
-                    <a href="apply.html" class="btn-primary">Apply now</a>
+                    <img src="images/money-borrowing.avif" alt="Borrow Money Icon" class="service-icon">
+                    <div class="service-content">
+                        <h3>Borrow</h3>
+                        <p>Access instant and flexible loans made for you.</p>
+                        <a href="apply.html" class="btn-primary">Apply now</a>
+                    </div>
                 </div>
                 <div class="service-card">
-                    <h3>Pay</h3>
-                    <p>Pay bills, transfer money, and manage transactions.</p>
-                    <a href="payments.html" class="btn-primary">Get started</a>
+                    <img src="images/bill-paying.avif" alt="Pay Bills Icon" class="service-icon">
+                    <div class="service-content">
+                        <h3>Pay</h3>
+                        <p>Pay bills, transfer money, and manage transactions.</p>
+                        <a href="payments.html" class="btn-primary">Get started</a>
+                    </div>
                 </div>
                 <div class="service-card">
-                    <h3>Invest</h3>
-                    <p>Lend to creditworthy borrowers and enjoy rewarding returns.</p>
-                    <a href="investments.html" class="btn-primary">Learn more</a>
+                    <img src="images/a-man-investing.avif" alt="Invest Money Icon" class="service-icon">
+                    <div class="service-content">
+                        <h3>Invest</h3>
+                        <p>Lend to creditworthy borrowers and enjoy rewarding returns.</p>
+                        <a href="investments.html" class="btn-primary">Learn more</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -99,7 +106,7 @@
         <div class="quick-loan-container">
             <h2 class="section-title">Get a Loan in 30 seconds</h2>
             <p class="section-subtitle">Just download the app and create an account</p>
-            <a href="#download" class="btn-outline">Download app</a>
+            <a href="#download" class="btn-primary">Download app</a>
             
             <div class="loan-form-group">
                 <label>How much would you like?</label>
@@ -159,19 +166,22 @@
             
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">📱</div>
+                    <!-- REPLACE: Application process icon -->
+                    <img src="images/easy-loan.avif" alt="Easy Application Icon" class="feature-icon">
                     <h3 class="feature-title">Easy Application</h3>
                     <p class="feature-description">Apply right here on our website or through the Value Loans app—fast and easy.</p>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
+                    <!-- REPLACE: Flexible options icon -->
+                    <img src="images/flex-options.jpg" alt="Flexible Options Icon" class="feature-icon">
                     <h3 class="feature-title">Flexible Options</h3>
                     <p class="feature-description">Select type of loan and choose repayment plan and rate that works for you.</p>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="feature-icon">💰</div>
+                    <!-- REPLACE: Money disbursement icon -->
+                    <img src="images/smooth.avif" alt="Smooth Disbursement Icon" class="feature-icon">
                     <h3 class="feature-title">Smooth Disbursement</h3>
                     <p class="feature-description">Once approved, your funds are sent directly to your account or creditors.</p>
                 </div>
@@ -190,24 +200,32 @@
             
             <div class="loan-options-grid">
                 <div class="loan-option-card">
+                    <!-- ADD: Personal finance illustration -->
+                    <img src="images/loan_filling.avif" alt="Personal Loans" class="loan-option-image">
                     <h3 class="feature-title">Personal Loans</h3>
                     <p class="feature-description">Get from MWK 500 to MWK 250,000 for your personal needs.</p>
                     <a href="apply.html" class="btn-primary">Apply Now</a>
                 </div>
                 
                 <div class="loan-option-card">
+                    <!-- ADD: Business growth illustration -->
+                    <img src="images/business.avif" alt="Business Loans" class="loan-option-image">
                     <h3 class="feature-title">Business Loans</h3>
                     <p class="feature-description">Boost your business with loans from MWK 500 to MWK 1,000,000.</p>
                     <a href="apply.html" class="btn-primary">Apply Now</a>
                 </div>
                 
                 <div class="loan-option-card">
+                    <!-- ADD: Agriculture/farming illustration -->
+                    <img src="images/agri3.jpg" alt="Agriculture Loans" class="loan-option-image">
                     <h3 class="feature-title">Agri Loans</h3>
                     <p class="feature-description">Loans for farmers—fund seeds, tools, and more to grow your business.</p>
                     <a href="apply.html" class="btn-primary">Apply Now</a>
                 </div>
 
                 <div class="loan-option-card">
+                    <!-- ADD: Utility bills illustration -->
+                    <img src="images/payments1.jpg" alt="Bill Credit" class="loan-option-image">
                     <h3 class="feature-title">Bill Credit</h3>
                     <p class="feature-description">Airtime, data, pay tv, electricity and water on credit.</p>
                     <span class="coming-soon">Coming soon</span>
@@ -216,7 +234,7 @@
             </div>
 
             <div style="text-align: center; margin-top: 2rem;">
-                <a href="#loans" class="btn-outline">View all loans →</a>
+                <a href="#loans" class="btn-primary">View all loans →</a>
             </div>
         </div>
     </section>
@@ -227,112 +245,168 @@
             <h2 class="section-title">Everything You Need, All in One App</h2>
             <div class="app-features-grid">
                 <div class="app-feature">
+                    <!-- ADD: Quick loan process visual -->
+                    <img src="images/get-fast-cash.avif" alt="Get Cash Fast" class="app-feature-icon">
                     <h3>Get Cash Fast</h3>
                     <p>Need money in a pinch? Sign up and get a loan in just 5 minutes.</p>
                     <a href="#download" class="btn-primary">Download app</a>
                 </div>
                 <div class="app-feature">
+                    <!-- ADD: Bill payment interface -->
+                    <img src="images/pay-bills.avif" alt="Pay Bills Your Way" class="app-feature-icon">
                     <h3>Pay Bills Your Way</h3>
                     <p>Settle your bills instantly or choose to buy now and pay later.</p>
                 </div>
                 <div class="app-feature">
+                    <!-- ADD: Money transfer graphic -->
+                    <img src="images/send-money.jpg" alt="Send Money for Free" class="app-feature-icon">
                     <h3>Send Money for Free</h3>
                     <p>Transfer money to friends and family on Value Loans for free using the Value Loans tag.</p>
                 </div>
                 <div class="app-feature">
+                    <!-- ADD: Debit card mockup -->
+                    <img src="images/debit-card1.avif" alt="Your Perfect Debit Card" class="app-feature-icon">
                     <h3>Your Perfect Debit Card</h3>
                     <p>Order your virtual or physical debit card with an overdraft feature.</p>
                     <span class="coming-soon">Coming soon</span>
                 </div>
                 <div class="app-feature">
+                    <!-- ADD: Banking transaction visual -->
+                    <img src="images/deposits-withdrawals.jpg" alt="Deposits and Withdrawals" class="app-feature-icon">
                     <h3>Deposits and Withdrawals</h3>
                     <p>Deposit or withdraw money directly to your Mobile Money wallet or bank account.</p>
                 </div>
             </div>
         </div>
     </section>
-
+<br><br>
     <!-- Shopping Section -->
     <section class="shopping">
         <div class="container">
             <div class="shopping-content">
+                <!-- ADD: Shopping/debit card illustration -->
+                
                 <h2>Shop and pay bills with zero balance!</h2>
                 <p>Get a free virtual or physical debit card to do your online and offline shopping</p>
-                <span class="coming-soon">Coming soon</span>
+                <span class="coming-soon">Coming soon!</span>
             </div>
         </div>
     </section>
-
+<br><br>
     <!-- Lending Section -->
-    <section class="lending">
-        <div class="lending-container">
-            <h2>Earn by Lending to Others</h2>
-            <p>Earn rewarding returns by lending to creditworthy borrowers. Start building your investment portfolio today.</p>
-            <a href="investments.html" class="btn-primary">Join waitlist</a>
+    <section class="lending" style="background-image: url('images/investiment.avif'); background-size: cover; background-position: center; background-repeat: no-repeat; color: white; position: relative; min-height: 600px; display: flex; align-items: center;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4);"></div>
+        <div class="lending-container" style="position: relative; z-index: 1; width: 100%; text-align: center; max-width: 800px; margin: 0 auto; padding: 2rem;">
+            <h2 style="font-size: 2.8rem; font-weight: 700; margin-bottom: 1.5rem; text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.2), 2px 2px 4px rgba(0, 0, 0, 0.6); line-height: 1.3; color: #f8f9fa; opacity: 0.95;">Earn by Lending to Others</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2.5rem; text-shadow: 0 0 15px rgba(255, 255, 255, 0.2), 1px 1px 3px rgba(0, 0, 0, 0.5); line-height: 1.6; font-weight: 400; color: #e9ecef; opacity: 0.9;">Earn rewarding returns by lending to creditworthy borrowers. Start building your investment portfolio today.</p>
+            <a href="investments.html" class="btn-primary" style="display: inline-block; color: #f8f9fa; padding: 12px 30px; border-radius: 30px; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 20px rgba(255, 255, 255, 0.2), 0 8px 25px rgba(0, 0, 0, 0.3); text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); transition: all 0.3s ease; background: transparent; text-decoration: none;">Join waitlist</a>
         </div>
     </section>
 
     <!-- FAQ Section -->
-    <section class="faq">
-        <div class="faq-container">
-            <h2 class="section-title">Got Questions? We can help</h2>
-            <p class="section-subtitle">Everything you need to know about our services. Can't find the answer you're looking for? Please chat to our team.</p>
-            
-            <div class="faq-item">
-                <div class="faq-question">What is the longest repayment period for your loans?</div>
-                <div class="faq-answer">Tell me about your services</div>
+<section class="faq">
+    <div class="faq-container">
+        <h2 class="section-title">Got Questions? We can help</h2>
+        <p class="section-subtitle">Everything you need to know about our services. Can't find the answer you're looking for? Please chat to our team.</p>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>What is the longest repayment period for your loans?</span>
+                <span class="faq-icon">+</span>
             </div>
-            
-            <div class="faq-item">
-                <div class="faq-question">How do I open an account with Value Loans?</div>
-                <div class="faq-answer">Simply download our app and complete the registration process in minutes.</div>
-            </div>
-            
-            <div class="faq-item">
-                <div class="faq-question">Can I repay my loan early?</div>
-                <div class="faq-answer">Yes, you can repay your loan early without any penalties.</div>
-            </div>
-            
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="contact.html" class="btn-primary">Contact Us</a>
-            </div>
+            <div class="faq-answer">The longest repayment period for our loans is 60 months (5 years), depending on the loan type and amount.</div>
         </div>
-    </section>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>How do I open an account with Value Loans?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">Simply download our app and complete the registration process in minutes. You'll need your ID and basic personal information.</div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>Can I repay my loan early?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">Yes, you can repay your loan early without any penalties. Early repayment can even save you on interest costs.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>What documents do I need to apply for a loan?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">You'll need a valid ID, proof of income, and in some cases, collateral documentation depending on the loan type.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>How quickly can I get my loan approved?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">Most personal loans are approved within 24 hours, while some instant loans can be approved in as little as 30 minutes.</div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="contact.html" class="btn-primary">Contact Us</a>
+        </div>
+    </div>
+</section>
 
     <!-- Blog Section -->
-    <section class="blog">
-        <div class="blog-container">
-            <h2 class="section-title">Latest news and blog posts</h2>
-            
-            <div class="blog-grid">
-                <div class="blog-card">
+<section class="blog">
+    <div class="blog-container">
+        <h2 class="section-title">Latest news and blog posts</h2>
+        
+        <div class="blog-grid">
+            <div class="blog-card">
+                <img src="images/blog-financing.avif" alt="SME Financing" class="blog-image">
+                <div class="blog-content">
                     <div class="blog-date">October 3, 2025</div>
                     <h3 class="blog-title">How Value Loans SME Financing Works for Your Business</h3>
                     <a href="#" class="read-more">Read more →</a>
                 </div>
-                
-                <div class="blog-card">
+            </div>
+            
+            <div class="blog-card">
+                <img src="images/blog-agribusiness.avif" alt="Agri Loan Success" class="blog-image">
+                <div class="blog-content">
                     <div class="blog-date">June 18, 2025</div>
                     <h3 class="blog-title">Agri Loan Helps Farm Expand Operations</h3>
                     <a href="#" class="read-more">Read more →</a>
                 </div>
-                
-                <div class="blog-card">
+            </div>
+            
+            <div class="blog-card">
+                <img src="images/blog-award.jpg" alt="GITEX Africa Award" class="blog-image">
+                <div class="blog-content">
                     <div class="blog-date">May 31, 2024</div>
                     <h3 class="blog-title">Value Loans Wins Big at GITEX Africa 2024</h3>
                     <a href="#" class="read-more">Read more →</a>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section">
+                <!-- ADD: Company logo -->
+                <img src="images/logo-full.png" alt="Value Financial Services" class="footer-logo">
                 <h3>Value</h3>
                 <p>"We are building the next generation of financial services for AFRICA."</p>
                 <p>Value is an award-winning, venture-backed fintech startup that provides online loans.</p>
+                <!-- ADD: Social media icons -->
+                <div class="social-icons">
+                    <a href="#"><img src="images/fb-icon.avif" alt="Facebook"></a>
+                    <a href="#"><img src="images/X-icon.avif" alt="Twitter"></a>
+                    <a href="#"><img src="images/in-icon.avif" alt="LinkedIn"></a>
+                    <a href="#"><img src="images/IG-icon.avif" alt="Instagram"></a>
+                </div>
             </div>
             
             <div class="footer-section">
@@ -357,6 +431,12 @@
                 <p>support@valueloans.org</p>
                 <p>+265 996 113 594</p>
                 <p>+265 897 325 815</p>
+                <!-- ADD: Payment method icons -->
+                <div class="payment-methods">
+                    <img src="images/visa-icon.avif" alt="Visa">
+                    <img src="images/mastercard-icon.jpg" alt="Mastercard">
+                    <img src="images/mobile-money-icon.avif" alt="Mobile Money">
+                </div>
             </div>
         </div>
 
@@ -379,5 +459,28 @@
             <p>&copy; 2024 Value Financial Services Limited. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        
+        question.addEventListener('click', () => {
+            // Close all other FAQ items
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                }
+            });
+            
+            // Toggle current item
+            item.classList.toggle('active');
+        });
+    });
+});
+</script>
+
 </body>
 </html>
