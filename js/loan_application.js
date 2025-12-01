@@ -87,12 +87,13 @@ async function savePersonalDetails() {
         location: $("location").value,
         phone: $("phone").value
     };
+    const BACKEND_URL = "http://localhost:3000"; // or your backend host/port
 
-    const response = await fetch("/api/v1/loan_requests/start", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(payload)
-    });
+const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/start`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(payload)
+});
 
     const data = await safeJson(response);
 
@@ -126,7 +127,7 @@ async function saveGuarantorDetails() {
         location: $("g_location").value
     };
 
-    const response = await fetch(`/api/v1/loan_requests/${loanRequestId}/guarantor`, {
+    const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/${loanRequestId}/guarantor`, {
         method: "PUT",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(payload)
@@ -161,7 +162,7 @@ async function saveLoanDetails() {
         purpose: $("purpose").value
     };
 
-    const response = await fetch(`/api/v1/loan_requests/${loanRequestId}/loan_details`, {
+    const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/${loanRequestId}/loan_details`, {
         method: "PUT",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(payload)
@@ -201,7 +202,7 @@ async function uploadDocuments() {
 
     if ([...formData].length === 0) return true;
 
-    const response = await fetch(`/api/v1/loan_requests/${loanRequestId}/documents`, {
+    const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/${loanRequestId}/documents`, {
         method: "PUT",
         body: formData
     });
@@ -223,7 +224,7 @@ async function uploadDocuments() {
 
 async function finalizeApplication() {
 
-    const response = await fetch(`/api/v1/loan_requests/${loanRequestId}/submit`, {
+    const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/${loanRequestId}/submit`, {
         method: "POST"
     });
 
