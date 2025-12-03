@@ -172,35 +172,48 @@
             </div>
         </div>
 
-        <!-- STEP 3 - LOAN DETAILS -->
-        <div class="form-step" id="step-3">
-            <div class="step-title">3. Loan Details</div>
+       <!-- STEP 3 - LOAN DETAILS -->
+<div class="form-step" id="step-3">
+    <div class="step-title">3. Loan Details</div>
 
-            <div class="form-group">
-                <label>Loan Type</label>
-                <select id="loanType">
-                    <option value="civil_servant">Civil Servant Loan</option>
-                    <option value="group_business">Group Business Loan</option>
-                    <option value="graduate_ayiphule">Graduate Ayiphule Loan</option>
-                    <option value="payday">Payday Loan</option>
-                </select>
-            </div>
+    <div class="form-group">
+        <label>Loan Type</label>
+        <select id="loanType">
+            <option value="civil_servant">Civil Servant Loan</option>
+            <option value="group_business">Group Business Loan</option>
+            <option value="graduate_ayiphule">Graduate Ayiphule Loan</option>
+            <option value="payday">Payday Loan</option>
+        </select>
+    </div>
 
-            <div class="form-group">
-                <label>Desired Amount (MWK)</label>
-                <input type="number" id="amount">
-            </div>
+    <div class="form-group">
+        <label>Desired Amount (MWK)</label>
+        <input type="number" id="amount">
+    </div>
 
-            <div class="form-group">
-                <label>Tenure (Months)</label>
-                <input type="number" id="tenure">
-            </div>
+    <div class="form-group">
+        <label>Tenure (Months)</label>
+        <input type="number" id="tenure">
+    </div>
 
-            <div class="form-group">
-                <label>Purpose</label>
-                <input type="text" id="purpose">
-            </div>
-        </div>
+    
+
+    <div class="form-group">
+        <label>Purpose</label>
+        <input type="text" id="purpose">
+    </div>
+    <div class="form-group">
+        <label>Interest Rate (%)</label>
+        <input type="text" id="interestRate" readonly>
+    </div>
+
+    <div class="form-group">
+      <label>Total Repayable (MWK)</label>
+      <input type="text" id="totalRepayable" readonly>
+    </div>
+
+</div>
+
 
         <!-- STEP 4 - DOCUMENT UPLOAD -->
         <div class="form-step" id="step-4">
@@ -263,3 +276,53 @@ document.addEventListener('DOMContentLoaded', testBackendConnection);
 
 </body>
 </html>
+<script>
+const loanTypeEl = document.getElementById("loanType");
+const amountEl = document.getElementById("amount");
+const tenureEl = document.getElementById("tenure");
+const interestRateEl = document.getElementById("interestRate");
+const totalRepayableEl = document.getElementById("totalRepayable");
+
+async function updateInterestAndRepayable() {
+    const tenure = tenureEl.value;
+    const amount = parseFloat(amountEl.value);
+    const loanType = loanTypeEl.value;
+
+    if (!tenure || !amount || !loanType) {
+        interestRateEl.value = "";
+        totalRepayableEl.value = "";
+        return;
+    }
+
+    try {
+        // Backend should accept loan_type & tenure
+        const response = await fetch(`${BACKEND_URL}/api/v1/loan_interest_configs?term_months=${tenure}`);
+;
+        const data = await response.json();
+
+        if (data && data.interest_rate) {
+            const rate = parseFloat(data.interest_rate);
+
+            // Show interest rate
+            interestRateEl.value = rate + "%";
+
+            // Calculate total repayable
+            const total = amount * (1 + rate / 100);
+            totalRepayableEl.value = total.toFixed(2);
+        } else {
+            interestRateEl.value = "Not Configured";
+            totalRepayableEl.value = "";
+        }
+    } catch (err) {
+        console.error(err);
+        interestRateEl.value = "Error";
+        totalRepayableEl.value = "";
+    }
+}
+
+// Trigger calculation whenever amount, tenure, or loan type changes
+amountEl.addEventListener("input", updateInterestAndRepayable);
+tenureEl.addEventListener("input", updateInterestAndRepayable);
+loanTypeEl.addEventListener("change", updateInterestAndRepayable);
+</script>
+
