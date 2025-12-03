@@ -6,13 +6,13 @@
     <title>Malawi Defence Forces Loan - Value Loans</title>
     <link rel="stylesheet" href="../styles/custom.css">
 </head>
-<body>
+<body class="page-defence-forces">
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="../index.html" class="logo">
-                <div class="logo-icon">V</div>
-                <div class="logo-text">Value Loans</div>
+            <a href="index.html" class="logo">
+                <!-- Logo image -->
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
             </a>
             <div class="nav-menu">
                 <!-- Loans Dropdown -->
@@ -21,10 +21,9 @@
                     <div class="dropdown-menu">
                         <div class="dropdown-column">
                             <h4>Personal Loans</h4>
-                            <a href="personal-loans.html" class="dropdown-link">Personal Loans</a>
                             <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
-                            <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
-                            <a href="collateral-loan.html" class="dropdown-link">Collateral Backed Loan</a>
+                            <a href="defence-forces-loan.html" class="dropdown-link active">Malawi Defence Forces Loan</a>
+                            <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
                             <a href="yango-loans.html" class="dropdown-link">Value Loans on Yango</a>
                             <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
                             <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
@@ -50,13 +49,16 @@
                 <a href="payments.html" class="nav-link">Payments</a>
                 <a href="investments.html" class="nav-link">Investments</a>
                 <a href="about.html" class="nav-link">About</a>
+                <!-- Sign in / Sign up link - Now uses consistent nav-link styles -->
+                <a href="auth.html" class="nav-link">Sign in / Sign up</a>
                 <a href="apply.html" class="btn-primary">Apply for a Loan</a>
             </div>
         </div>
     </nav>
 
+
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" style="background-image: url('images/mdff.jpg');">
         <div class="hero-container">
             <div class="hero-content">
                 <h1>Malawi Defence Forces Loans</h1>
@@ -65,16 +67,15 @@
                     <a href="apply.html" class="btn-primary">Apply Now</a>
                 </div>
             </div>
-            <div class="hero-image">
-                Malawi Defence Forces Loan Image
-            </div>
         </div>
     </section>
 
-    <!-- Explore Section -->
+        <!-- Explore Section -->
     <section class="section">
         <div class="container">
             <div class="section-content">
+                <!-- Image placeholder for military personnel -->
+                <img src="images/military-personnel.avif" alt="Malawi Defence Forces Personnel" class="section-image">
                 <h2>Explore Malawi Defence Forces Loan</h2>
                 <p>Value Loans' Malawi Defence Forces Loan is a specialized salary-backed credit facility created for active members of Malawi Army. With stable income structures and high integrity, service personnel qualify for a dependable, dignified borrowing solution with no need for collateral.</p>
                 <div style="text-align: center; margin-top: 2rem;">
@@ -90,142 +91,179 @@
             <h2 class="section-title">Benefits</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">💰</div>
-                    <h3 class="feature-title">Low Interest Rates</h3>
-                    <p class="feature-description">Get affordable financing compared to unsecured loans.</p>
+                    <div class="feature-image-container">
+                        <img src="images/low-interest.jpg" alt="Low Interest Rates" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">Low Interest Rates</h3>
+                        <p class="feature-description">Get affordable financing compared to unsecured loans.</p>
+                    </div>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3 class="feature-title">Flexible Repayment</h3>
-                    <p class="feature-description">Choose a term that fits your income and financial goals.</p>
+                    <div class="feature-image-container">
+                        <img src="images/flexible-repayment.avif" alt="Flexible Repayment" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">Flexible Repayment</h3>
+                        <p class="feature-description">Choose a term that fits your income and financial goals.</p>
+                    </div>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="feature-icon">🏦</div>
-                    <h3 class="feature-title">Flexible Loan Amounts</h3>
-                    <p class="feature-description">Borrow between MWK 500 to MWK 250,000.</p>
+                    <div class="feature-image-container">
+                        <img src="images/flexible-amounts.avif" alt="Flexible Loan Amounts" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">Flexible Loan Amounts</h3>
+                        <p class="feature-description">Borrow between MWK 500 to MWK 250,000.</p>
+                    </div>
                 </div>
 
                 <div class="feature-card">
-                    <div class="feature-icon">🛡️</div>
-                    <h3 class="feature-title">No Collateral</h3>
-                    <p class="feature-description">Secured through payroll deduction.</p>
+                    <div class="feature-image-container">
+                        <img src="images/no-collateral.jpg" alt="No Collateral Required" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">No Collateral</h3>
+                        <p class="feature-description">Secured through payroll deduction.</p>
+                    </div>
                 </div>
 
                 <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3 class="feature-title">Quick Disbursement</h3>
-                    <p class="feature-description">Get access to funds within 24–48 hours of approval</p>
+                    <div class="feature-image-container">
+                        <img src="images/quick-disbursement.avif" alt="Quick Disbursement" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">Quick Disbursement</h3>
+                        <p class="feature-description">Get access to funds within 24–48 hours of approval</p>
+                    </div>
                 </div>
 
                 <div class="feature-card">
-                    <div class="feature-icon">📅</div>
-                    <h3 class="feature-title">Long Repayment Terms</h3>
-                    <p class="feature-description">Enjoy repayment flexibility with tenures of up to 36 months</p>
+                    <div class="feature-image-container">
+                        <img src="images/long-terms.avif" alt="Long Repayment Terms" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">Long Repayment Terms</h3>
+                        <p class="feature-description">Enjoy repayment flexibility with tenures of up to 36 months</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Eligibility & Documentation Section -->
+        <!-- Eligibility & Documentation Section -->
     <section class="section">
         <div class="container">
             <div class="two-column-grid">
                 <div class="column">
                     <div class="eligibility-container">
-                        <h2>Eligibility Criteria</h2>
-                        <p>You may qualify if you:</p>
-                        <ul class="eligibility-list">
-                            <li>Confirmed employee of the Malawi Army</li>
-                            <li>Have a National Registration Card (NRC)</li>
-                        </ul>
-                        <div style="margin-top: 2rem;">
-                            <a href="apply.html" class="btn-primary">Apply now</a>
+                        <!-- Image placeholder for eligibility -->
+                        <img src="images/eligibility-military.avif" alt="Military Eligibility" class="card-image">
+                        <div class="eligibility-container-content">
+                            <h2>Eligibility Criteria</h2>
+                            <p>You may qualify if you:</p>
+                            <ul class="eligibility-list">
+                                <li>Confirmed employee of the Malawi Army</li>
+                                <li>Have a National Registration Card (NRC)</li>
+                            </ul>
+                            <div style="margin-top: 2rem;">
+                                <a href="apply.html" class="btn-primary">Apply now</a>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="documentation-container">
-                        <h2>Required Documentation</h2>
-                        <p>Ensure you submit the following documents along with your pre-approval form:</p>
-                        <ul class="eligibility-list">
-                            <li>National Registration Card (NRC)</li>
-                            <li>Two most recent consecutive payslips</li>
-                            <li>Latest 1-month bank statement</li>
-                            <li>Signed Value Loans pre-approval form</li>
-                        </ul>
-                        <div style="margin-top: 2rem;">
-                            <a href="apply.html" class="btn-primary">Apply now</a>
+                        <!-- Image placeholder for documentation -->
+                        <img src="images/documentation.avif" alt="Required Documents" class="card-image">
+                        <div class="documentation-container-content">
+                            <h2>Required Documentation</h2>
+                            <p>Ensure you submit the following documents along with your pre-approval form:</p>
+                            <ul class="eligibility-list">
+                                <li>National Registration Card (NRC)</li>
+                                <li>Two most recent consecutive payslips</li>
+                                <li>Latest 1-month bank statement</li>
+                                <li>Signed Value Loans pre-approval form</li>
+                            </ul>
+                            <div style="margin-top: 2rem;">
+                                <a href="apply.html" class="btn-primary">Apply now</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- How It Works Section -->
-    <section class="section loan-options">
-        <div class="container">
-            <h2 class="section-title">How it works</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-number">1</div>
-                    <h3>Apply Online</h3>
-                    <p>Fill out a simple application via our website or mobile app.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">2</div>
-                    <h3>Submit Your Details</h3>
-                    <p>Upload KYC documents and sign pre-approval form.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">3</div>
-                    <h3>Quick Review</h3>
-                    <p>Our team verifies your information.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">4</div>
-                    <h3>Loan Approval</h3>
-                    <p>Once approved, funds are sent to your bank account.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">5</div>
-                    <h3>Flexible Repayment</h3>
-                    <p>Repay via automatic salary deductions.</p>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 3rem;">
-                <a href="apply.html" class="btn-primary">Apply now</a>
-            </div>
-        </div>
-    </section>
-
     <!-- FAQ Section -->
     <section class="section">
         <div class="container">
             <h2 class="section-title">Got Questions? We can help</h2>
             <p class="section-subtitle">Everything you need to know about the Malawi Defence Forces Loan. Can't find the answer you're looking for? Please chat to our team.</p>
             
-            <div class="faq-items">
+            <!-- Image placeholder for customer support -->
+            <img src="images/customer-support.jpg" alt="Customer Support" class="section-image" style="max-width: 800px; height: 300px; object-fit: cover; border-radius: 12px; margin: 0 auto 3rem; display: block;">
+            
+            <div class="faq-container">
                 <div class="faq-item">
-                    <div class="faq-question">How long does loan approval take?</div>
-                    <div class="faq-answer">Loan approval typically takes 24-48 hours after submission of all required documents.</div>
+                    <div class="faq-question">
+                        <span>How long does loan approval take?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Loan approval typically takes 12-24 hours after submission of all required documents.</p>
+                    </div>
                 </div>
                 
                 <div class="faq-item">
-                    <div class="faq-question">Is collateral required?</div>
-                    <div class="faq-answer">No, Malawi Defence Forces Loans are unsecured and backed by your employment status and salary.</div>
+                    <div class="faq-question">
+                        <span>Is collateral required?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>No, Malawi Defence Forces Loans are unsecured and backed by your employment status and salary.</p>
+                    </div>
                 </div>
                 
                 <div class="faq-item">
-                    <div class="faq-question">What is the loan term?</div>
-                    <div class="faq-answer">Loan terms range from 3 to 36 months, giving you flexibility to choose what works best for your financial situation.</div>
+                    <div class="faq-question">
+                        <span>What is the loan term?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Loan terms range from 3 to 36 months, giving you flexibility to choose what works best for your financial situation.</p>
+                    </div>
                 </div>
 
                 <div class="faq-item">
-                    <div class="faq-question">How do I receive the funds?</div>
-                    <div class="faq-answer">Once approved, funds are disbursed directly to your bank account within 24-48 hours.</div>
+                    <div class="faq-question">
+                        <span>How do I receive the funds?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Once approved, funds are disbursed directly to your bank account within 24-48 hours.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What is the maximum loan amount?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can borrow up to MWK 250,000 depending on your salary and eligibility.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How are repayments made?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Repayments are automatically deducted from your salary through payroll deduction.</p>
+                    </div>
                 </div>
             </div>
             
@@ -235,13 +273,22 @@
         </div>
     </section>
 
-    <!-- Footer -->
+        <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section">
+                <!-- ADD: Footer logo -->
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="footer-logo">
                 <h3>Value Loans</h3>
                 <p>"We are building the next generation of financial services for AFRICA."</p>
-                <p>Value Loans is an award-winning, venture-backed fintech startup that provides online loans.</p>
+                <p>Value loans is an award-winning, venture-backed fintech startup that provides online loans.</p>
+                <!-- ADD: Social media icons -->
+                <div class="social-icons">
+                    <a href="#"><img src="../images/fb-icon.avif" alt="Facebook"></a>
+                    <a href="#"><img src="../images/X-icon.avif" alt="Twitter"></a>
+                    <a href="#"><img src="../images/in-icon.avif" alt="LinkedIn"></a>
+                    <a href="#"><img src="../images/IG-icon.avif" alt="Instagram"></a>
+                </div>
             </div>
             
             <div class="footer-section">
@@ -266,6 +313,12 @@
                 <p>support@valueloans.org</p>
                 <p>+265 996 113 594</p>
                 <p>+265 897 325 815</p>
+                <!-- ADD: Payment method icons -->
+                <div class="payment-methods">
+                    <img src="../images/visa-icon.avif" alt="Visa">
+                    <img src="../images/mastercard-icon.jpg" alt="Mastercard">
+                    <img src="../images/mobile-money-icon.avif" alt="Mobile Money">
+                </div>
             </div>
         </div>
 
@@ -288,5 +341,29 @@
             <p>&copy; 2024 Value Loans Financial Services Limited. All rights reserved.</p>
         </div>
     </footer>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                // Close all other FAQ items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+        
+        // Optional: Open first FAQ by default
+        // faqItems[0].classList.add('active');
+    });
+    </script>
 </body>
 </html>

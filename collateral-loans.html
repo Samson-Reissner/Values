@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="../styles/custom.css">
 </head>
 <body>
-    <!-- Navigation -->
+        <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="logo">
-                <div class="logo-icon">V</div>
-                <div class="logo-text">Value Loans</div>
+                <!-- REPLACE: Logo image -->
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
             </a>
             <div class="nav-menu">
                 <!-- Loans Dropdown -->
@@ -21,10 +21,9 @@
                     <div class="dropdown-menu">
                         <div class="dropdown-column">
                             <h4>Personal Loans</h4>
-                            <a href="personal-loans.html" class="dropdown-link">Personal Loans</a>
                             <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
                             <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
-                            <a href="collateral-loan.html" class="dropdown-link">Collateral Backed Loan</a>
+                            <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
                             <a href="yango-loans.html" class="dropdown-link">Value Loans on Yango</a>
                             <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
                             <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
@@ -50,13 +49,15 @@
                 <a href="payments.html" class="nav-link">Payments</a>
                 <a href="investments.html" class="nav-link">Investments</a>
                 <a href="about.html" class="nav-link">About</a>
+                <!-- Sign in / Sign up link - Now uses consistent nav-link styles -->
+                <a href="auth.html" class="nav-link">Sign in / Sign up</a>
                 <a href="apply.html" class="btn-primary">Apply for a Loan</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" style="background-image: url('images/collateral.avif');">
         <div class="hero-container">
             <div class="hero-content">
                 <h1>Collateral Backed Loan</h1>
@@ -64,9 +65,6 @@
                 <div class="hero-actions" style="margin-top: 2rem;">
                     <a href="apply.html" class="btn-primary">Apply Now</a>
                 </div>
-            </div>
-            <div class="hero-image">
-                Collateral Backed Loan Image
             </div>
         </div>
     </section>
@@ -90,39 +88,62 @@
             <h2 class="section-title">Why Choose a Collateral Backed Loan?</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">💰</div>
-                    <h3 class="feature-title">Low Interest Rates</h3>
-                    <p class="feature-description">Get affordable financing compared to unsecured loans.</p>
+                    <div class="feature-image-container">
+                        <img src="images/low-interests.jpg" alt="Low Interest Rates" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">Low Interest Rates</h3>
+                        <p class="feature-description">Get affordable financing compared to unsecured loans.</p>
+                    </div>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3 class="feature-title">Flexible Repayment</h3>
-                    <p class="feature-description">Choose a term that fits your income and financial goals.</p>
+                    <div class="feature-image-container">
+                        <img src="images/flexible-repayment.avif" alt="Flexible Repayment" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">Flexible Repayment</h3>
+                        <p class="feature-description">Choose a term that fits your income and financial goals.</p>
+                    </div>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="feature-icon">🏠</div>
-                    <h3 class="feature-title">Use a Range of Assets</h3>
-                    <p class="feature-description">Secure your loan using movable or immovable assets.</p>
+                    <div class="feature-image-container">
+                        <img src="images/collateral2.avif" alt="Use a Range of Assets" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">Use a Range of Assets</h3>
+                        <p class="feature-description">Secure your loan using movable or immovable assets.</p>
+                    </div>
+                </div>
+                 <div class="feature-card">
+                    <div class="feature-image-container">
+                        <img src="images/long-terms.avif" alt="Long Repayment Terms" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">Long Repayment Terms</h3>
+                        <p class="feature-description">Enjoy repayment flexibility with tenures of up to 12 months</p>
+                    </div>
                 </div>
 
                 <div class="feature-card">
-                    <div class="feature-icon">📄</div>
-                    <h3 class="feature-title">No Hidden Fees</h3>
-                    <p class="feature-description">Transparent terms, always.</p>
+                    <div class="feature-image-container">
+                        <img src="images/transparent-terms.jpg" alt="No Hidden Fees" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">No Hidden Fees</h3>
+                        <p class="feature-description">Transparent terms, always.</p>
+                    </div>
                 </div>
 
                 <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3 class="feature-title">Quick Disbursement</h3>
-                    <p class="feature-description">Get access to funds within 24–48 hours of approval.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">📅</div>
-                    <h3 class="feature-title">Repayment Terms</h3>
-                    <p class="feature-description">Enjoy repayment flexibility with tenures of up to 12 months.</p>
+                    <div class="feature-image-container">
+                        <img src="images/quick-disbursement.avif" alt="Quick Disbursement" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">Quick Disbursement</h3>
+                        <p class="feature-description">Get access to funds within 24–48 hours of approval.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -132,7 +153,9 @@
     <section class="section">
         <div class="container">
             <div class="eligibility-container">
-                <div class="eligibility-content">
+                <!-- Image placeholder for eligibility -->
+                <img src="images/collateral-eligibility.jpg" alt="Collateral Loan Eligibility" class="card-image">
+                <div class="eligibility-container-content">
                     <h2>Eligibility Criteria</h2>
                     <p>You may qualify if you:</p>
                     <ul class="eligibility-list">
@@ -150,31 +173,52 @@
     </section>
 
     <!-- How It Works Section -->
-    <section class="section loan-options">
+    <section class="section loan-options" style="background: linear-gradient(rgba(239, 246, 255, 0.9), rgba(239, 246, 255, 0.9)), url('images/collateral-background.jpg') center/cover no-repeat;">
         <div class="container">
             <h2 class="section-title">How it works</h2>
+            
+            <!-- Process Infographic Image -->
+            <div class="process-image-container">
+                <img src="images/collateral-process.jpg" alt="Collateral Loan Process" class="process-infographic">
+            </div>
+            
             <div class="steps-grid">
                 <div class="step-card">
+                    <div class="step-image-container">
+                        <img src="images/apply-online-collateral.jpg" alt="Apply Online" class="step-image">
+                    </div>
                     <div class="step-number">1</div>
                     <h3>Apply Online</h3>
                     <p>Fill out a simple application via our website or mobile app.</p>
                 </div>
                 <div class="step-card">
+                    <div class="step-image-container">
+                        <img src="images/submit-collateral-docs.jpg" alt="Submit KYC & Collateral Details" class="step-image">
+                    </div>
                     <div class="step-number">2</div>
                     <h3>Submit KYC & Collateral Details</h3>
                     <p>Upload proof of income and asset documentation.</p>
                 </div>
                 <div class="step-card">
+                    <div class="step-image-container">
+                        <img src="images/collateral-review.jpg" alt="Quick Review" class="step-image">
+                    </div>
                     <div class="step-number">3</div>
                     <h3>Quick Review</h3>
                     <p>Our team verifies your information and evaluates your collateral.</p>
                 </div>
                 <div class="step-card">
+                    <div class="step-image-container">
+                        <img src="images/collateral-approval.jpg" alt="Loan Approval" class="step-image">
+                    </div>
                     <div class="step-number">4</div>
                     <h3>Loan Approval</h3>
                     <p>Once approved, funds are sent to your preferred account or mobile wallet.</p>
                 </div>
                 <div class="step-card">
+                    <div class="step-image-container">
+                        <img src="images/collateral-repayment.jpg" alt="Flexible Repayment" class="step-image">
+                    </div>
                     <div class="step-number">5</div>
                     <h3>Flexible Repayment</h3>
                     <p>Pay monthly over your selected loan term, from 1 to 12 months.</p>
@@ -192,25 +236,68 @@
             <h2 class="section-title">Got Questions? We can help</h2>
             <p class="section-subtitle">Everything you need to know about the Collateral Backed Loan. Can't find the answer you're looking for? Please chat to our team.</p>
             
-            <div class="faq-items">
+            <!-- Image placeholder for customer support -->
+            <img src="images/collateral-support.jpg" alt="Collateral Loan Support" class="section-image" style="max-width: 800px; height: 300px; object-fit: cover; border-radius: 12px; margin: 0 auto 3rem; display: block;">
+            
+            <div class="faq-container">
                 <div class="faq-item">
-                    <div class="faq-question">What types of collateral can I use?</div>
-                    <div class="faq-answer">You can use various assets including vehicles, land titles, property documents, or other valuable assets that can be properly evaluated and documented.</div>
+                    <div class="faq-question">
+                        <span>What types of collateral can I use?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can use various assets including vehicles, land titles, property documents, or other valuable assets that can be properly evaluated and documented.</p>
+                    </div>
                 </div>
                 
                 <div class="faq-item">
-                    <div class="faq-question">What happens if I miss a payment?</div>
-                    <div class="faq-answer">We recommend contacting our support team immediately if you anticipate payment difficulties. We offer flexible solutions to help you manage your repayments.</div>
+                    <div class="faq-question">
+                        <span>What happens if I miss a payment?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We recommend contacting our support team immediately if you anticipate payment difficulties. We offer flexible solutions to help you manage your repayments.</p>
+                    </div>
                 </div>
                 
                 <div class="faq-item">
-                    <div class="faq-question">How fast can I get the loan?</div>
-                    <div class="faq-answer">Once approved, funds are typically disbursed within 24-48 hours to your preferred account or mobile wallet.</div>
+                    <div class="faq-question">
+                        <span>How fast can I get the loan?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Once approved, funds are typically disbursed within 24-48 hours to your preferred account or mobile wallet.</p>
+                    </div>
                 </div>
 
                 <div class="faq-item">
-                    <div class="faq-question">How fast is the approval process?</div>
-                    <div class="faq-answer">Approval typically takes 24-48 hours after submission of all required documents and collateral evaluation.</div>
+                    <div class="faq-question">
+                        <span>How fast is the approval process?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Approval typically takes 24-48 hours after submission of all required documents and collateral evaluation.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Do I get my collateral back?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, your collateral is returned to you once you complete all loan repayments according to the agreed terms.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What happens if I default on the loan?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>In case of default, we follow legal procedures which may include liquidating the collateral to recover the loan amount, after providing proper notice and opportunities to resolve the situation.</p>
+                    </div>
                 </div>
             </div>
             
@@ -273,5 +360,28 @@
             <p>&copy; 2024 Value Loans Financial Services Limited. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- FAQ JavaScript -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                // Close all other FAQ items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+    });
+    </script>
 </body>
 </html>

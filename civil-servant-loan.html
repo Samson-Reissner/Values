@@ -10,9 +10,9 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="../index.html" class="logo">
-                <div class="logo-icon">V</div>
-                <div class="logo-text">Value Loans</div>
+            <a href="index.html" class="logo">
+                <!-- REPLACE: Logo image -->
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
             </a>
             <div class="nav-menu">
                 <!-- Loans Dropdown -->
@@ -21,10 +21,9 @@
                     <div class="dropdown-menu">
                         <div class="dropdown-column">
                             <h4>Personal Loans</h4>
-                            <a href="personal-loans.html" class="dropdown-link">Personal Loans</a>
                             <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
-                            <a href="defence-forces-loan.html" class="dropdown-link">Zambia Defence Forces Loan</a>
-                            <a href="collateral-loan.html" class="dropdown-link">Collateral Backed Loan</a>
+                            <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
+                            <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
                             <a href="yango-loans.html" class="dropdown-link">Value Loans on Yango</a>
                             <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
                             <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
@@ -50,13 +49,15 @@
                 <a href="payments.html" class="nav-link">Payments</a>
                 <a href="investments.html" class="nav-link">Investments</a>
                 <a href="about.html" class="nav-link">About</a>
+                <!-- Sign in / Sign up link - Now uses consistent nav-link styles -->
+                <a href="auth.html" class="nav-link">Sign in / Sign up</a>
                 <a href="apply.html" class="btn-primary">Apply for a Loan</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" style="background-image: url('images/civil1.avif');">
         <div class="hero-container">
             <div class="hero-content">
                 <h1>Civil Servant Loan</h1>
@@ -65,9 +66,6 @@
                     <a href="apply.html" class="btn-primary">Apply Now</a>
                 </div>
             </div>
-            <div class="hero-image">
-                Civil Servant Loan Image
-            </div>
         </div>
     </section>
 
@@ -75,6 +73,8 @@
     <section class="section">
         <div class="container">
             <div class="section-content">
+                <!-- Image placeholder for civil servants -->
+                <img src="images/civil2.avif" alt="Civil Servants" class="section-image">
                 <h2>Explore Civil Service Loans</h2>
                 <p>Value Loans' Civil Service Loans provide affordable, salary-deducted financing tailored to Malawi's government employees, offering predictable terms and stress-free repayment for essential needs.</p>
                 <div style="text-align: center; margin-top: 2rem;">
@@ -90,39 +90,63 @@
             <h2 class="section-title">Benefits of Civil Service Loans</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">💰</div>
-                    <h3 class="feature-title">Low Interest Rates</h3>
-                    <p class="feature-description">Low interest and service fee, one of the most competitive rates on the market</p>
+                    <div class="feature-image-container">
+                        <img src="images/low-interest-rates.jpg" alt="Low Interest Rates" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">Low Interest Rates</h3>
+                        <p class="feature-description">Low interest and service fee, one of the most competitive rates on the market</p>
+                    </div>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3 class="feature-title">Flexible Loan Amounts</h3>
-                    <p class="feature-description">Borrow from MWK 500 up to MWK 250,000 based on your salary level.</p>
+                    <div class="feature-image-container">
+                        <img src="images/flexible-amounts.avif" alt="Flexible Loan Amounts" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">Flexible Loan Amounts</h3>
+                        <p class="feature-description">Borrow from MWK 500 up to MWK 250,000 based on your salary level.</p>
+                    </div>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="feature-icon">🏦</div>
-                    <h3 class="feature-title">Direct Salary Deductions</h3>
-                    <p class="feature-description">Hassle-free repayments, no need to visit a branch or make manual transfers</p>
+                    <div class="feature-image-container">
+                        <img src="images/salary-deduction.jpg" alt="Direct Salary Deductions" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">Direct Salary Deductions</h3>
+                        <p class="feature-description">Hassle-free repayments, no need to visit a branch or make manual transfers</p>
+                    </div>
                 </div>
 
                 <div class="feature-card">
-                    <div class="feature-icon">🛡️</div>
-                    <h3 class="feature-title">No Collateral Required</h3>
-                    <p class="feature-description">Loans are backed by your employment, not your property.</p>
+                    <div class="feature-image-container">
+                        <img src="images/no_collateral.avif" alt="No Collateral Required" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">No Collateral Required</h3>
+                        <p class="feature-description">Loans are backed by your employment, not your property.</p>
+                    </div>
                 </div>
 
                 <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3 class="feature-title">Fast Disbursement</h3>
-                    <p class="feature-description">Get access to funds within 24–48 hours of approval</p>
+                    <div class="feature-image-container">
+                        <img src="images/quick-disbursement.avif" alt="Fast Disbursement" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">Fast Disbursement</h3>
+                        <p class="feature-description">Get access to funds within 24–48 hours of approval</p>
+                    </div>
                 </div>
 
                 <div class="feature-card">
-                    <div class="feature-icon">📅</div>
-                    <h3 class="feature-title">Long Repayment Terms</h3>
-                    <p class="feature-description">Enjoy repayment flexibility with tenures of up to 36 months</p>
+                    <div class="feature-image-container">
+                        <img src="images/long-terms.avif" alt="Long Repayment Terms" class="feature-image">
+                    </div>
+                    <div class="feature-card-content">
+                        <h3 class="feature-title">Long Repayment Terms</h3>
+                        <p class="feature-description">Enjoy repayment flexibility with tenures of up to 36 months</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -132,7 +156,9 @@
     <section class="section">
         <div class="container">
             <div class="eligibility-container">
-                <div class="eligibility-content">
+                <!-- Image placeholder for eligibility -->
+                <img src="images/civil-servant-eligibility.jpg" alt="Civil Servant Eligibility" class="card-image">
+                <div class="eligibility-container-content">
                     <h2>Eligibility Criteria</h2>
                     <p>To qualify for a Civil Service Loan, you must:</p>
                     <ul class="eligibility-list">
@@ -151,38 +177,222 @@
     </section>
 
     <!-- How It Works Section -->
-    <section class="section loan-options">
+    <section class="section loan-options" style="background: linear-gradient(rgba(72, 74, 76, 0.9), rgba(231, 165, 250, 0.9)), url('images/professional-bg.jpg') center/cover no-repeat;">
         <div class="container">
-            <h2 class="section-title">How it works</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-number">1</div>
-                    <h3>Start Your Application</h3>
-                    <p>Complete a quick online form via Value Loans' mobile or web app.</p>
+            <h2 class="section-title" style="color: whitesmoke; text-align: center; margin-bottom: 2.5rem;">How It Works</h2>
+            
+            <!-- Process Infographic Image -->
+            <div class="process-image-container" style="text-align: center; margin-bottom: 3rem;">
+                <img src="images/collateral-process.jpg" alt="Collateral Loan Process" class="process-infographic" style="max-width: 800px; width: 100%; border-radius: 8px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);">
+            </div>
+            
+            <div class="steps-grid" style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 2rem;
+                position: relative;
+                z-index: 1;
+            ">
+                <div class="step-card" style="
+                    background: rgba(255, 255, 255, 0.95);
+                    border-radius: 12px;
+                    padding: 1.75rem 1.25rem;
+                    text-align: center;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                ">
+                    <div class="step-image-container" style="margin-bottom: 1.25rem;">
+                        <img src="images/apply-online-collateral.jpg" alt="Apply Online" class="step-image" style="
+                            width: 100%;
+                            height: 140px;
+                            object-fit: cover;
+                            border-radius: 8px;
+                        ">
+                    </div>
+                    <div class="step-number" style="
+                        background: linear-gradient(135deg, #1e40af, #3b82f6);
+                        color: white;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 0 auto 1rem;
+                        font-weight: bold;
+                        font-size: 1.2rem;
+                    ">1</div>
+                    <h3 style="
+                        color: #1e293b;
+                        margin-bottom: 0.75rem;
+                        font-size: 1.25rem;
+                    ">Apply Online</h3>
+                    <p style="color: #4b5563; line-height: 1.5; font-size: 0.95rem;">Fill out a simple application via our website or mobile app.</p>
                 </div>
-                <div class="step-card">
-                    <div class="step-number">2</div>
-                    <h3>Submit Your Details</h3>
-                    <p>Upload KYC documents and employer confirmation.</p>
+                
+                <div class="step-card" style="
+                    background: rgba(255, 255, 255, 0.95);
+                    border-radius: 12px;
+                    padding: 1.75rem 1.25rem;
+                    text-align: center;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                ">
+                    <div class="step-image-container" style="margin-bottom: 1.25rem;">
+                        <img src="images/submit-collateral-docs.jpg" alt="Submit KYC & Collateral Details" class="step-image" style="
+                            width: 100%;
+                            height: 140px;
+                            object-fit: cover;
+                            border-radius: 8px;
+                        ">
+                    </div>
+                    <div class="step-number" style="
+                        background: linear-gradient(135deg, #1e40af, #3b82f6);
+                        color: white;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 0 auto 1rem;
+                        font-weight: bold;
+                        font-size: 1.2rem;
+                    ">2</div>
+                    <h3 style="
+                        color: #1e293b;
+                        margin-bottom: 0.75rem;
+                        font-size: 1.25rem;
+                    ">Submit KYC & Collateral Details</h3>
+                    <p style="color: #4b5563; line-height: 1.5; font-size: 0.95rem;">Upload proof of income and asset documentation.</p>
                 </div>
-                <div class="step-card">
-                    <div class="step-number">3</div>
-                    <h3>Get Verified Fast</h3>
-                    <p>We work directly with your employer for verification.</p>
+                
+                <div class="step-card" style="
+                    background: rgba(255, 255, 255, 0.95);
+                    border-radius: 12px;
+                    padding: 1.75rem 1.25rem;
+                    text-align: center;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                ">
+                    <div class="step-image-container" style="margin-bottom: 1.25rem;">
+                        <img src="images/collateral-review.jpg" alt="Quick Review" class="step-image" style="
+                            width: 100%;
+                            height: 140px;
+                            object-fit: cover;
+                            border-radius: 8px;
+                        ">
+                    </div>
+                    <div class="step-number" style="
+                        background: linear-gradient(135deg, #1e40af, #3b82f6);
+                        color: white;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 0 auto 1rem;
+                        font-weight: bold;
+                        font-size: 1.2rem;
+                    ">3</div>
+                    <h3 style="
+                        color: #1e293b;
+                        margin-bottom: 0.75rem;
+                        font-size: 1.25rem;
+                    ">Quick Review</h3>
+                    <p style="color: #4b5563; line-height: 1.5; font-size: 0.95rem;">Our team verifies your information and evaluates your collateral.</p>
                 </div>
-                <div class="step-card">
-                    <div class="step-number">4</div>
-                    <h3>Get Approval Fast</h3>
-                    <p>Loans are approved quickly and disbursed to your mobile wallet or bank.</p>
+                
+                <div class="step-card" style="
+                    background: rgba(255, 255, 255, 0.95);
+                    border-radius: 12px;
+                    padding: 1.75rem 1.25rem;
+                    text-align: center;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                ">
+                    <div class="step-image-container" style="margin-bottom: 1.25rem;">
+                        <img src="images/collateral-approval.jpg" alt="Loan Approval" class="step-image" style="
+                            width: 100%;
+                            height: 140px;
+                            object-fit: cover;
+                            border-radius: 8px;
+                        ">
+                    </div>
+                    <div class="step-number" style="
+                        background: linear-gradient(135deg, #1e40af, #3b82f6);
+                        color: white;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 0 auto 1rem;
+                        font-weight: bold;
+                        font-size: 1.2rem;
+                    ">4</div>
+                    <h3 style="
+                        color: #1e293b;
+                        margin-bottom: 0.75rem;
+                        font-size: 1.25rem;
+                    ">Loan Approval</h3>
+                    <p style="color: #4b5563; line-height: 1.5; font-size: 0.95rem;">Once approved, funds are sent to your preferred account or mobile wallet.</p>
                 </div>
-                <div class="step-card">
-                    <div class="step-number">5</div>
-                    <h3>Repay with Ease</h3>
-                    <p>Monthly deductions are made directly from your salary.</p>
+                
+                <div class="step-card" style="
+                    background: rgba(255, 255, 255, 0.95);
+                    border-radius: 12px;
+                    padding: 1.75rem 1.25rem;
+                    text-align: center;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                ">
+                    <div class="step-image-container" style="margin-bottom: 1.25rem;">
+                        <img src="images/collateral-repayment.jpg" alt="Flexible Repayment" class="step-image" style="
+                            width: 100%;
+                            height: 140px;
+                            object-fit: cover;
+                            border-radius: 8px;
+                        ">
+                    </div>
+                    <div class="step-number" style="
+                        background: linear-gradient(135deg, #1e40af, #3b82f6);
+                        color: white;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin: 0 auto 1rem;
+                        font-weight: bold;
+                        font-size: 1.2rem;
+                    ">5</div>
+                    <h3 style="
+                        color: #1e293b;
+                        margin-bottom: 0.75rem;
+                        font-size: 1.25rem;
+                    ">Flexible Repayment</h3>
+                    <p style="color: #4b5563; line-height: 1.5; font-size: 0.95rem;">Pay monthly over your selected loan term, from 1 to 12 months.</p>
                 </div>
             </div>
-            <div style="text-align: center; margin-top: 3rem;">
-                <a href="apply.html" class="btn-primary">Apply now</a>
+            
+            <div style="text-align: center; margin-top: 3rem; position: relative; z-index: 1;">
+                <a href="apply.html" class="btn-primary" style="
+                    background: linear-gradient(135deg, #1e40af, #3b82f6);
+                    color: white;
+                    padding: 1rem 2.5rem;
+                    border-radius: 8px;
+                    text-decoration: none;
+                    font-weight: 600;
+                    display: inline-block;
+                    transition: all 0.3s ease;
+                    border: none;
+                    font-size: 1.1rem;
+                    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+                ">Apply Now</a>
             </div>
         </div>
     </section>
@@ -193,25 +403,68 @@
             <h2 class="section-title">Got Questions? We can help</h2>
             <p class="section-subtitle">Everything you need to know about the Civil Service Loan. Can't find the answer you're looking for? Please chat to our team.</p>
             
-            <div class="faq-items">
+            <!-- Image placeholder for customer support -->
+            <img src="images/civil-servant-support.jpg" alt="Civil Servant Customer Support" class="section-image" style="max-width: 800px; height: 300px; object-fit: cover; border-radius: 12px; margin: 0 auto 3rem; display: block;">
+            
+            <div class="faq-container">
                 <div class="faq-item">
-                    <div class="faq-question">How much can I borrow as a civil servant?</div>
-                    <div class="faq-answer">You can borrow from MWK 500 to MWK 250,000 depending on your salary level and employment duration.</div>
+                    <div class="faq-question">
+                        <span>How much can I borrow as a civil servant?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can borrow from MWK 500 to MWK 250,000 depending on your salary level and employment duration.</p>
+                    </div>
                 </div>
                 
                 <div class="faq-item">
-                    <div class="faq-question">How are repayments made?</div>
-                    <div class="faq-answer">Repayments are made through direct salary deductions, making it convenient and hassle-free.</div>
+                    <div class="faq-question">
+                        <span>How are repayments made?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Repayments are made through direct salary deductions, making it convenient and hassle-free.</p>
+                    </div>
                 </div>
                 
                 <div class="faq-item">
-                    <div class="faq-question">How fast is the approval process?</div>
-                    <div class="faq-answer">Approval typically takes 24-48 hours after submission of all required documents.</div>
+                    <div class="faq-question">
+                        <span>How fast is the approval process?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Approval typically takes 24-48 hours after submission of all required documents.</p>
+                    </div>
                 </div>
 
                 <div class="faq-item">
-                    <div class="faq-question">Do I need collateral to get this loan?</div>
-                    <div class="faq-answer">No, Civil Service Loans are unsecured and backed by your employment status.</div>
+                    <div class="faq-question">
+                        <span>Do I need collateral to get this loan?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>No, Civil Service Loans are unsecured and backed by your employment status.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Which government departments are eligible?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>All government ministries, departments, and agencies in Malawi are eligible for Civil Service Loans.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I prepay my loan?</span>
+                        <div class="faq-icon">+</div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, you can prepay your loan at any time without any penalties.</p>
+                    </div>
                 </div>
             </div>
             
@@ -225,9 +478,18 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section">
+                <!-- ADD: Footer logo -->
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="footer-logo">
                 <h3>Value Loans</h3>
                 <p>"We are building the next generation of financial services for AFRICA."</p>
-                <p>Value Loans is an award-winning, venture-backed fintech startup that provides online loans.</p>
+                <p>Value loans is an award-winning, venture-backed fintech startup that provides online loans.</p>
+                <!-- ADD: Social media icons -->
+                <div class="social-icons">
+                    <a href="#"><img src="../images/fb-icon.avif" alt="Facebook"></a>
+                    <a href="#"><img src="../images/X-icon.avif" alt="Twitter"></a>
+                    <a href="#"><img src="../images/in-icon.avif" alt="LinkedIn"></a>
+                    <a href="#"><img src="../images/IG-icon.avif" alt="Instagram"></a>
+                </div>
             </div>
             
             <div class="footer-section">
@@ -252,6 +514,12 @@
                 <p>support@valueloans.org</p>
                 <p>+265 996 113 594</p>
                 <p>+265 897 325 815</p>
+                <!-- ADD: Payment method icons -->
+                <div class="payment-methods">
+                    <img src="../images/visa-icon.avif" alt="Visa">
+                    <img src="../images/mastercard-icon.jpg" alt="Mastercard">
+                    <img src="../images/mobile-money-icon.avif" alt="Mobile Money">
+                </div>
             </div>
         </div>
 
@@ -274,5 +542,28 @@
             <p>&copy; 2024 Value Loans Financial Services Limited. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- FAQ JavaScript -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                // Close all other FAQ items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+    });
+    </script>
 </body>
 </html>
