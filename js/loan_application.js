@@ -1,6 +1,7 @@
 /* ===========================================================
    SAFE HELPERS
 =========================================================== */
+const BACKEND_URL = "http://localhost:3000";
 
 async function safeJson(response) {
     const text = await response.text();
@@ -87,7 +88,7 @@ async function savePersonalDetails() {
         location: $("location").value,
         phone: $("phone").value
     };
-    const BACKEND_URL = "http://localhost:3000"; // or your backend host/port
+   // const BACKEND_URL = "http://localhost:3000"; // or your backend host/port
 
 const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/start`, {
     method: "POST",
@@ -113,10 +114,10 @@ const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/start`, {
 
 async function saveGuarantorDetails() {
 
-    if (!loanRequestId) {
-        alert("Loan ID missing");
-        return false;
-    }
+    // if (!loanRequestId) {
+    //     alert("Loan ID missing");
+    //     return false;
+    // }
 
     const payload = {
         first_name: $("g_first").value,
