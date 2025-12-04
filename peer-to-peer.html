@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peer-to-Peer - Value</title>
+    <title>Peer-to-Peer Lending - Value</title>
     <link rel="stylesheet" href="../styles/custom.css">
 </head>
 <body>
-        <!-- Navigation -->
+
+<!-- Navigation -->
 <nav class="navbar">
     <div class="nav-container">
         <a href="index.html" class="logo">
@@ -15,247 +16,147 @@
             <div class="logo-text">Value</div>
         </a>
         <div class="nav-menu">
-            <!-- Loans Dropdown -->
-            <div class="dropdown">
-                <a href="#loans" class="nav-link dropdown-toggle">Loans</a>
-                <div class="dropdown-menu">
-                    <div class="dropdown-column">
-                        <h4>Personal Loans</h4>
-                        <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
-                        <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
-                        <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
-                        <a href="yango-loans.html" class="dropdown-link">Value Loans on Yango</a>
-                        <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
-                        <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
-                    </div>
-                    <div class="dropdown-column">
-                        <h4>Business Loans</h4>
-                        <a href="business-loans.html" class="dropdown-link">Business Loans</a>
-                        <a href="order-finance.html" class="dropdown-link">Order Finance</a>
-                        <a href="invoice-discounting.html" class="dropdown-link">Invoice Discounting</a>
-                        <a href="asset-financing.html" class="dropdown-link">Asset Financing</a>
-                    </div>
-                    <div class="dropdown-column">
-                        <h4>Agri Loans</h4>
-                        <a href="agri-loans.html" class="dropdown-link">Agri Loans</a>
-                    </div>
-                    <div class="dropdown-column">
-                        <h4>Apps</h4>
-                        <a href="android-app.html" class="dropdown-link">Android App</a>
-                        <a href="ios-app.html" class="dropdown-link">iOS App</a>
-                    </div>
-                </div>
-            </div>
+            <a href="loans.html" class="nav-link">Loans</a>
             <a href="payments.html" class="nav-link">Payments</a>
-            <a href="peer-to-peer.html" class="nav-link">Investments</a>
+            <a href="peer-to-peer.html" class="nav-link active">Peer-to-Peer</a>
             <a href="about.html" class="nav-link">About</a>
-            <a href="apply.html" class="btn-primary">Apply for a Loan</a>
+            <a href="signin.html">Login / Sign Up</a>
         </div>
     </div>
 </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-content">
-                <h1>Join the Waitlist</h1>
-                <p class="hero-subtitle">Start earning by lending to creditworthy borrowers. Be the first to know when we launch.</p>
-            </div>
-            <div class="hero-image">
-                Investments Image
-            </div>
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1>Peer-to-Peer Lending</h1>
+            <p class="hero-subtitle">
+                Borrow or lend money directly with other people on a secure platform.  
+                Value Loans facilitates the process and earns a 2% service fee.
+            </p>
+            <a href="signin.html">Sign In to Get Started</a>
         </div>
-    </section>
-
-    <!-- Waitlist Form Section -->
-    <section class="section">
-        <div class="container">
-            <div class="waitlist-container">
-                <div class="waitlist-form">
-                    <h2 class="section-title">Investment Opportunities Coming Soon</h2>
-                    <p class="section-subtitle">Join our exclusive waitlist to be notified when our investment platform launches.</p>
-                    
-                    <form class="investment-form">
-                        <div class="form-group">
-                            <label for="name">Name*</label>
-                            <input type="text" id="name" name="name" placeholder="Your Full Name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="phone">Phone Number*</label>
-                            <input type="tel" id="phone" name="phone" placeholder="Your Phone Number" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="investment-amount">Intended Investment Amount*</label>
-                            <input type="text" id="investment-amount" name="investment-amount" placeholder="Intended Investment Amount" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="roi">Desired ROI (per annum) %</label>
-                            <input type="number" id="roi" name="roi" placeholder="Enter Percentage" min="0" max="100" step="0.1">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Email*</label>
-                            <input type="email" id="email" name="email" placeholder="your@email.com" required>
-                        </div>
-                        
-                        <div class="form-checkbox">
-                            <input type="checkbox" id="privacy-policy" name="privacy-policy" required>
-                            <label for="privacy-policy">You agree to our friendly <a href="#privacy">privacy policy</a>.</label>
-                        </div>
-                        
-                        <button type="submit" style="border-color: transparent; border-radius: 100px;" class="btn-primary submit-btn">Submit</button>
-                    </form>
-                </div>
-                
-                <div class="waitlist-benefits">
-                    <h3>Why Invest with Value?</h3>
-                    <div class="benefits-list">
-                        <div class="benefit-item">
-                            <div class="benefit-icon">💰</div>
-                            <div class="benefit-text">
-                                <h4>Competitive Returns</h4>
-                                <p>Earn attractive returns by lending to verified borrowers</p>
-                            </div>
-                        </div>
-                        <div class="benefit-item">
-                            <div class="benefit-icon">🛡️</div>
-                            <div class="benefit-text">
-                                <h4>Secure Platform</h4>
-                                <p>Your investments are protected with robust security measures</p>
-                            </div>
-                        </div>
-                        <div class="benefit-item">
-                            <div class="benefit-icon">📊</div>
-                            <div class="benefit-text">
-                                <h4>Diversified Portfolio</h4>
-                                <p>Spread your investments across multiple creditworthy borrowers</p>
-                            </div>
-                        </div>
-                        <div class="benefit-item">
-                            <div class="benefit-icon">⚡</div>
-                            <div class="benefit-text">
-                                <h4>Easy Management</h4>
-                                <p>Monitor and manage your investments through our user-friendly platform</p>
-                            </div>
-                        </div>
-                    </div>
+       <div class="blog-card">
+                <img src="images/peer-to-peer.jpg" alt="Peer-To-Peer" class="blog-image">
+                <div class="blog-content">
+                    <div class="blog-date">June 18, 2025</div>
+                    <h3 class="blog-title">Peer-To-Peer </h3>
                 </div>
             </div>
-        </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Additional Info Section -->
-    <section class="section loan-options">
-        <div class="container">
-            <div class="investment-info">
-                <h2 class="section-title">How Peer-to-Peer Lending Works</h2>
-                <div class="info-grid">
-                    <div class="info-card">
-                        <div class="info-number">1</div>
-                        <h3>Join the Platform</h3>
-                        <p>Complete your registration and verify your account to start investing</p>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-number">2</div>
-                        <h3>Choose Investments</h3>
-                        <p>Select from pre-vetted borrowers with different risk profiles and returns</p>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-number">3</div>
-                        <h3>Fund Loans</h3>
-                        <p>Allocate your capital across multiple loans to diversify risk</p>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-number">4</div>
-                        <h3>Earn Returns</h3>
-                        <p>Receive monthly payments as borrowers repay their loans with interest</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- How It Works -->
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">How Peer-to-Peer Lending Works</h2>
+        <p class="section-subtitle">
+            A simple, transparent, and secure way to borrow or lend money through our verified user marketplace.
+        </p>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-section">
-                <h3>Value Loans</h3>
-                <p>"We are building the next generation of financial services for AFRICA."</p>
-                <p>Value Loans is an award-winning, venture-backed fintech startup that provides online loans.</p>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-number">1</div>
+                <h3>Register & Verify</h3>
+                <p>
+                    Only verified users can lend or borrow. Create an account, provide basic KYC details,
+                    and verify your phone number.
+                </p>
             </div>
-            
-            <div class="footer-section">
-                <h3>PRODUCTS</h3>
-                <a href="#loans">Loans</a>
-                <a href="payments.html">Payments</a>
-                <a href="investments.html">Investments</a>
+
+            <div class="info-card">
+                <div class="info-number">2</div>
+                <h3>Choose to Borrow or Lend</h3>
+                <p>
+                    Borrowers can request an amount. Lenders can browse borrower profiles,
+                    repayment capacity, and risk levels.
+                </p>
             </div>
-            
-            <div class="footer-section">
-                <h3>RESOURCES</h3>
-                <a href="#blog">Blog</a>
-                <a href="#careers">Careers</a>
-                <a href="#requirements">Loan Requirements</a>
+
+            <div class="info-card">
+                <div class="info-number">3</div>
+                <h3>Send or Receive Funds</h3>
+                <p>
+                    When a lender accepts a request, they send the funds directly to the borrower.
+                    A screenshot/confirmation of payment is uploaded in the system.
+                </p>
             </div>
-            
-            <div class="footer-section">
-                <h3>GET INVOLVED</h3>
-                <a href="#agent">Become an Agent</a>
-                <h4>CONTACT</h4>
-                <p>Area 36, M1 Road, Opposite LUANAR City Campus, Lilongwe, Malawi</p>
-                <p>support@valueloans.org</p>
-                <p>+265 996 113 594</p>
-                <p>+265 897 325 815</p>
+
+            <div class="info-card">
+                <div class="info-number">4</div>
+                <h3>Repayment Handling</h3>
+                <p>
+                    Value tracks repayment.  
+                    • Civil servants: repayment deducted automatically from salary  
+                    • Others: repayments tracked and followed up by our system  
+                    Value charges a **2% facilitation fee**.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Rules & Requirements -->
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">Before You Borrow or Lend</h2>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>📌 Mandatory Requirements</h3>
+                <ul>
+                    <li>Must be registered on the platform</li>
+                    <li>Must be signed in to access P2P features</li>
+                    <li>Lender must upload proof of payment when sending funds</li>
+                    <li>Borrower must confirm receipt of funds in the system</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>🛡️ Protection & Security</h3>
+                <ul>
+                    <li>Borrowers are identity-verified</li>
+                    <li>Lenders receive repayment guarantees for civil servants</li>
+                    <li>All transactions monitored by Value Loans</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>💸 Platform Fees</h3>
+                <ul>
+                    <li>Value charges a 2% fee per successful lending transaction</li>
+                    <li>No hidden charges</li>
+                </ul>
             </div>
         </div>
 
-        <div class="footer-disclaimer">
-            <p>Minimum Tenure: 62 days | Maximum Tenure: 60 months | Maximum APR: 40%</p>
-            <p>Representative Example of a K1,000,000 SME loan over 12 months:</p>
-            <div class="example-grid">
-                <div>INTEREST RATE: 2.5%</div>
-                <div>LOAN VALUE: MWK1,000,000</div>
-                <div>LOAN TERM: 12 Months</div>
-                <div>TOTAL AMOUNT: MWK1,169,845.52</div>
-                <div>MONTHLY REPAYMENT: MWK97,487.13</div>
-            </div>
+        <div style="text-align:center; margin-top:40px;">
+            <a href="signin.html" class="btn-primary">Sign In / Create Account to Continue</a>
         </div>
-        
-        <div class="footer-bottom">
-            <div class="footer-links">
-                <a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Use</a>
-            </div>
-            <p>&copy; 2024 Value Loans Financial Services Limited. All rights reserved.</p>
-        </div>
-    </footer>
+    </div>
+</section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('.investment-form');
-            
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Get form data
-                const formData = new FormData(form);
-                const data = Object.fromEntries(formData);
-                
-                // Simple validation
-                if (!data.name || !data.phone || !data['investment-amount'] || !data.email || !data['privacy-policy']) {
-                    alert('Please fill in all required fields and agree to the privacy policy.');
-                    return;
-                }
-                
-                // Show success message
-                alert('Thank you for joining our waitlist! We will notify you when our investment platform launches.');
-                
-                // Reset form
-                form.reset();
-            });
-        });
-    </script>
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>Value Loans</h3>
+            <p>"Building the next generation of financial services for Africa."</p>
+        </div>
+        <div class="footer-section">
+            <h3>PRODUCTS</h3>
+            <a href="loans.html">Loans</a>
+            <a href="payments.html">Payments</a>
+            <a href="peer-to-peer.html">Investments</a>
+        </div>
+        <div class="footer-section">
+            <h3>CONTACT</h3>
+            <p>Area 36, M1 Road, Lilongwe, Malawi</p>
+            <p>support@valueloans.org</p>
+            <p>+265 996 113 594</p>
+        </div>
+    </div>
+</footer>
+
 </body>
 </html>
