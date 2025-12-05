@@ -107,7 +107,7 @@
 
     <!-- Bottom Button -->
     <div class="bottom-action">
-        <button class="lend-btn">Lend Money</button>
+        <button class="lend-btn" onclick="window.location.href='lend_form.html'">Lend Money</button> 
     </div>
 </div>
 
@@ -120,44 +120,59 @@
     }
 
     // --- FETCH DASHBOARD DATA ---
-    fetch("https://yourapi.com/borrower/dashboard", {
-        headers: {
-            "Authorization": "Bearer " + token
-        }
-    })
-    .then(res => {
-        if (res.status === 401) {
-            window.location.href = "login.html";
-        }
-        return res.json();
-    })
-    .then(data => {
-        const container = document.getElementById("bidders-list");
-        container.innerHTML = "";
+fetch("http://localhost:3000/api/v1/borrower/dashboard",{
+    headers: {
+        "Authorization": "Bearer " + token
+    }
+})
+.then(res => {
+    if (res.status === 401) window.location.href = "login.html";
+    return res.json();
+})
+.then(investments => {
+    const container = document.getElementById("bidders-list");
+    container.innerHTML = "";
 
-        if (!data.bidders || data.bidders.length === 0) {
-            container.innerHTML = "<p>No lenders available yet.</p>";
-            return;
-        }
+    if (!investments || investments.length === 0) {
+        container.innerHTML = "<p>No lenders available yet.</p>";
+        return;
+    }
 
-        data.bidders.forEach((bidder, index) => {
-            container.innerHTML += `
-                <div class="bid-card">
-                    <div class="bid-details">
-                        <h3>Lender #${index + 1}</h3>
-                        <p><strong>Amount:</strong> MWK ${bidder.amount}</p>
-                        <p><strong>Interest:</strong> ${bidder.interest_rate}% per month</p>
-                        <p><strong>Contact:</strong> ${bidder.masked_contact}</p>
-                    </div>
-                    <button class="borrow-btn">Borrow</button>
+    investments.forEach((inv, index) => {
+        container.innerHTML += `
+            <div class="bid-card">
+                <div class="bid-details">
+                    <h3>Lender #${index + 1} (${inv.lender_name})</h3>
+                    <p><strong>Amount:</strong> MWK ${inv.amount}</p>
+                    <p><strong>Interest:</strong> ${inv.interest_rate}% per month</p>
+                    <p><strong>Tenure:</strong> ${inv.tenure_months} months</p>
+                    <p><strong>Contact:</strong> ${inv.masked_contact}</p>
                 </div>
-            `;
-        });
-    })
-    .catch(err => {
-        console.error(err);
-        document.getElementById("bidders-list").innerHTML = "<p>Error loading lenders.</p>";
+                <button class="borrow-btn" onclick="borrow(${inv.id})">Borrow</button>
+            </div>
+        `;
     });
+})
+.catch(err => {
+    console.error(err);
+    document.getElementById("bidders-list").innerHTML = "<p>Error loading lenders.</p>";
+});
+function borrow(investmentId) {
+    fetch(`http://localhost:3000/api/v1/p2p_investments/${investmentId}/borrow`, {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json"
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert("You successfully borrowed this investment!");
+        location.reload(); // refresh dashboard
+    })
+    .catch(err => console.error(err));
+}
+
 
     // --- LOGOUT FUNCTION ---
     function logout() {
