@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lend Money</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+
+    <style>
+        body { background: #f7f7f7; }
+        .form-container {
+            max-width: 450px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #1e73ff;
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover { background: #005be0; }
+    </style>
+</head>
+
+<body>
+
+<div class="form-container">
+    <h2>Lend Money</h2>
+
+    <form id="lendForm">
+        <label>Amount (MWK)</label>
+        <input type="number" id="amount" required>
+
+        <label>Tenure (Months)</label>
+        <input type="number" id="tenure" required>
+
+        <label>Interest Rate (%)</label>
+        <input type="number" id="interest" required>
+
+        <button type="submit">Submit Offer</button>
+    </form>
+
+    <p id="msg" style="margin-top:15px;color:green;"></p>
+</div>
+
+<script>
+const BACKEND_URL = "http://localhost:3000"; // or your production backend
+const $ = (id) => document.getElementById(id);
+const token = localStorage.getItem("token");
+
+if (!token) window.location.href = "login.html";
+
+async function safeJson(response) {
+    const text = await response.text();
+    try {
+        return text ? JSON.parse(text) : {};
+    } catch {
+        console.warn("Non-JSON response:", text);
+        return {};
+    }
+}
+
+const form = $("lendForm");
+
+form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const payload = {
+        p2p_investment: {
+            amount: $("amount").value,
+            tenure_months: $("tenure").value,
+            interest_rate: $("interest").value
+        }
+    };
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/v1/p2p_investments`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await safeJson(response);
+
+        if (!response.ok) {
+            alert(data.error || (data.errors ? data.errors.join(", ") : "Failed to submit offer"));
+            return;
+        }
+
+        $("msg").innerText = "Offer submitted successfully!";
+        setTimeout(() => window.location.href = "dashboard.html", 1500);
+
+    } catch (err) {
+        console.error(err);
+        alert("Error submitting offer");
+    }
+});
+
+</script>
+
+</body>
+</html>
