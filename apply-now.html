@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Loan Application - Value Loans</title>
+    <link rel="stylesheet" href="styles/custom.css">
+    <link rel="stylesheet" href="styles/loan-application.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="loan-application-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
+            </a>
+            <div class="nav-menu">
+                <div class="dropdown">
+                    <a href="#loans" class="nav-link dropdown-toggle">Loans</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <h4>Personal Loans</h4>
+                            <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
+                            <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
+                            <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Business Loans</h4>
+                            <a href="business-loans.html" class="dropdown-link">Business Loans</a>
+                            <a href="order-finance.html" class="dropdown-link">Order Finance</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="payments.html" class="nav-link">Payments</a>
+                <a href="investments.html" class="nav-link">Investments</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="auth-landing.html" class="nav-link">Sign in / Sign up</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="application-container">
+        <!-- Header with Progress Steps -->
+        <div class="application-header">
+            <h1>Complete Your Loan Application</h1>
+            <p>Fill in your details to finalize the loan application process</p>
+            
+            <div class="application-progress">
+                <div class="progress-step active" data-step="1">
+                    <div class="progress-circle">1</div>
+                    <div class="progress-label">Loan Details</div>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <div class="progress-circle">2</div>
+                    <div class="progress-label">User Verification</div>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <div class="progress-circle">3</div>
+                    <div class="progress-label">KYC Documents</div>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <div class="progress-circle">4</div>
+                    <div class="progress-label">Confirmation</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Application Content -->
+        <div class="application-content">
+            <!-- Step 1: Loan Details Confirmation -->
+            <div class="application-form active" id="step1">
+                <h2 class="section-title">Confirm Loan Details</h2>
+                <p class="section-subtitle">Please review and confirm your loan details. You can edit them if needed.</p>
+                
+                <div class="loan-summary-card">
+                    <div class="summary-item">
+                        <span class="summary-label">Loan Type:</span>
+                        <span class="summary-value" id="loanTypeDisplay">Civil Servant Loan</span>
+                        <button class="edit-button" onclick="editField('loanType')">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Loan Amount:</span>
+                        <span class="summary-value" id="loanAmountDisplay">MWK 5,000,000</span>
+                        <button class="edit-button" onclick="editField('loanAmount')">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Loan Term:</span>
+                        <span class="summary-value" id="loanTermDisplay">12 Months</span>
+                        <button class="edit-button" onclick="editField('loanTerm')">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Monthly Repayment:</span>
+                        <span class="summary-value" id="monthlyRepaymentDisplay">MWK 456,250</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Total Repayment:</span>
+                        <span class="summary-value" id="totalRepaymentDisplay">MWK 5,475,000</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Processing Fee (25%):</span>
+                        <span class="summary-value" id="processingFeeDisplay">MWK 1,250,000</span>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3 class="section-subtitle">Loan Purpose</h3>
+                    <div class="form-input-group">
+                        <i class="fas fa-bullseye form-input-icon"></i>
+                        <select id="loanPurpose" class="form-input">
+                            <option value="">Select loan purpose</option>
+                            <option value="education">Education Expenses</option>
+                            <option value="medical">Medical Treatment</option>
+                            <option value="home">Home Renovation</option>
+                            <option value="business">Business Expansion</option>
+                            <option value="vehicle">Vehicle Purchase</option>
+                            <option value="agriculture">Agricultural Investment</option>
+                            <option value="debt">Debt Consolidation</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 2: User Verification -->
+            <div class="application-form" id="step2">
+                <h2 class="section-title">User Verification</h2>
+                <p class="section-subtitle">Please verify your identity with your registered credentials.</p>
+                
+                <div class="verification-notice">
+                    <i class="fas fa-shield-alt"></i>
+                    <p>We need to verify this is you. Please enter the same credentials you used during registration.</p>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Email Address <span class="required">*</span></label>
+                        <div class="form-input-group">
+                            <i class="fas fa-envelope form-input-icon"></i>
+                            <input type="email" id="verifyEmail" class="form-input" placeholder="Enter your registered email">
+                        </div>
+                        <div class="validation-message" id="emailVerifyMessage"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Password <span class="required">*</span></label>
+                        <div class="form-input-group password-field">
+                            <i class="fas fa-lock form-input-icon"></i>
+                            <input type="password" id="verifyPassword" class="form-input" placeholder="Enter your password">
+                            <button type="button" class="password-toggle" onclick="togglePassword('verifyPassword')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="validation-message" id="passwordVerifyMessage"></div>
+                    </div>
+                </div>
+                
+                <div class="application-warning" id="verificationWarning">
+                    <i class="fas fa-exclamation-triangle"></i> 
+                    <span>Credentials don't match. Please try again or contact support if you've forgotten your password.</span>
+                </div>
+            </div>
+            
+            <!-- Step 3: KYC Documents -->
+            <div class="application-form" id="step3">
+                <h2 class="section-title">KYC Document Upload</h2>
+                <p class="section-subtitle">Please upload required documents for verification.</p>
+                
+                <div class="kyc-upload" onclick="document.getElementById('idUpload').click()">
+                    <i class="fas fa-id-card"></i>
+                    <h4>National ID / Passport</h4>
+                    <p>Upload a clear photo or scanned copy of your National ID or Passport</p>
+                    <button class="btn-outline">
+                        <i class="fas fa-upload"></i> Click to Upload
+                    </button>
+                    <input type="file" id="idUpload" accept=".jpg,.jpeg,.png,.pdf" style="display: none;" onchange="handleFileUpload('id', this)">
+                </div>
+                
+                <div class="kyc-upload" onclick="document.getElementById('payslipUpload').click()">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <h4>Proof of Income</h4>
+                    <p>Upload your latest 3 months payslips or bank statements</p>
+                    <button class="btn-outline">
+                        <i class="fas fa-upload"></i> Click to Upload
+                    </button>
+                    <input type="file" id="payslipUpload" accept=".jpg,.jpeg,.png,.pdf" style="display: none;" onchange="handleFileUpload('payslip', this)">
+                </div>
+                
+                <div class="uploaded-files" id="uploadedFiles" style="display: none;">
+                    <h4 class="section-subtitle">Uploaded Documents</h4>
+                </div>
+            </div>
+            
+            <!-- Step 4: Confirmation -->
+            <div class="application-form" id="step4">
+                <h2 class="section-title">Final Confirmation & Payment</h2>
+                <p class="section-subtitle">Complete your application by uploading proof of processing fee payment</p>
+                
+                <div class="application-summary">
+                    <h3>Loan Application Summary</h3>
+                    
+                    <div class="summary-grid">
+                        <div class="summary-card">
+                            <h4>Loan Details</h4>
+                            <div class="summary-row">
+                                <span>Loan Type:</span>
+                                <strong id="finalLoanType">Civil Servant Loan</strong>
+                            </div>
+                            <div class="summary-row">
+                                <span>Loan Amount:</span>
+                                <strong id="finalLoanAmount">MWK 5,000,000</strong>
+                            </div>
+                            <div class="summary-row">
+                                <span>Loan Term:</span>
+                                <strong id="finalLoanTerm">12 Months</strong>
+                            </div>
+                            <div class="summary-row">
+                                <span>Monthly Payment:</span>
+                                <strong id="finalMonthlyRepayment">MWK 456,250</strong>
+                            </div>
+                            <div class="summary-row">
+                                <span>Total Repayment:</span>
+                                <strong id="finalTotalRepayment">MWK 5,475,000</strong>
+                            </div>
+                            <div class="summary-row">
+                                <span>Loan Purpose:</span>
+                                <strong id="finalLoanPurpose">Education Expenses</strong>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-card payment-card">
+                            <h4>Processing Fee Payment</h4>
+                            <div class="summary-row">
+                                <span>Loan Amount:</span>
+                                <strong id="paymentLoanAmount">MWK 5,000,000</strong>
+                            </div>
+                            <div class="summary-row">
+                                <span>Processing Fee (25%):</span>
+                                <strong id="paymentProcessingFee">MWK 1,250,000</strong>
+                            </div>
+                            <div class="summary-row total-row">
+                                <span>Total to Pay Now:</span>
+                                <strong id="paymentTotalToPay">MWK 1,250,000</strong>
+                            </div>
+                            
+                            <div class="payment-instructions">
+                                <h5>Payment Instructions:</h5>
+                                <p><strong>Bank:</strong> Value Financial Services</p>
+                                <p><strong>Account Name:</strong> Value Loans Processing Fee</p>
+                                <p><strong>Account Number:</strong> 1001-2345-6789</p>
+                                <p><strong>Reference:</strong> Your Application ID</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kyc-upload" onclick="document.getElementById('paymentProofUpload').click()">
+                    <i class="fas fa-receipt"></i>
+                    <h4>Upload Proof of Payment</h4>
+                    <p>Upload screenshot, receipt, or bank slip showing payment of <strong id="paymentAmountDisplay">MWK 1,250,000</strong></p>
+                    <button class="btn-outline">
+                        <i class="fas fa-upload"></i> Click to Upload Payment Proof
+                    </button>
+                    <input type="file" id="paymentProofUpload" accept=".jpg,.jpeg,.png,.pdf" style="display: none;" onchange="handlePaymentProofUpload(this)">
+                </div>
+                
+                <div class="uploaded-files" id="paymentProofFiles" style="display: none;">
+                    <h4 class="section-subtitle">Uploaded Payment Proof</h4>
+                </div>
+                
+                <div class="terms-agreement">
+                    <input type="checkbox" id="agreeTerms" class="checkbox-input">
+                    <label for="agreeTerms">
+                        I confirm that I have paid the processing fee and uploaded proof of payment.
+                    </label>
+                </div>
+                
+                <div class="application-success" id="successMessage" style="display: none;">
+                    <!-- Success message will be shown here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer with Navigation Buttons -->
+        <div class="application-footer">
+            <div class="application-progress-text">
+                Step <span id="currentStepNumber">1</span> of 4
+            </div>
+            <div class="application-buttons">
+                <button class="btn-prev" id="prevBtn" onclick="prevStep()">
+                    <i class="fas fa-arrow-left"></i> Previous
+                </button>
+                <button class="btn-next" id="nextBtn" onclick="nextStep()">
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+                <button class="btn-submit" id="submitBtn" onclick="submitApplication()">
+                    <i class="fas fa-paper-plane"></i> Submit Application
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- UPDATED SCRIPT -->
+    <script>
+// Application State
+let currentStep = 1;
+const totalSteps = 4;
+let uploadedDocuments = [];
+let uploadedPaymentProof = null;
+
+// Get loan data from localStorage
+let loanData = null;
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    // Get loan data from localStorage
+    const savedLoanData = localStorage.getItem('loanApplicationData');
+    
+    if (!savedLoanData) {
+        alert('No loan data found. Please go back and use the loan calculator first.');
+        window.location.href = 'apply.html';
+        return;
+    }
+    
+    try {
+        loanData = JSON.parse(savedLoanData);
+        
+        // Map loan type value to display name
+        const loanTypeMap = {
+            'civil-servant': 'Civil Servant Loan',
+            'collateral': 'Collateral Backed Loan',
+            'instant': 'Instant Loan',
+            'business': 'Business Loan',
+            'agri': 'Agri Loan',
+            'scheme': 'Scheme Loan'
+        };
+        
+        // Format the data for display
+        const displayData = {
+            type: loanTypeMap[loanData.type] || 'Civil Servant Loan',
+            amount: loanData.amount || 0,
+            term: loanData.term || 12,
+            monthlyRepayment: loanData.monthlyRepayment || 0,
+            totalRepayment: loanData.totalRepayment || 0,
+            purpose: loanData.purpose || '',
+            interestRate: loanData.interestRate || 1.5
+        };
+        
+        // Calculate processing fee (25%)
+        displayData.processingFee = displayData.amount * 0.25;
+        
+        // Store for use in functions
+        window.loanData = displayData;
+        
+        // Display loan data in Step 1
+        updateStep1Display();
+        
+        // Set loan purpose in dropdown if available
+        if (displayData.purpose && document.getElementById('loanPurpose')) {
+            document.getElementById('loanPurpose').value = displayData.purpose;
+        }
+        
+    } catch (e) {
+        console.error('Error parsing loan data:', e);
+        alert('Error loading loan data. Please try again.');
+        window.location.href = 'apply.html';
+    }
+    
+    updateStepDisplay();
+});
+
+function updateStep1Display() {
+    if (!window.loanData) return;
+    
+    document.getElementById('loanTypeDisplay').textContent = window.loanData.type;
+    document.getElementById('loanAmountDisplay').textContent = formatCurrency(window.loanData.amount);
+    document.getElementById('loanTermDisplay').textContent = window.loanData.term + " Months";
+    document.getElementById('monthlyRepaymentDisplay').textContent = formatCurrency(window.loanData.monthlyRepayment);
+    document.getElementById('totalRepaymentDisplay').textContent = formatCurrency(window.loanData.totalRepayment);
+    document.getElementById('processingFeeDisplay').textContent = formatCurrency(window.loanData.processingFee);
+}
+
+function updateStep4Display() {
+    if (!window.loanData) return;
+    
+    // Get the selected loan purpose
+    const purposeSelect = document.getElementById('loanPurpose');
+    const loanPurpose = purposeSelect ? purposeSelect.options[purposeSelect.selectedIndex].text : 'Not specified';
+    
+    // Update all loan details in Step 4
+    document.getElementById('finalLoanType').textContent = window.loanData.type;
+    document.getElementById('finalLoanAmount').textContent = formatCurrency(window.loanData.amount);
+    document.getElementById('finalLoanTerm').textContent = window.loanData.term + " Months";
+    document.getElementById('finalMonthlyRepayment').textContent = formatCurrency(window.loanData.monthlyRepayment);
+    document.getElementById('finalTotalRepayment').textContent = formatCurrency(window.loanData.totalRepayment);
+    document.getElementById('finalLoanPurpose').textContent = loanPurpose;
+    
+    // Update payment details
+    document.getElementById('paymentLoanAmount').textContent = formatCurrency(window.loanData.amount);
+    document.getElementById('paymentProcessingFee').textContent = formatCurrency(window.loanData.processingFee);
+    document.getElementById('paymentTotalToPay').textContent = formatCurrency(window.loanData.processingFee);
+    document.getElementById('paymentAmountDisplay').textContent = formatCurrency(window.loanData.processingFee);
+}
+
+function formatCurrency(amount) {
+    return 'MWK ' + amount.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
+// Simple edit function
+function editField(field) {
+    if (!window.loanData) return;
+    
+    switch(field) {
+        case 'loanType':
+            const loanTypes = [
+                'Civil Servant Loan',
+                'Collateral Backed Loan', 
+                'Instant Loan',
+                'Business Loan',
+                'Agri Loan',
+                'Scheme Loan'
+            ];
+            
+            const selected = prompt(`Select loan type:\n\n${loanTypes.map((type, i) => `${i+1}. ${type}`).join('\n')}\n\nEnter number:`);
+            
+            if (selected && !isNaN(selected) && selected >= 1 && selected <= loanTypes.length) {
+                window.loanData.type = loanTypes[parseInt(selected) - 1];
+                recalculateLoan();
+                updateStep1Display();
+                if (currentStep === 4) {
+                    updateStep4Display();
+                }
+            }
+            break;
+            
+        case 'loanAmount':
+            const newAmount = prompt('Enter new loan amount (MWK):', window.loanData.amount);
+            if (newAmount && !isNaN(newAmount) && newAmount >= 10000 && newAmount <= 50000000) {
+                window.loanData.amount = parseFloat(newAmount);
+                window.loanData.processingFee = window.loanData.amount * 0.25; // Recalculate 25% fee
+                recalculateLoan();
+                updateStep1Display();
+                if (currentStep === 4) {
+                    updateStep4Display();
+                }
+            } else if (newAmount) {
+                alert('Please enter a valid amount between MWK 10,000 and MWK 50,000,000');
+            }
+            break;
+            
+        case 'loanTerm':
+            const newTerm = prompt('Enter new loan term (months):', window.loanData.term);
+            if (newTerm && !isNaN(newTerm) && newTerm >= 3 && newTerm <= 60) {
+                window.loanData.term = parseInt(newTerm);
+                recalculateLoan();
+                updateStep1Display();
+                if (currentStep === 4) {
+                    updateStep4Display();
+                }
+            } else if (newTerm) {
+                alert('Please enter a valid term between 3 and 60 months');
+            }
+            break;
+    }
+}
+
+function recalculateLoan() {
+    if (!window.loanData) return;
+    
+    // Interest rates based on loan type
+    const interestRates = {
+        'Civil Servant Loan': 0.015,
+        'Collateral Backed Loan': 0.012,
+        'Instant Loan': 0.025,
+        'Business Loan': 0.018,
+        'Agri Loan': 0.013,
+        'Scheme Loan': 0.014
+    };
+    
+    const interestRate = interestRates[window.loanData.type] || 0.015;
+    
+    // Monthly payment formula: P * r * (1+r)^n / ((1+r)^n - 1)
+    const monthlyRate = interestRate;
+    const principal = window.loanData.amount;
+    const months = window.loanData.term;
+    
+    const monthlyPayment = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / 
+                          (Math.pow(1 + monthlyRate, months) - 1);
+    
+    window.loanData.monthlyRepayment = monthlyPayment;
+    window.loanData.totalRepayment = monthlyPayment * months;
+    window.loanData.processingFee = window.loanData.amount * 0.25; // Always 25% of loan amount
+}
+
+// User verification
+function validateVerification() {
+    const email = document.getElementById('verifyEmail').value.trim();
+    const password = document.getElementById('verifyPassword').value;
+    
+    let isValid = true;
+    
+    document.getElementById('emailVerifyMessage').className = 'validation-message';
+    document.getElementById('passwordVerifyMessage').className = 'validation-message';
+    document.getElementById('verificationWarning').style.display = 'none';
+    
+    if (!email) {
+        document.getElementById('emailVerifyMessage').textContent = 'Email is required';
+        document.getElementById('emailVerifyMessage').classList.add('invalid');
+        isValid = false;
+    } else {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            document.getElementById('emailVerifyMessage').textContent = 'Please enter a valid email';
+            document.getElementById('emailVerifyMessage').classList.add('invalid');
+            isValid = false;
+        }
+    }
+    
+    if (!password) {
+        document.getElementById('passwordVerifyMessage').textContent = 'Password is required';
+        document.getElementById('passwordVerifyMessage').classList.add('invalid');
+        isValid = false;
+    } else if (password.length < 6) {
+        document.getElementById('passwordVerifyMessage').textContent = 'Password must be at least 6 characters';
+        document.getElementById('passwordVerifyMessage').classList.add('invalid');
+        isValid = false;
+    }
+    
+    if (isValid) {
+        document.getElementById('emailVerifyMessage').textContent = '✓ Email verified';
+        document.getElementById('emailVerifyMessage').classList.add('valid');
+        document.getElementById('passwordVerifyMessage').textContent = '✓ Password verified';
+        document.getElementById('passwordVerifyMessage').classList.add('valid');
+        return true;
+    }
+    
+    return false;
+}
+
+function nextStep() {
+    if (validateCurrentStep()) {
+        if (currentStep < totalSteps) {
+            currentStep++;
+            
+            if (currentStep === 4) {
+                updateStep4Display();
+            }
+            
+            updateStepDisplay();
+        }
+    }
+}
+
+function prevStep() {
+    if (currentStep > 1) {
+        currentStep--;
+        updateStepDisplay();
+    }
+}
+
+function updateStepDisplay() {
+    document.querySelectorAll('.progress-step').forEach(step => {
+        const stepNum = parseInt(step.getAttribute('data-step'));
+        if (stepNum === currentStep) {
+            step.classList.add('active');
+        } else {
+            step.classList.remove('active');
+        }
+    });
+    
+    document.querySelectorAll('.application-form').forEach(form => {
+        form.classList.remove('active');
+    });
+    document.getElementById(`step${currentStep}`).classList.add('active');
+    
+    document.getElementById('prevBtn').style.display = currentStep === 1 ? 'none' : 'inline-flex';
+    document.getElementById('nextBtn').style.display = currentStep === totalSteps ? 'none' : 'inline-flex';
+    document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'inline-flex' : 'none';
+    
+    document.getElementById('currentStepNumber').textContent = currentStep;
+}
+
+function validateCurrentStep() {
+    switch(currentStep) {
+        case 2:
+            return validateVerification();
+        case 3:
+            return validateDocuments();
+        case 4:
+            return validatePayment();
+        default:
+            return true;
+    }
+}
+
+function validateDocuments() {
+    const idUploaded = uploadedDocuments.some(doc => doc.type === 'id');
+    const incomeUploaded = uploadedDocuments.some(doc => doc.type === 'payslip');
+    
+    if (!idUploaded || !incomeUploaded) {
+        alert('Please upload both National ID/Passport and Proof of Income documents.');
+        return false;
+    }
+    
+    return true;
+}
+
+function validatePayment() {
+    if (!uploadedPaymentProof) {
+        alert('Please upload proof of payment for the processing fee.');
+        return false;
+    }
+    
+    const agreeTerms = document.getElementById('agreeTerms');
+    if (!agreeTerms || !agreeTerms.checked) {
+        alert('Please agree to confirm payment.');
+        return false;
+    }
+    
+    return true;
+}
+
+function togglePassword(fieldId) {
+    const input = document.getElementById(fieldId);
+    const icon = input.parentElement.querySelector('.password-toggle i');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+// File upload functions
+function handleFileUpload(type, input) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    if (file.size > 5 * 1024 * 1024) {
+        alert('File size too large. Maximum size is 5MB.');
+        input.value = '';
+        return;
+    }
+    
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+    if (!validTypes.includes(file.type)) {
+        alert('Please upload a JPG, PNG, or PDF file.');
+        input.value = '';
+        return;
+    }
+    
+    const documentId = `doc-${Date.now()}`;
+    uploadedDocuments.push({
+        id: documentId,
+        type: type,
+        name: file.name,
+        size: file.size,
+        file: file
+    });
+    
+    displayUploadedFile(documentId, type, file);
+    
+    const container = document.getElementById('uploadedFiles');
+    if (container) {
+        container.style.display = 'block';
+    }
+}
+
+function handlePaymentProofUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    if (file.size > 5 * 1024 * 1024) {
+        alert('File size too large. Maximum size is 5MB.');
+        input.value = '';
+        return;
+    }
+    
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+    if (!validTypes.includes(file.type)) {
+        alert('Please upload a JPG, PNG, or PDF file.');
+        input.value = '';
+        return;
+    }
+    
+    uploadedPaymentProof = {
+        id: `payment-${Date.now()}`,
+        name: file.name,
+        size: file.size,
+        file: file
+    };
+    
+    displayPaymentProof(uploadedPaymentProof);
+    
+    const container = document.getElementById('paymentProofFiles');
+    if (container) {
+        container.style.display = 'block';
+    }
+}
+
+function displayUploadedFile(id, type, file) {
+    const container = document.getElementById('uploadedFiles');
+    if (!container) return;
+    
+    const fileItem = document.createElement('div');
+    fileItem.className = 'file-item';
+    fileItem.id = id;
+    
+    const typeName = type === 'id' ? 'ID Document' : 'Proof of Income';
+    const icon = file.type.includes('image') ? 'fa-image' : 'fa-file-pdf';
+    
+    fileItem.innerHTML = `
+        <div class="file-info">
+            <i class="fas ${icon}"></i>
+            <div class="file-details">
+                <div class="file-name">${typeName}: ${file.name}</div>
+                <div class="file-size">${formatFileSize(file.size)}</div>
+            </div>
+        </div>
+        <div class="file-actions">
+            <button class="btn-view" onclick="viewFile('${id}')">
+                <i class="fas fa-eye"></i> View
+            </button>
+            <button class="btn-download" onclick="downloadFile('${id}')">
+                <i class="fas fa-download"></i> Download
+            </button>
+            <button class="btn-remove" onclick="removeFile('${id}')">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+    
+    const existingItem = container.querySelector(`[data-type="${type}"]`);
+    if (existingItem) {
+        existingItem.remove();
+    }
+    
+    fileItem.setAttribute('data-type', type);
+    container.appendChild(fileItem);
+}
+
+function displayPaymentProof(paymentProof) {
+    const container = document.getElementById('paymentProofFiles');
+    if (!container) return;
+    
+    const fileItem = document.createElement('div');
+    fileItem.className = 'file-item';
+    fileItem.id = paymentProof.id;
+    
+    const icon = paymentProof.file.type.includes('image') ? 'fa-image' : 'fa-file-pdf';
+    
+    fileItem.innerHTML = `
+        <div class="file-info">
+            <i class="fas ${icon}"></i>
+            <div class="file-details">
+                <div class="file-name">Payment Proof: ${paymentProof.name}</div>
+                <div class="file-size">${formatFileSize(paymentProof.size)}</div>
+            </div>
+        </div>
+        <div class="file-actions">
+            <button class="btn-view" onclick="viewPaymentProof('${paymentProof.id}')">
+                <i class="fas fa-eye"></i> View
+            </button>
+            <button class="btn-download" onclick="downloadPaymentProof('${paymentProof.id}')">
+                <i class="fas fa-download"></i> Download
+            </button>
+            <button class="btn-remove" onclick="removePaymentProof('${paymentProof.id}')">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+    
+    const existingItem = container.querySelector('.file-item');
+    if (existingItem) {
+        existingItem.remove();
+    }
+    
+    container.appendChild(fileItem);
+}
+
+function formatFileSize(bytes) {
+    if (bytes < 1024) return bytes + ' bytes';
+    else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    else return (bytes / 1048576).toFixed(1) + ' MB';
+}
+
+function viewFile(id) {
+    const doc = uploadedDocuments.find(d => d.id === id);
+    if (doc && doc.file) {
+        const fileURL = URL.createObjectURL(doc.file);
+        
+        if (doc.file.type.includes('pdf')) {
+            window.open(fileURL, '_blank');
+        } else {
+            const viewer = document.createElement('div');
+            viewer.className = 'file-viewer-overlay';
+            viewer.innerHTML = `
+                <div class="file-viewer">
+                    <div class="viewer-header">
+                        <h3>${doc.name}</h3>
+                        <button class="btn-close" onclick="this.parentElement.parentElement.remove()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="viewer-content">
+                        <img src="${fileURL}" alt="${doc.name}" style="max-width: 100%; max-height: 80vh;">
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(viewer);
+        }
+    }
+}
+
+function viewPaymentProof(id) {
+    if (!uploadedPaymentProof || uploadedPaymentProof.id !== id) return;
+    
+    const file = uploadedPaymentProof.file;
+    const fileURL = URL.createObjectURL(file);
+    
+    if (file.type.includes('pdf')) {
+        window.open(fileURL, '_blank');
+    } else {
+        const viewer = document.createElement('div');
+        viewer.className = 'file-viewer-overlay';
+        viewer.innerHTML = `
+            <div class="file-viewer">
+                <div class="viewer-header">
+                    <h3>Payment Proof: ${uploadedPaymentProof.name}</h3>
+                    <button class="btn-close" onclick="this.parentElement.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="viewer-content">
+                    <img src="${fileURL}" alt="Payment Proof" style="max-width: 100%; max-height: 80vh;">
+                </div>
+            </div>
+        `;
+        document.body.appendChild(viewer);
+    }
+}
+
+function downloadFile(id) {
+    const doc = uploadedDocuments.find(d => d.id === id);
+    if (doc && doc.file) {
+        const url = URL.createObjectURL(doc.file);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = doc.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+}
+
+function downloadPaymentProof(id) {
+    if (!uploadedPaymentProof || uploadedPaymentProof.id !== id) return;
+    
+    const url = URL.createObjectURL(uploadedPaymentProof.file);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = uploadedPaymentProof.name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function removeFile(id) {
+    uploadedDocuments = uploadedDocuments.filter(doc => doc.id !== id);
+    const element = document.getElementById(id);
+    if (element) {
+        element.remove();
+    }
+    
+    const container = document.getElementById('uploadedFiles');
+    if (container && container.children.length === 1) {
+        container.style.display = 'none';
+    }
+}
+
+function removePaymentProof(id) {
+    if (uploadedPaymentProof && uploadedPaymentProof.id === id) {
+        uploadedPaymentProof = null;
+    }
+    
+    const element = document.getElementById(id);
+    if (element) {
+        element.remove();
+    }
+    
+    const container = document.getElementById('paymentProofFiles');
+    if (container && container.children.length === 1) {
+        container.style.display = 'none';
+    }
+}
+
+function submitApplication() {
+    if (!validateCurrentStep()) {
+        return;
+    }
+    
+    const appId = 'VL-' + new Date().getFullYear() + '-' + Math.floor(10000 + Math.random() * 90000);
+    
+    const successHTML = `
+        <div class="application-success" id="successMessage">
+            <i class="fas fa-check-circle success-icon"></i>
+            <h2>Application Submitted Successfully!</h2>
+            <p>Your loan application has been received and is under review.</p>
+            <p><strong>Application ID:</strong> ${appId}</p>
+            <p><strong>Processing Fee Paid:</strong> ${formatCurrency(window.loanData.processingFee)}</p>
+            <div class="success-actions">
+                <a href="index.html" class="btn-primary">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('step4').innerHTML = successHTML;
+    
+    document.querySelectorAll('.progress-step').forEach(step => {
+        step.classList.add('active');
+    });
+    
+    document.querySelector('.application-footer').style.display = 'none';
+}
+</script>
+</body>
+</html>

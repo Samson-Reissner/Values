@@ -1715,3 +1715,560 @@ input[type="date"].form-input::-webkit-calendar-picker-indicator {
 }
 
 /* The rest of your existing signup wizard styles remain exactly the same below this point */
+/* ===== LOAN APPLICATION PAGE STYLES ===== */
+
+/* Page Background */
+.loan-application-page {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../images/assets1.jpg') center/cover no-repeat fixed;
+    min-height: 100vh;
+    padding: var(--spacing-md) 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Application Container */
+.application-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    position: relative;
+    animation: slideUp 0.8s ease;
+}
+
+/* Header with Progress Steps */
+.application-header {
+    background: linear-gradient(135deg, #3d5975, #52a9e4);
+    color: white;
+    padding: var(--spacing-2xl);
+    text-align: center;
+    position: relative;
+}
+
+.application-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.application-header > * {
+    position: relative;
+    z-index: 2;
+}
+
+.application-header h1 {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-sm);
+    color: white;
+    font-weight: var(--font-weight-bold);
+}
+
+.application-header p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+/* Progress Steps */
+.application-progress {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: var(--spacing-xl);
+    position: relative;
+}
+
+.application-progress::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 50px;
+    right: 50px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.3);
+    z-index: 1;
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.progress-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    transition: all 0.3s ease;
+}
+
+.progress-step.active .progress-circle {
+    background: white;
+    color: #3d5975;
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.progress-label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+}
+
+/* Application Content */
+.application-content {
+    padding: var(--spacing-2xl);
+}
+
+.application-form {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.application-form.active {
+    display: block;
+}
+
+.form-section {
+    margin-bottom: var(--spacing-2xl);
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid #3498db;
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Loan Summary Card */
+.loan-summary-card {
+    background: linear-gradient(135deg, #f8fafc, #e3f2fd);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    border: 2px solid #3498db;
+    margin-bottom: var(--spacing-xl);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.1);
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.summary-label {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.summary-value {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.edit-button {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.edit-button:hover {
+    background: linear-gradient(135deg, #2980b9, #1c5a7e);
+    transform: translateY(-1px);
+}
+
+/* Verification Notice */
+.verification-notice {
+    background: #fff8e1;
+    border: 1px solid #ffd54f;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.verification-notice i {
+    color: #f39c12;
+    font-size: 1.5rem;
+}
+
+.verification-notice p {
+    color: #7d6608;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* KYC Upload */
+.kyc-upload {
+    border: 2px dashed #3498db;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-2xl);
+    text-align: center;
+    background: rgba(235, 245, 251, 0.5);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-bottom: var(--spacing-xl);
+}
+
+.kyc-upload:hover {
+    border-color: #2980b9;
+    background: rgba(235, 245, 251, 0.8);
+    transform: translateY(-2px);
+}
+
+.kyc-upload i {
+    font-size: 3rem;
+    color: #3498db;
+    margin-bottom: var(--spacing-md);
+}
+
+.kyc-upload h4 {
+    color: #2c3e50;
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.25rem;
+}
+
+.kyc-upload p {
+    color: #64748b;
+    margin-bottom: var(--spacing-md);
+    line-height: 1.5;
+}
+
+.uploaded-files {
+    margin-top: var(--spacing-lg);
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-sm);
+    background: white;
+    border-radius: var(--radius-md);
+    border: 1px solid #e0e0e0;
+    margin-bottom: var(--spacing-sm);
+    transition: all 0.3s ease;
+}
+
+.file-item:hover {
+    border-color: #3498db;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.1);
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.file-info i {
+    color: #3498db;
+    font-size: 1.25rem;
+}
+
+/* Application Footer */
+.application-footer {
+    padding: var(--spacing-xl);
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+}
+
+.application-progress-text {
+    font-size: 0.95rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.application-progress-text strong {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.application-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+/* Button Styles */
+.btn-prev, .btn-next, .btn-submit {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.btn-prev {
+    background: #f8f9fa;
+    color: #64748b;
+    border: 1px solid #e0e0e0;
+}
+
+.btn-prev:hover {
+    background: #e9ecef;
+    transform: translateY(-1px);
+}
+
+.btn-next {
+    background: linear-gradient(135deg, #3d5975, #52a9e4);
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-next:hover {
+    background: linear-gradient(135deg, #52a9e4, #3d5975);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color: white;
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+}
+
+.btn-submit:hover {
+    background: linear-gradient(135deg, #229954, #27ae60);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(46, 204, 113, 0.4);
+}
+
+/* Application Warning */
+.application-warning {
+    display: none;
+    background: #fee;
+    border: 1px solid #e74c3c;
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+    color: #c0392b;
+    text-align: center;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.application-warning i {
+    font-size: 1.25rem;
+}
+
+/* Success Message */
+.application-success {
+    text-align: center;
+    padding: var(--spacing-3xl);
+}
+
+.success-icon {
+    font-size: 4rem;
+    color: #27ae60;
+    margin-bottom: var(--spacing-lg);
+    animation: bounce 1s ease;
+}
+
+.application-success h2 {
+    color: #2c3e50;
+    margin-bottom: var(--spacing-md);
+    font-size: 1.75rem;
+}
+
+.application-success p {
+    color: #64748b;
+    margin-bottom: var(--spacing-xl);
+    line-height: 1.5;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-20px);}
+    60% {transform: translateY(-10px);}
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .loan-application-page {
+        padding: var(--spacing-sm);
+        align-items: flex-start;
+    }
+    
+    .application-container {
+        margin: var(--spacing-sm);
+        border-radius: var(--radius-lg);
+    }
+    
+    .application-header {
+        padding: var(--spacing-xl);
+    }
+    
+    .application-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .application-progress {
+        gap: 1.5rem;
+    }
+    
+    .application-progress::before {
+        left: 20px;
+        right: 20px;
+    }
+    
+    .progress-label {
+        font-size: 0.75rem;
+    }
+    
+    .application-content {
+        padding: var(--spacing-xl);
+    }
+    
+    .application-footer {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+    
+    .application-buttons {
+        width: 100%;
+    }
+    
+    .application-buttons button {
+        flex: 1;
+    }
+}
+
+@media (max-width: 480px) {
+    .application-header {
+        padding: var(--spacing-lg);
+    }
+    
+    .application-content {
+        padding: var(--spacing-lg);
+    }
+    
+    .loan-summary-card {
+        padding: var(--spacing-lg);
+    }
+    
+    .summary-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+    
+    .edit-button {
+        align-self: flex-end;
+        margin-left: 0;
+        margin-top: var(--spacing-xs);
+    }
+    
+    .application-progress {
+        gap: 1rem;
+    }
+    
+    .application-progress::before {
+        left: 10px;
+        right: 10px;
+    }
+    
+    .kyc-upload {
+        padding: var(--spacing-xl);
+    }
+}
+
+/* Additional utility classes */
+.btn-outline {
+    background: transparent;
+    color: #3498db;
+    border: 2px solid #3498db;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-outline:hover {
+    background: #3498db;
+    color: white;
+}
+
+.btn-secondary {
+    background: #f8f9fa;
+    color: #2c3e50;
+    border: 2px solid #e0e0e0;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background: #e9ecef;
+    border-color: #bdc3c7;
+}
