@@ -1,8 +1,31 @@
+
+<div class="progress-bar">
+    <div id="progressFill"></div>
+</div>
+<style>
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #eee;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+#progressFill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #007bff, #28a745);
+    transition: width 0.5s ease-in-out;
+}
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>Apply for a Loan - Value Loans</title>
     <link rel="stylesheet" href="styles/custom.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -530,14 +553,104 @@
                     <a href="#"><img src="images/in-icon.avif" alt="LinkedIn"></a>
                     <a href="#"><img src="images/IG-icon.avif" alt="Instagram"></a>
                 </div>
+=======
+    <title>Apply for Loan</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* --- FORM WIZARD STYLE --- */
+        .form-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .step-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .btn-nav {
+            padding: 10px 18px;
+            border-radius: 6px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-submit {
+            background: #28a745;
+        }
+
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- YOUR NAVBAR HERE -->
+    <header>
+        <!-- replace this with your actual navbar -->
+    </header>
+
+    <div class="form-container">
+        <h2 style="text-align:center; margin-bottom:10px;">Loan Application</h2>
+
+        <!-- STEP 1 - PERSONAL DETAILS -->
+        <div class="form-step active" id="step-1">
+            <div class="step-title">1. Personal Details</div>
+
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" id="firstName">
+>>>>>>> origin/P2P_fix
             </div>
-            
-            <div class="footer-section">
-                <h3>PRODUCTS</h3>
-                <a href="#loans">Loans</a>
-                <a href="payments.html">Payments</a>
-                <a href="investments.html">Investments</a>
+
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" id="lastName">
             </div>
+<<<<<<< HEAD
             
             <div class="footer-section">
                 <h3>RESOURCES</h3>
@@ -560,29 +673,146 @@
                     <img src="images/mastercard-icon.jpg" alt="Mastercard">
                     <img src="images/mobile-money-icon.avif" alt="Mobile Money">
                 </div>
+=======
+
+            <div class="form-group">
+                <label>Occupation</label>
+                <input type="text" id="occupation">
+            </div>
+
+            <div class="form-group">
+                <label>Current Location</label>
+                <input type="text" id="location">
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="text" id="phone">
+>>>>>>> origin/P2P_fix
             </div>
         </div>
 
-        <div class="footer-disclaimer">
-            <p>Minimum Tenure: 62 days | Maximum Tenure: 60 months | Maximum APR: 40%</p>
-            <p>Representative Example of a MWK1,000,000 SME loan over 12 months:</p>
-            <div class="example-grid">
-                <div>INTEREST RATE: 2.5%</div>
-                <div>LOAN VALUE: MWK1,000,000</div>
-                <div>LOAN TERM: 12 Months</div>
-                <div>TOTAL AMOUNT: MWK1,169,845.52</div>
-                <div>MONTHLY REPAYMENT: MWK97,487.13</div>
+        <!-- STEP 2 - GUARANTOR -->
+        <div class="form-step" id="step-2">
+            <div class="step-title">2. Guarantor Details</div>
+
+            <div class="form-group">
+                <label>Guarantor First Name</label>
+                <input type="text" id="g_first">
+            </div>
+
+            <div class="form-group">
+                <label>Guarantor Last Name</label>
+                <input type="text" id="g_last">
+            </div>
+
+            <div class="form-group">
+                <label>Guarantor Phone</label>
+                <input type="text" id="g_phone">
+            </div>
+
+            <div class="form-group">
+                <label>Guarantor Email</label>
+                <input type="email" id="g_email">
+            </div>
+
+            <div class="form-group">
+                <label>Guarantor Occupation</label>
+                <input type="text" id="g_occupation">
+            </div>
+
+            <div class="form-group">
+                <label>Guarantor Location</label>
+                <input type="text" id="g_location">
             </div>
         </div>
-        
-        <div class="footer-bottom">
-            <div class="footer-links">
-                <a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Use</a>
+
+       <!-- STEP 3 - LOAN DETAILS -->
+<div class="form-step" id="step-3">
+    <div class="step-title">3. Loan Details</div>
+
+    <div class="form-group">
+        <label>Loan Type</label>
+        <select id="loanType">
+            <option value="civil_servant">Civil Servant Loan</option>
+            <option value="group_business">Group Business Loan</option>
+            <option value="graduate_ayiphule">Graduate Ayiphule Loan</option>
+            <option value="payday">Payday Loan</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Desired Amount (MWK)</label>
+        <input type="number" id="amount">
+    </div>
+
+    <div class="form-group">
+        <label>Tenure (Months)</label>
+        <input type="number" id="tenure">
+    </div>
+
+    
+
+    <div class="form-group">
+        <label>Purpose</label>
+        <input type="text" id="purpose">
+    </div>
+    <div class="form-group">
+        <label>Interest Rate (%)</label>
+        <input type="text" id="interestRate" readonly>
+    </div>
+
+    <div class="form-group">
+      <label>Total Repayable (MWK)</label>
+      <input type="text" id="totalRepayable" readonly>
+    </div>
+
+</div>
+
+
+        <!-- STEP 4 - DOCUMENT UPLOAD -->
+        <div class="form-step" id="step-4">
+            <div class="step-title">4. Upload Updated Documents</div>
+
+            <p>Please upload the required documents (only if prompted).</p>
+
+            <div class="form-group">
+                <label>Payslip</label>
+                <input type="file" id="payslip">
             </div>
+
+            <div class="form-group">
+                <label>Bank Statement</label>
+                <input type="file" id="bankStatement">
+            </div>
+<<<<<<< HEAD
             <p>&copy; 2024 Value Financial Services Limited. All rights reserved.</p>
+=======
+>>>>>>> origin/P2P_fix
         </div>
+
+        <!-- STEP 5 SUBMIT -->
+        <div class="form-step" id="step-5">
+            <div class="step-title">Review & Submit</div>
+            <p>Click submit to finish application.</p>
+        </div>
+
+
+        <!-- NAVIGATION BUTTONS -->
+        <div class="form-navigation">
+            <button id="prevBtn" class="btn-nav" onclick="nextPrev(-1)">Back</button>
+            <button id="nextBtn" class="btn-nav" onclick="nextPrev(1)">Next</button>
+        </div>
+
+    </div>
+
+
+    <!-- YOUR FOOTER HERE -->
+    <footer>
+        <!-- replace with your footer -->
     </footer>
 
+<<<<<<< HEAD
 <script>
 // Loan Calculator Functionality
 document.getElementById('loanCalculatorForm').addEventListener('submit', function(e) {
@@ -675,5 +905,78 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 </script>
+=======
+<script src="js/loan_application.js"></script>
+<script src="js/app.js"></script>
+<script>
+const BACKEND_URL = "http://localhost:3000";
+
+async function testBackendConnection() {
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/test`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    console.log("%cBackend Connected ✔", "color: green; font-weight: bold;");
+    console.log("Response:", data);
+  } catch (error) {
+    console.log("%cBackend NOT Connected ✖", "color: red; font-weight: bold;");
+    console.error("Error:", error);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', testBackendConnection);
+</script>
+
+>>>>>>> origin/P2P_fix
 </body>
 </html>
+<script>
+const loanTypeEl = document.getElementById("loanType");
+const amountEl = document.getElementById("amount");
+const tenureEl = document.getElementById("tenure");
+const interestRateEl = document.getElementById("interestRate");
+const totalRepayableEl = document.getElementById("totalRepayable");
+
+async function updateInterestAndRepayable() {
+    const tenure = tenureEl.value;
+    const amount = parseFloat(amountEl.value);
+    const loanType = loanTypeEl.value;
+
+    if (!tenure || !amount || !loanType) {
+        interestRateEl.value = "";
+        totalRepayableEl.value = "";
+        return;
+    }
+
+    try {
+        // Backend should accept loan_type & tenure
+        const response = await fetch(`${BACKEND_URL}/api/v1/loan_interest_configs?term_months=${tenure}`);
+;
+        const data = await response.json();
+
+        if (data && data.interest_rate) {
+            const rate = parseFloat(data.interest_rate);
+
+            // Show interest rate
+            interestRateEl.value = rate + "%";
+
+            // Calculate total repayable
+            const total = amount * (1 + rate / 100);
+            totalRepayableEl.value = total.toFixed(2);
+        } else {
+            interestRateEl.value = "Not Configured";
+            totalRepayableEl.value = "";
+        }
+    } catch (err) {
+        console.error(err);
+        interestRateEl.value = "Error";
+        totalRepayableEl.value = "";
+    }
+}
+
+// Trigger calculation whenever amount, tenure, or loan type changes
+amountEl.addEventListener("input", updateInterestAndRepayable);
+tenureEl.addEventListener("input", updateInterestAndRepayable);
+loanTypeEl.addEventListener("change", updateInterestAndRepayable);
+</script>
+
