@@ -4,66 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payments - Value</title>
-    <link rel="stylesheet" href="../styles/custom.css">
+    <link rel="stylesheet" href="/styles/custom.css">
+    <link rel="stylesheet" href="/styles/hero-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-        <!-- Navigation -->
-<nav class="navbar">
-    <div class="nav-container">
-        <a href="index.html" class="logo">
-            <div class="logo-icon">V</div>
-            <div class="logo-text">Value</div>
-        </a>
-        <div class="nav-menu">
-            <!-- Loans Dropdown -->
-            <div class="dropdown">
-                <a href="#loans" class="nav-link dropdown-toggle">Loans</a>
-                <div class="dropdown-menu">
-                    <div class="dropdown-column">
-                        <h4>Personal Loans</h4>
-                        <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
-                        <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
-                        <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
-                        <a href="yango-loans.html" class="dropdown-link">Value Loans on Yango</a>
-                        <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
-                        <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
-                    </div>
-                    <div class="dropdown-column">
-                        <h4>Business Loans</h4>
-                        <a href="business-loans.html" class="dropdown-link">Business Loans</a>
-                        <a href="order-finance.html" class="dropdown-link">Order Finance</a>
-                        <a href="invoice-discounting.html" class="dropdown-link">Invoice Discounting</a>
-                        <a href="asset-financing.html" class="dropdown-link">Asset Financing</a>
-                    </div>
-                    <div class="dropdown-column">
-                        <h4>Agri Loans</h4>
-                        <a href="agri-loans.html" class="dropdown-link">Agri Loans</a>
-                    </div>
-                    <div class="dropdown-column">
-                        <h4>Apps</h4>
-                        <a href="android-app.html" class="dropdown-link">Android App</a>
-                        <a href="ios-app.html" class="dropdown-link">iOS App</a>
+<body class="page-payments">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <!-- REPLACE: Logo image -->
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
+            </a>
+            <div class="nav-menu">
+                <!-- Loans Dropdown -->
+                <div class="dropdown">
+                    <a href="#loans" class="nav-link dropdown-toggle">Loans</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <h4>Personal Loans</h4>
+                            <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
+                            <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
+                            <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
+                            <a href="yango-loans.html" class="dropdown-link">Value Loans on Yango</a>
+                            <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
+                            <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Business Loans</h4>
+                            <a href="business-loans.html" class="dropdown-link">Business Loans</a>
+                            <a href="order-finance.html" class="dropdown-link">Order Finance</a>
+                            <a href="invoice-discounting.html" class="dropdown-link">Invoice Discounting</a>
+                            <a href="asset-financing.html" class="dropdown-link">Asset Financing</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Agri Loans</h4>
+                            <a href="agri-loans.html" class="dropdown-link">Agri Loans</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Apps</h4>
+                            <a href="android-app.html" class="dropdown-link">Android App</a>
+                            <a href="ios-app.html" class="dropdown-link">iOS App</a>
+                        </div>
                     </div>
                 </div>
+                <a href="payments.html" class="nav-link active">Payments</a>
+                <a href="investments.html" class="nav-link">Investments</a>
+                <a href="about.html" class="nav-link">About</a>
+                <!-- Sign in / Sign up link - Now uses consistent nav-link styles -->
+                <a href="auth-landing.html" class="nav-link">Sign in / Sign up</a>
+                <a href="apply.html" class="btn-primary">Apply for a Loan</a>
             </div>
             <a href="payments.html" class="nav-link">Payments</a>
             <a href="peer-to-peer.html" class="nav-link">Peer-to-Peer</a>
             <a href="about.html" class="nav-link">About</a>
             <a href="apply.html" class="btn-primary">Apply for a Loan</a>
         </div>
-    </div>
-</nav>
+    </nav>
+
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" style="background-image: url('images/payments4.png'); background-size: cover; background-position: center; height: px;">
         <div class="hero-container">
             <div class="hero-content">
-                <h1>Your One-Stop Solution for Payments and Transfers</h1>
+                 <h1>Your One-Stop Solution for Payments and Transfers</h1>
                 <div class="hero-actions" style="margin-top: 2rem;">
                     <a href="#download" class="btn-primary">Download the App</a>
                 </div>
-            </div>
-            <div class="hero-image">
-                Payments & Transfers Image
             </div>
         </div>
     </section>
@@ -74,67 +80,91 @@
             <h2 class="section-title">Send and Receive Money</h2>
             <div class="payments-grid">
                 <div class="payment-card">
-                    <div class="payment-icon">📱</div>
-                    <h3>To Mobile Money</h3>
-                    <p>Send funds to Airtel and TNM Mpamba accounts.</p>
+                    <img src="/images/mobile-money.avif" alt="Mobile Money" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">To Mobile Money</h3>
+                        <p class="card-description">Send funds to Airtel and TNM Mpamba accounts.</p>
+                        
+                        <!-- Add mobile money provider icons -->
+                        <div class="mobile-providers">
+                            <div class="provider">
+                                <i class="fas fa-mobile-alt provider-icon airtel"></i>
+                                <span class="provider-name">Airtel Money</span>
+                            </div>
+                            <div class="provider">
+                                <i class="fas fa-sim-card provider-icon tnm"></i>
+                                <span class="provider-name">TNM Mpamba</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="payment-card">
-                    <div class="payment-icon">👥</div>
-                    <h3>Peer-to-Peer (P2P)</h3>
-                    <p>Easily receive and send funds using customised Value Wallet tags.</p>
+                    <img src="/images/p2p.jpg" alt="Peer-to-Peer" class="payment-icon-image">
+                    <div class="payment-card-content">
+                        <h3>Peer-to-Peer (P2P)</h3>
+                        <p>Easily receive and send funds using customised Value Wallet tags.</p>
+                    </div>
                 </div>
                 <div class="payment-card">
-                    <div class="payment-icon">🏦</div>
-                    <h3>To Bank Accounts</h3>
-                    <p>Transfer money from your Value wallet to any bank account.</p>
+                    <img src="/images/bank-transfer.jpg" alt="Bank Transfer" class="payment-icon-image">
+                    <div class="payment-card-content">
+                        <h3>To Bank Accounts</h3>
+                        <p>Transfer money from your Value wallet to any bank account.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Top-Up Your Wallet Section -->
-    <section class="section loan-options">
-        <div class="container">
-            <div class="wallet-section">
-                <div class="wallet-content">
-                    <h2>Top-Up Your Wallet</h2>
-                    <p class="wallet-subtitle">Add Funds, It's Easy</p>
-                    <div class="funding-options">
-                        <div class="funding-option">
-                            <div class="funding-icon">🏦</div>
-                            <span>From your bank account</span>
-                        </div>
-                        <div class="funding-option">
-                            <div class="funding-icon">📱</div>
-                            <span>From mobile money (Airtel, TNM Mpamba)</span>
-                        </div>
-                        <div class="funding-option">
-                            <div class="funding-icon">💳</div>
-                            <span>Using your debit card</span>
-                        </div>
+    <section class="section wallet-section" style="background-image: url('images/wallet-topup2.avif'); background-size: cover; background-position: center; position: relative; min-height: 600px; display: flex; align-items: center;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5);"></div>
+        <div class="container" style="position: relative; z-index: 1; width: 100%;">
+            <div class="wallet-content" style="text-align: center; max-width: 800px; margin: 0 auto; padding: 2rem;">
+                <h2 style="font-size: 2.8rem; font-weight: 700; margin-bottom: 1.5rem; text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.2), 2px 2px 4px rgba(0, 0, 0, 0.6); line-height: 1.3; color: #f8f9fa; opacity: 0.95;">Top-Up Your Wallet</h2>
+                <p class="wallet-subtitle" style="font-size: 1.2rem; margin-bottom: 2.5rem; text-shadow: 0 0 15px rgba(255, 255, 255, 0.2), 1px 1px 3px rgba(0, 0, 0, 0.5); line-height: 1.6; font-weight: 400; color: #e9ecef; opacity: 0.9;">Add Funds, It's Easy!</p>
+                
+                <div class="funding-options" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 2rem 0;">
+                    <div class="funding-option" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); text-align: center; transition: all 0.3s ease;">
+                        <img src="images/bank-funding.avif" alt="Bank Account" class="funding-icon-image" style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%; margin: 0 auto 1rem; border: 2px solid rgba(255, 255, 255, 0.3);">
+                        <span style="color: white; font-weight: 600; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);">From your bank account</span>
                     </div>
-                    <div style="margin-top: 2rem;">
-                        <a href="#download" class="btn-primary">Download the app</a>
+                    <div class="funding-option" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); text-align: center; transition: all 0.3s ease;">
+                        <img src="images/mobile-funding.avif" alt="Mobile Money" class="funding-icon-image" style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%; margin: 0 auto 1rem; border: 2px solid rgba(255, 255, 255, 0.3);">
+                        <span style="color: white; font-weight: 600; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);">From mobile money (Airtel, TNM Mpamba)</span>
+                    </div>
+                    <div class="funding-option" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); text-align: center; transition: all 0.3s ease;">
+                        <img src="images/card-funding.avif" alt="Debit Card" class="funding-icon-image" style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%; margin: 0 auto 1rem; border: 2px solid rgba(255, 255, 255, 0.3);">
+                        <span style="color: white; font-weight: 600; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);">Using your debit card</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Debit Card Section -->
-    <section class="section">
-        <div class="container">
-            <div class="debit-card-section">
-                <div class="debit-card-content">
-                    <span class="coming-soon">Coming soon</span>
-                    <h2>Shop, Withdraw, and Pay with Ease</h2>
-                    <p>Get a free virtual or physical debit card for online and in-store shopping.</p>
-                    <ul class="debit-features">
-                        <li>Make local and international payments – even with zero balance!</li>
-                        <li>Withdraw cash from any ATM, directly linked to your Value Loans wallet.</li>
-                        <li>Manage and secure your card anytime with the Value Loans app.</li>
-                    </ul>
-                </div>
+    <br><br>
+   <!-- Debit Card Section -->
+    <section class="section debit-card-section" style="background-image: url('images/credit-card.jpg'); background-size: cover; background-position: center; position: relative; min-height: 600px; display: flex; align-items: center; margin-top: 4rem;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5);"></div>
+        <div class="container" style="position: relative; z-index: 1; width: 100%;">
+            <div class="debit-card-content" style="text-align: center; max-width: 800px; margin: 0 auto; padding: 2rem;">
+                <span class="coming-soon" style="display: inline-block; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px); color: white; padding: 8px 20px; border-radius: 25px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 2rem;">Coming soon</span>
+                <h2 style="font-size: 2.8rem; font-weight: 700; margin-bottom: 1.5rem; text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.2), 2px 2px 4px rgba(0, 0, 0, 0.6); line-height: 1.3; color: #f8f9fa; opacity: 0.95;">Shop, Withdraw, and Pay with Ease</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 2.5rem; text-shadow: 0 0 15px rgba(255, 255, 255, 0.2), 1px 1px 3px rgba(0, 0, 0, 0.5); line-height: 1.6; font-weight: 400; color: #e9ecef; opacity: 0.9;">Get a free virtual or physical debit card for online and in-store shopping.</p>
+                
+                <ul class="debit-features" style="list-style: none; padding: 0; margin: 2rem 0; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    <li style="padding: 1rem 0; padding-left: 2.5rem; position: relative; color: #f8f9fa; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); font-size: 1.1rem; line-height: 1.5;">
+                        <span style="position: absolute; left: 0; color: #52a9e4; font-weight: bold; font-size: 1.5rem;">✓</span>
+                        Make local and international payments – even with zero balance!
+                    </li>
+                    <li style="padding: 1rem 0; padding-left: 2.5rem; position: relative; color: #f8f9fa; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); font-size: 1.1rem; line-height: 1.5;">
+                        <span style="position: absolute; left: 0; color: #52a9e4; font-weight: bold; font-size: 1.5rem;">✓</span>
+                        Withdraw cash from any ATM, directly linked to your Value Loans wallet.
+                    </li>
+                    <li style="padding: 1rem 0; padding-left: 2.5rem; position: relative; color: #f8f9fa; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); font-size: 1.1rem; line-height: 1.5;">
+                        <span style="position: absolute; left: 0; color: #52a9e4; font-weight: bold; font-size: 1.5rem;">✓</span>
+                        Manage and secure your card anytime with the Value Loans app.
+                    </li>
+                </ul>
             </div>
         </div>
     </section>
@@ -142,13 +172,14 @@
     <!-- Bill Payments Section -->
     <section class="section loan-options">
         <div class="container">
-            <div class="bill-payments-section">
-                <div class="bill-content">
-                    <h2>Essential Bills</h2>
-                    <p class="bill-subtitle">Bill Payments Made Easy</p>
-                    <p>Stay connected, powered up, and entertained with effortless bill payments for airtime, data, electricity, water, and TV subscriptions across Zambia and Tanzania.</p>
+            <div class="bill-payments-section" style="background-image: url('images/payments3.avif'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; min-height: 500px; border-radius: 20px; overflow: hidden;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6);"></div>
+                <div class="bill-content" style="position: relative; z-index: 1; text-align: center; max-width: 700px; margin: 0 auto; padding: 3rem;">
+                    <h2 style="font-size: 2.8rem; font-weight: 700; margin-bottom: 1.5rem; text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.2), 2px 2px 4px rgba(0, 0, 0, 0.6); line-height: 1.3; color: #f8f9fa; opacity: 0.95;">Essential Bills</h2>
+                    <p class="bill-subtitle" style="font-size: 1.2rem; margin-bottom: 1.5rem; text-shadow: 0 0 15px rgba(255, 255, 255, 0.2), 1px 1px 3px rgba(0, 0, 0, 0.5); line-height: 1.6; font-weight: 400; color: #e9ecef; opacity: 0.9;">Bill Payments Made Easy</p>
+                    <p style="font-size: 1.1rem; margin-bottom: 2.5rem; text-shadow: 0 0 15px rgba(255, 255, 255, 0.2), 1px 1px 3px rgba(0, 0, 0, 0.5); line-height: 1.6; font-weight: 400; color: #e9ecef; opacity: 0.9;">Stay connected, powered up, and entertained with effortless bill payments for airtime, data, electricity, water, and TV subscriptions across Zambia and Tanzania.</p>
                     <div style="margin-top: 2rem;">
-                        <a href="#download" class="btn-primary">Download the app</a>
+                        <a href="#download" class="btn-primary" style="display: inline-block; color: #f8f9fa; padding: 12px 30px; border-radius: 30px; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 20px rgba(255, 255, 255, 0.2), 0 8px 25px rgba(0, 0, 0, 0.3); text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); transition: all 0.3s ease; background: transparent; text-decoration: none;">Download the app</a>
                     </div>
                 </div>
             </div>
@@ -158,30 +189,36 @@
     <!-- Wallet Overdraft Section -->
     <section class="section">
         <div class="container">
-            <div class="overdraft-section">
-                <div class="overdraft-content">
-                    <h2>Wallet Overdraft</h2>
-                    <p class="overdraft-subtitle">Access Funds Anytime, Even with Zero Balance</p>
-                    <div class="overdraft-steps">
-                        <div class="overdraft-step">
-                            <div class="step-number">1</div>
-                            <p>Apply for a wallet overdraft via the Value Loans mobile app</p>
+            <div class="overdraft-section" style="background-image: url('images/wallet-overdraft.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; min-height: 600px; border-radius: 20px; overflow: hidden;">
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6);"></div>
+                <div class="overdraft-content" style="position: relative; z-index: 1; text-align: center; max-width: 900px; margin: 0 auto; padding: 3rem;">
+                    <h2 style="font-size: 2.8rem; font-weight: 700; margin-bottom: 1.5rem; text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.2), 2px 2px 4px rgba(0, 0, 0, 0.6); line-height: 1.3; color: #f8f9fa; opacity: 0.95;">Wallet Overdraft</h2>
+                    <p class="overdraft-subtitle" style="font-size: 1.2rem; margin-bottom: 2.5rem; text-shadow: 0 0 15px rgba(255, 255, 255, 0.2), 1px 1px 3px rgba(0, 0, 0, 0.5); line-height: 1.6; font-weight: 400; color: #e9ecef; opacity: 0.9;">Access Funds Anytime, Even with Zero Balance</p>
+                    
+                    <div class="overdraft-steps" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin: 2rem 0;">
+                        <div class="overdraft-step" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); text-align: center; transition: all 0.3s ease;">
+                            <div class="step-number" style="width: 50px; height: 50px; background: linear-gradient(135deg, #52a9e4, #3d5975); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin: 0 auto 1rem; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);">1</div>
+                            <p style="color: white; font-weight: 500; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); line-height: 1.5;">Apply for a wallet overdraft via the Value Loans mobile app</p>
                         </div>
-                        <div class="overdraft-step">
-                            <div class="step-number">2</div>
-                            <p>Activate it in 5 minutes</p>
+                        
+                        <div class="overdraft-step" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); text-align: center; transition: all 0.3s ease;">
+                            <div class="step-number" style="width: 50px; height: 50px; background: linear-gradient(135deg, #52a9e4, #3d5975); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin: 0 auto 1rem; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);">2</div>
+                            <p style="color: white; font-weight: 500; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); line-height: 1.5;">Activate it in 5 minutes</p>
                         </div>
-                        <div class="overdraft-step">
-                            <div class="step-number">3</div>
-                            <p>Stay active to increase your limit</p>
+                        
+                        <div class="overdraft-step" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); text-align: center; transition: all 0.3s ease;">
+                            <div class="step-number" style="width: 50px; height: 50px; background: linear-gradient(135deg, #52a9e4, #3d5975); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin: 0 auto 1rem; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);">3</div>
+                            <p style="color: white; font-weight: 500; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); line-height: 1.5;">Stay active to increase your limit</p>
                         </div>
-                        <div class="overdraft-step">
-                            <div class="step-number">4</div>
-                            <p>Avoid defaults to keep enjoying this feature</p>
+                        
+                        <div class="overdraft-step" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); text-align: center; transition: all 0.3s ease;">
+                            <div class="step-number" style="width: 50px; height: 50px; background: linear-gradient(135deg, #52a9e4, #3d5975); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; margin: 0 auto 1rem; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);">4</div>
+                            <p style="color: white; font-weight: 500; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); line-height: 1.5;">Avoid defaults to keep enjoying this feature</p>
                         </div>
                     </div>
+                    
                     <div style="margin-top: 2rem;">
-                        <a href="#download" class="btn-primary">Download the app</a>
+                        <a href="#download" class="btn-primary" style="display: inline-block; color: #f8f9fa; padding: 12px 30px; border-radius: 30px; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; border: 2px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 20px rgba(255, 255, 255, 0.2), 0 8px 25px rgba(0, 0, 0, 0.3); text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); transition: all 0.3s ease; background: transparent; text-decoration: none;">Download the app</a>
                     </div>
                 </div>
             </div>
@@ -189,36 +226,73 @@
     </section>
 
     <!-- FAQ Section -->
-    <section class="section loan-options">
-        <div class="container">
+    <section class="faq">
+        <div class="faq-container">
             <h2 class="section-title">Got Questions? We can help</h2>
             <p class="section-subtitle">Everything you need to know about the Value Loans App. Can't find the answer you're looking for? Please chat to our team.</p>
             
-            <div class="faq-items">
-                <div class="faq-item">
-                    <div class="faq-question">Why Download the Value Loans App?</div>
-                    <div class="faq-answer">The Value Loans app provides a complete financial solution with loans, payments, peer-to-peer, and money transfers all in one secure platform.</div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Why Download the Value Loans App?</span>
+                    <span class="faq-icon">+</span>
                 </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">Who can use this application?</div>
-                    <div class="faq-answer">Anyone with a smartphone in supported countries can download and use the Value Loans app for their financial needs.</div>
+                <div class="faq-answer">The Value Loans app provides a complete financial solution with loans, payments, investments, and money transfers all in one secure platform.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Who can use this application?</span>
+                    <span class="faq-icon">+</span>
                 </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">How do I get started with the application?</div>
-                    <div class="faq-answer">Simply download the app from your app store, complete the registration process, and verify your identity to start using all features.</div>
+                <div class="faq-answer">Anyone with a smartphone in supported countries can download and use the Value Loans app for their financial needs.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How do I get started with the application?</span>
+                    <span class="faq-icon">+</span>
                 </div>
+                <div class="faq-answer">Simply download the app from your app store, complete the registration process, and verify your identity to start using all features.</div>
+            </div>
 
-                <div class="faq-item">
-                    <div class="faq-question">How can I apply for Loan using the app?</div>
-                    <div class="faq-answer">Navigate to the Loans section in the app, choose your preferred loan product, complete the application form, and submit with required documents.</div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How can I apply for Loan using the app?</span>
+                    <span class="faq-icon">+</span>
                 </div>
+                <div class="faq-answer">Navigate to the Loans section in the app, choose your preferred loan product, complete the application form, and submit with required documents.</div>
+            </div>
 
-                <div class="faq-item">
-                    <div class="faq-question">Are there any limits on transactions</div>
-                    <div class="faq-answer">Transaction limits vary based on your account verification level and transaction type. Higher limits are available for fully verified accounts.</div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Are there any limits on transactions?</span>
+                    <span class="faq-icon">+</span>
                 </div>
+                <div class="faq-answer">Transaction limits vary based on your account verification level and transaction type. Higher limits are available for fully verified accounts.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What documents do I need to apply for a loan?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">You'll need a valid ID, proof of income, and in some cases, collateral documentation depending on the loan type.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How quickly can I get my loan approved?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">Most personal loans are approved within 24 hours, while some instant loans can be approved in as little as 30 minutes.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Can I repay my loan early?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">Yes, you can repay your loan early without any penalties. Early repayment can even save you on interest costs.</div>
             </div>
             
             <div style="text-align: center; margin-top: 2rem;">
@@ -231,9 +305,18 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section">
+                <!-- ADD: Footer logo -->
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="footer-logo">
                 <h3>Value Loans</h3>
                 <p>"We are building the next generation of financial services for AFRICA."</p>
                 <p>Value loans is an award-winning, venture-backed fintech startup that provides online loans.</p>
+                <!-- ADD: Social media icons -->
+                <div class="social-icons">
+                    <a href="#"><img src="../images/fb-icon.avif" alt="Facebook"></a>
+                    <a href="#"><img src="../images/X-icon.avif" alt="Twitter"></a>
+                    <a href="#"><img src="../images/in-icon.avif" alt="LinkedIn"></a>
+                    <a href="#"><img src="../images/IG-icon.avif" alt="Instagram"></a>
+                </div>
             </div>
             
             <div class="footer-section">
@@ -258,6 +341,12 @@
                 <p>support@valueloans.org</p>
                 <p>+265 996 113 594</p>
                 <p>+265 897 325 815</p>
+                <!-- ADD: Payment method icons -->
+                <div class="payment-methods">
+                    <img src="../images/visa-icon.avif" alt="Visa">
+                    <img src="../images/mastercard-icon.jpg" alt="Mastercard">
+                    <img src="../images/mobile-money-icon.avif" alt="Mobile Money">
+                </div>
             </div>
         </div>
 
@@ -280,5 +369,28 @@
             <p>&copy; 2024 Value Loans Financial Services Limited. All rights reserved.</p>
         </div>
     </footer>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                // Close all other FAQ items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+    });
+    </script>
+
 </body>
 </html>

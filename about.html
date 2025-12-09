@@ -6,62 +6,61 @@
     <title>About - Value</title>
     <link rel="stylesheet" href="../styles/custom.css">
 </head>
-<body>
+<body class="page-about about-page">
     <!-- Navigation -->
-<nav class="navbar">
-    <div class="nav-container">
-        <a href="index.html" class="logo">
-            <div class="logo-icon">V</div>
-            <div class="logo-text">Value</div>
-        </a>
-        <div class="nav-menu">
-            <!-- Loans Dropdown -->
-            <div class="dropdown">
-                <a href="#loans" class="nav-link dropdown-toggle">Loans</a>
-                <div class="dropdown-menu">
-                    <div class="dropdown-column">
-                        <h4>Personal Loans</h4>
-                        <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
-                        <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
-                        <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
-                        <a href="yango-loans.html" class="dropdown-link">Value Loans on Yango</a>
-                        <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
-                        <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
-                    </div>
-                    <div class="dropdown-column">
-                        <h4>Business Loans</h4>
-                        <a href="business-loans.html" class="dropdown-link">Business Loans</a>
-                        <a href="order-finance.html" class="dropdown-link">Order Finance</a>
-                        <a href="invoice-discounting.html" class="dropdown-link">Invoice Discounting</a>
-                        <a href="asset-financing.html" class="dropdown-link">Asset Financing</a>
-                    </div>
-                    <div class="dropdown-column">
-                        <h4>Agri Loans</h4>
-                        <a href="agri-loans.html" class="dropdown-link">Agri Loans</a>
-                    </div>
-                    <div class="dropdown-column">
-                        <h4>Apps</h4>
-                        <a href="android-app.html" class="dropdown-link">Android App</a>
-                        <a href="ios-app.html" class="dropdown-link">iOS App</a>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <!-- Logo image -->
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
+            </a>
+            <div class="nav-menu">
+                <!-- Loans Dropdown -->
+                <div class="dropdown">
+                    <a href="#loans" class="nav-link dropdown-toggle">Loans</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <h4>Personal Loans</h4>
+                            <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
+                            <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
+                            <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
+                            <a href="yango-loans.html" class="dropdown-link">Value Loans on Yango</a>
+                            <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
+                            <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Business Loans</h4>
+                            <a href="business-loans.html" class="dropdown-link">Business Loans</a>
+                            <a href="order-finance.html" class="dropdown-link">Order Finance</a>
+                            <a href="invoice-discounting.html" class="dropdown-link">Invoice Discounting</a>
+                            <a href="asset-financing.html" class="dropdown-link">Asset Financing</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Agri Loans</h4>
+                            <a href="agri-loans.html" class="dropdown-link">Agri Loans</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Apps</h4>
+                            <a href="android-app.html" class="dropdown-link">Android App</a>
+                            <a href="ios-app.html" class="dropdown-link">iOS App</a>
+                        </div>
                     </div>
                 </div>
+                <a href="payments.html" class="nav-link">Payments</a>
+                <a href="investments.html" class="nav-link">Investments</a>
+                <a href="about.html" class="nav-link active">About</a>
+                <!-- Sign in / Sign up link - Now uses consistent nav-link styles -->
+                <a href="auth-landing.html" class="nav-link">Sign in / Sign up</a>
+                <a href="apply.html" class="btn-primary">Apply for a Loan</a>
             </div>
-            <a href="payments.html" class="nav-link">Payments</a>
-            <a href="investments.html" class="nav-link">Investments</a>
-            <a href="about.html" class="nav-link">About</a>
-            <a href="apply.html" class="btn-primary">Apply for a Loan</a>
         </div>
-    </div>
-</nav>
+    </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" style="background-image: url('images/about.jpg');">
         <div class="hero-container">
             <div class="hero-content">
                 <h1>We are building the next generation of financial services in Africa!</h1>
-            </div>
-            <div class="hero-image">
-                About Us Image
             </div>
         </div>
     </section>
@@ -71,7 +70,9 @@
         <div class="container">
             <div class="about-content">
                 <h2 class="section-title">Who We Are</h2>
-                <p>VALUE is an AI-powered neobank providing digital loans, payments, and peer-to-peer across the Country.</p>
+                <!-- Company/Team Photo -->
+                <img src="images/who-we-are-image.avif" alt="Value Team" class="section-image">
+                <p>VALUE is an AI-powered neobank providing digital loans, payments, and investments across the Country.</p>
                 <p>Since our founding in 2016, we have grown from a lending platform into a comprehensive neobank with a Pan-African strategy focused on serving SMEs and individuals.</p>
                 <p>As one of the first companies approved by the Security Exchange Commission (SEC) in Malawi to provide investments through peer-to-peer lending, we're proud to be at the forefront of financial innovation in Africa.</p>
             </div>
@@ -83,12 +84,14 @@
         <div class="container">
             <div class="vision-mission-grid">
                 <div class="vision-card">
-                    <div class="vm-icon">🎯</div>
+                    <!-- Vision Image -->
+                    <img src="images/vision-image.avif" alt="Our Vision" class="card-image">
                     <h3>Our Vision</h3>
                     <p>To be the first true pan-African neobank offering customers access to a full suite of banking products.</p>
                 </div>
                 <div class="mission-card">
-                    <div class="vm-icon">🚀</div>
+                    <!-- Mission Image -->
+                    <img src="images/mission-image.avif" alt="Our Mission" class="card-image">
                     <h3>Our Mission</h3>
                     <p>To streamline financial services for millions of people in Africa.</p>
                 </div>
@@ -104,25 +107,37 @@
             
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
+                    <div class="feature-image-container">
+                        <!-- Transparency Image -->
+                        <img src="images/transparency-image.avif" alt="Transparent" class="feature-image">
+                    </div>
                     <h3 class="feature-title">Transparent</h3>
                     <p class="feature-description">Clear terms and conditions with no hidden fees</p>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="feature-icon">📱</div>
+                    <div class="feature-image-container">
+                        <!-- Convenience Image -->
+                        <img src="images/convenience-image.avif" alt="Convenient" class="feature-image">
+                    </div>
                     <h3 class="feature-title">Convenient</h3>
                     <p class="feature-description">100% digital experience accessible from anywhere</p>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="feature-icon">⚖️</div>
+                    <div class="feature-image-container">
+                        <!-- Fairness Image -->
+                        <img src="images/fairness-image.avif" alt="Fair" class="feature-image">
+                    </div>
                     <h3 class="feature-title">Fair</h3>
                     <p class="feature-description">Competitive rates with flexible repayment options</p>
                 </div>
 
                 <div class="feature-card">
-                    <div class="feature-icon">🤖</div>
+                    <div class="feature-image-container">
+                        <!-- AI Technology Image -->
+                        <img src="images/ai-technology-image.avif" alt="AI-Powered" class="feature-image">
+                    </div>
                     <h3 class="feature-title">AI-Powered</h3>
                     <p class="feature-description">Utilizing technology to make faster decisions and provide personalized service</p>
                 </div>
@@ -131,72 +146,46 @@
     </section>
 
     <!-- Our Journey Section -->
-    <section class="section loan-options">
+    <section class="section loan-options" style="background: url('images/journey.avif') center/cover no-repeat;">
         <div class="container">
-            <h2 class="section-title">Our Journey</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-year">2020</div>
-                    <div class="timeline-content">
-                        <h3>Expanded service offerings to include peer-to-peer</h3>
+            <h2 class="section-title" style="color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">Our Journey</h2>
+            <!-- IMAGE PLACEHOLDER: Journey Timeline Infographic -->
+            <img src="images/journey1.jpg" alt="Our Journey Timeline" class="section-image">
+            <div class="timeline" style="max-width: 800px; margin: 0 auto; padding: 0;">
+                <div class="timeline-item" style="display: flex; align-items: center; margin-bottom: 2rem; gap: 2rem;">
+                    <div class="timeline-year" style="flex-shrink: 0; width: 100px; text-align: center; font-weight: 700; font-size: 1.2rem; color: #2563eb; background: white; padding: 0.75rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        2020
+                    </div>
+                    <div class="timeline-content" style="flex: 1; background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <h3 style="margin: 0; font-size: 1.25rem; line-height: 1.4;">Expanded service offerings to include investments</h3>
                     </div>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">2022</div>
-                    <div class="timeline-content">
-                        <h3>Received SEC approval for peer-to-peer lending in Malawi</h3>
+                
+                <div class="timeline-item" style="display: flex; align-items: center; margin-bottom: 2rem; gap: 2rem;">
+                    <div class="timeline-year" style="flex-shrink: 0; width: 100px; text-align: center; font-weight: 700; font-size: 1.2rem; color: #2563eb; background: white; padding: 0.75rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        2022
+                    </div>
+                    <div class="timeline-content" style="flex: 1; background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <h3 style="margin: 0; font-size: 1.25rem; line-height: 1.4;">Received SEC approval for peer-to-peer lending in Malawi</h3>
                     </div>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">2023</div>
-                    <div class="timeline-content">
-                        <h3>Expanded operations to Tanzania</h3>
+                
+                <div class="timeline-item" style="display: flex; align-items: center; margin-bottom: 2rem; gap: 2rem;">
+                    <div class="timeline-year" style="flex-shrink: 0; width: 100px; text-align: center; font-weight: 700; font-size: 1.2rem; color: #2563eb; background: white; padding: 0.75rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        2023
+                    </div>
+                    <div class="timeline-content" style="flex: 1; background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <h3 style="margin: 0; font-size: 1.25rem; line-height: 1.4;">Expanded operations to Tanzania</h3>
                     </div>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-year">Present</div>
-                    <div class="timeline-content">
-                        <h3>Continuing our growth toward becoming the largest digital bank in Africa</h3>
+                
+                <div class="timeline-item" style="display: flex; align-items: center; margin-bottom: 2rem; gap: 2rem;">
+                    <div class="timeline-year" style="flex-shrink: 0; width: 100px; text-align: center; font-weight: 700; font-size: 1.2rem; color: #2563eb; background: white; padding: 0.75rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        Present
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Core Values Section -->
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title">Our Core Values</h2>
-            <div class="values-grid">
-                <div class="value-card">
-                    <div class="value-icon">👩‍💼</div>
-                    <h3>Female Empowerment</h3>
-                    <p>Supporting women entrepreneurs and promoting gender equality in financial access.</p>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon">🌍</div>
-                    <h3>Inclusion</h3>
-                    <p>Making financial services accessible to underserved populations.</p>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon">💡</div>
-                    <h3>Innovation</h3>
-                    <p>Continuously improving our technology and services.</p>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon">🔓</div>
-                    <h3>Transparency</h3>
-                    <p>Being open and honest in all our dealings.</p>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon">🌱</div>
-                    <h3>Environmental Responsibility</h3>
-                    <p>Making sustainable choices in our operations.</p>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon">❤️</div>
-                    <h3>Customer Centricity</h3>
-                    <p>Putting our customers' needs first in everything we do.</p>
+                    <div class="timeline-content" style="flex: 1; background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <h3 style="margin: 0; font-size: 1.25rem; line-height: 1.4;">Continuing our growth toward becoming the largest digital bank in Africa</h3>
+                    </div>
                 </div>
             </div>
         </div>
@@ -210,22 +199,31 @@
             
             <div class="contact-grid">
                 <div class="contact-card">
-                    <div class="contact-icon">📧</div>
-                    <h3>Email</h3>
-                    <p>Our friendly team is here to help.</p>
-                    <a href="mailto:info@valueloans.com" class="contact-link">info@valueloans.com</a>
+                    <!-- Email Contact Image -->
+                    <img src="images/email-contact-image.jpg" alt="Email Contact" class="contact-image">
+                    <div class="contact-card-content">
+                        <h3>Email</h3>
+                        <p>Our friendly team is here to help.</p>
+                        <a href="mailto:info@valueloans.com" class="contact-link">info@valueloans.com</a>
+                    </div>
                 </div>
                 <div class="contact-card">
-                    <div class="contact-icon">📞</div>
-                    <h3>Phone</h3>
-                    <p>Mon-Sat from 7:30am to 4:30pm.</p>
-                    <a href="tel:+265992284039" class="contact-link">+265 992 284039</a>
+                    <!-- Phone Contact Image -->
+                    <img src="images/phone-contact-image.avif" alt="Phone Contact" class="contact-image">
+                    <div class="contact-card-content">
+                        <h3>Phone</h3>
+                        <p>Mon-Sat from 7:30am to 4:30pm.</p>
+                        <a href="tel:+265992284039" class="contact-link">+265 992 284039</a>
+                    </div>
                 </div>
                 <div class="contact-card">
-                    <div class="contact-icon">🏢</div>
-                    <h3>Office</h3>
-                    <p>Come say hello at our office HQ.</p>
-                    <span class="contact-address">Area 36, M1 Road, Opposite LUANAR City Campus, Lilongwe, Malawi<br>Lilongwe | Malawi</span>
+                    <!-- Office Image -->
+                    <img src="images/office-image.avif" alt="Our Office" class="contact-image">
+                    <div class="contact-card-content">
+                        <h3>Office</h3>
+                        <p>Come say hello at our office HQ.</p>
+                        <span class="contact-address">Area 36, M1 Road, Opposite LUANAR City Campus, Lilongwe, Malawi<br>Lilongwe | Malawi</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -235,9 +233,18 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section">
+                <!-- Logo added -->
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="footer-logo">
                 <h3>Value Loans</h3>
                 <p>"We are building the next generation of financial services for AFRICA."</p>
                 <p>Value Loans is an award-winning, venture-backed fintech startup that provides online loans.</p>
+                <!-- Social media icons added -->
+                <div class="social-icons">
+                    <a href="#"><img src="images/fb-icon.avif" alt="Facebook"></a>
+                    <a href="#"><img src="images/X-icon.avif" alt="Twitter"></a>
+                    <a href="#"><img src="images/in-icon.avif" alt="LinkedIn"></a>
+                    <a href="#"><img src="images/IG-icon.avif" alt="Instagram"></a>
+                </div>
             </div>
             
             <div class="footer-section">
@@ -262,6 +269,10 @@
                 <p>info@valueloans.com</p>
                 <p>+265 996 113 594</p>
                 <p>+265 897 325 815</p>
+                <!-- Payment method icons added -->
+                <div class="payment-methods">
+                    <img src="images/visa-icon.avif" alt="Visa">
+                </div>
             </div>
         </div>
 
