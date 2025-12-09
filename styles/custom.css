@@ -1669,6 +1669,604 @@ p {
 .logo {
     display: flex;
     align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-bold);
+    margin: 0 auto var(--spacing-lg);
+}
+
+.faq-items {
+    max-width: 800px;
+    margin: 0 auto;
+}
+/* Malawi Defence Forces Loan Page Styles */
+.two-column-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-2xl);
+    margin-top: var(--spacing-xl);
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.documentation-container {
+    background: var(--white);
+    padding: var(--spacing-3xl);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--gray-200);
+    height: 100%;
+}
+
+.documentation-container h2 {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+@media (max-width: 768px) {
+    .two-column-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xl);
+    }
+    
+    .eligibility-container,
+    .documentation-container {
+        padding: var(--spacing-xl);
+    }
+}
+/* Additional Icons for Collateral Loan */
+.feature-icon::before {
+    /* These use emoji icons which are already in the HTML */
+    /* No additional CSS needed for emoji icons */
+}
+
+/* Ensure all feature cards have consistent styling */
+.feature-card {
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+/* Asset Financing Page Styles */
+.case-study-container {
+    background: var(--white);
+    padding: var(--spacing-3xl);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--gray-200);
+    height: 100%;
+}
+
+.case-study-container h2 {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.documents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-2xl);
+}
+
+.document-item {
+    background: var(--white);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    border: 1px solid var(--gray-200);
+    transition: all 0.3s ease;
+}
+
+.document-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.document-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.document-item h3 {
+    font-size: 1rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--black);
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .documents-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-md);
+    }
+    
+    .document-item {
+        padding: var(--spacing-lg);
+    }
+}
+/* Agri Loans Page Styles - Consistent Color Scheme */
+.agri-uses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-2xl);
+}
+
+.agri-use-card {
+    background: var(--white);
+    padding: var(--spacing-2xl);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    border: 1px solid var(--gray-200);
+    transition: all 0.3s ease;
+}
+
+.agri-use-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--blue-main);
+}
+
+.agri-use-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+.agri-use-card h3 {
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--black);
+    margin-bottom: var(--spacing-sm);
+}
+
+.why-choose-container {
+    background: linear-gradient(135deg, var(--blue-main), var(--blue-dark));
+    color: var(--white);
+    padding: var(--spacing-3xl);
+    border-radius: var(--radius-xl);
+    text-align: center;
+}
+
+.why-choose-content h2 {
+    color: var(--white);
+    margin-bottom: var(--spacing-lg);
+}
+
+.why-choose-content p {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-xl);
+    margin: var(--spacing-2xl) 0;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    text-align: left;
+}
+
+.benefit-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.benefit-text h3 {
+    color: var(--white);
+    margin-bottom: var(--spacing-xs);
+    font-size: 1.125rem;
+}
+
+.benefit-text p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0;
+    font-size: 0.95rem;
+}
+
+.cta-section {
+    margin-top: var(--spacing-2xl);
+    padding-top: var(--spacing-xl);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cta-section h3 {
+    color: var(--white);
+    margin-bottom: var(--spacing-sm);
+}
+
+.agri-options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-2xl);
+}
+
+.agri-option-card {
+    background: var(--white);
+    padding: var(--spacing-2xl);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+}
+
+.agri-option-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--blue-main);
+}
+
+.agri-option-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+.agri-option-card h3 {
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--black);
+    margin-bottom: var(--spacing-xl);
+}
+
+.agri-option-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+}
+
+/* Add blue hover effects to buttons in agri section */
+.agri-option-actions .btn-outline:hover {
+    border-color: var(--blue-main);
+    color: var(--blue-main);
+}
+
+.agri-option-actions .btn-primary {
+    background: linear-gradient(135deg, var(--blue-main), var(--blue-dark));
+}
+
+.agri-option-actions .btn-primary:hover {
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .benefit-item {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-md);
+    }
+    
+    .agri-option-actions {
+        flex-direction: column;
+    }
+    
+    .why-choose-container {
+        padding: var(--spacing-xl);
+    }
+    
+    .agri-uses-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .agri-options-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* Payments Page Styles */
+.payments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-2xl);
+}
+
+.payment-card {
+    background: var(--white);
+    padding: var(--spacing-2xl);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    border: 1px solid var(--gray-200);
+    transition: all 0.3s ease;
+}
+
+.payment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--blue-main);
+}
+
+.payment-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+.payment-card h3 {
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--black);
+    margin-bottom: var(--spacing-sm);
+}
+
+.wallet-section {
+    background: linear-gradient(135deg, var(--blue-main), var(--blue-dark));
+    color: var(--white);
+    padding: var(--spacing-3xl);
+    border-radius: var(--radius-xl);
+    text-align: center;
+}
+
+.wallet-content h2 {
+    color: var(--white);
+    margin-bottom: var(--spacing-sm);
+}
+
+.wallet-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.funding-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+    margin: var(--spacing-2xl) 0;
+}
+
+.funding-option {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    justify-content: center;
+}
+
+.funding-icon {
+    font-size: 1.5rem;
+}
+
+.funding-option span {
+    color: var(--white);
+    font-weight: var(--font-weight-medium);
+}
+
+.debit-card-section {
+    background: var(--white);
+    padding: var(--spacing-3xl);
+    border-radius: var(--radius-xl);
+    border: 2px dashed var(--blue-main);
+    text-align: center;
+}
+
+.debit-card-content h2 {
+    margin-bottom: var(--spacing-lg);
+}
+
+.debit-features {
+    list-style: none;
+    padding: 0;
+    margin: var(--spacing-xl) 0;
+    text-align: left;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.debit-features li {
+    padding: var(--spacing-sm) 0;
+    padding-left: var(--spacing-xl);
+    position: relative;
+    color: var(--black-light);
+}
+
+.debit-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--blue-main);
+    font-weight: bold;
+}
+
+.bill-payments-section {
+    background: var(--white);
+    padding: var(--spacing-3xl);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--gray-200);
+    text-align: center;
+}
+
+.bill-content h2 {
+    margin-bottom: var(--spacing-sm);
+}
+
+.bill-subtitle {
+    color: var(--blue-main);
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-lg);
+}
+
+.overdraft-section {
+    background: var(--white);
+    padding: var(--spacing-3xl);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--gray-200);
+}
+
+.overdraft-content h2 {
+    text-align: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.overdraft-subtitle {
+    text-align: center;
+    color: var(--blue-main);
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.overdraft-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-2xl);
+}
+
+.overdraft-step {
+    text-align: center;
+    padding: var(--spacing-lg);
+}
+
+.overdraft-step .step-number {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--blue-main), var(--blue-dark));
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-bold);
+    margin: 0 auto var(--spacing-md);
+}
+
+.overdraft-step p {
+    color: var(--black-light);
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .payments-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .funding-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .overdraft-steps {
+        grid-template-columns: 1fr;
+    }
+    
+    .wallet-section,
+    .debit-card-section,
+    .bill-payments-section,
+    .overdraft-section {
+        padding: var(--spacing-xl);
+    }
+    
+    .debit-features {
+        text-align: center;
+    }
+    
+    .debit-features li {
+        padding-left: 0;
+        padding-top: var(--spacing-lg);
+    }
+    
+    .debit-features li::before {
+        position: static;
+        display: block;
+        margin-bottom: var(--spacing-xs);
+    }
+}
+/* Peer-to-peer Page Styles */
+.waitlist-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-3xl);
+    align-items: start;
+}
+
+.waitlist-form {
+    background: var(--white);
+    padding: var(--spacing-3xl);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--gray-200);
+}
+
+.waitlist-form .section-title {
+    text-align: left;
+    margin-bottom: var(--spacing-sm);
+}
+
+.waitlist-form .section-subtitle {
+    text-align: left;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.peer-to-peer-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.form-group label {
+    font-weight: var(--font-weight-semibold);
+    color: var(--black);
+    font-size: 0.95rem;
+}
+
+.form-group input {
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: var(--white);
+    color: var(--black);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--blue-main);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group input::placeholder {
+    color: var(--gray-400);
+}
+
+.form-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    margin: var(--spacing-md) 0;
+}
+
+.form-checkbox input[type="checkbox"] {
+    margin-top: 0.25rem;
+}
+
+.form-checkbox label {
+    font-weight: var(--font-weight-normal);
+    color: var(--black-light);
+    line-height: 1.4;
+}
+
+.form-checkbox a {
+    color: var(--blue-main);
     text-decoration: none;
     color: inherit;
     gap: 0.5rem;

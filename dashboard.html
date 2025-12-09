@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrowers Dashboard - Value</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+
+    <style>
+        body {
+            background: #f7f7f7;
+        }
+
+        .dashboard-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .bid-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bid-details h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #222;
+        }
+
+        .bid-details p {
+            margin: 3px 0;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .borrow-btn {
+            padding: 10px 20px;
+            background: #1e73ff;
+            color: #fff;
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s ease;
+        }
+
+        .borrow-btn:hover {
+            background: #005be0;
+        }
+
+        .bottom-action {
+            text-align: center;
+            margin-top: 35px;
+        }
+
+        .lend-btn {
+            padding: 14px 30px;
+            background: #111;
+            color: #fff;
+            border-radius: 100px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .lend-btn:hover {
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">V</div>
+            <div class="logo-text">Value</div>
+        </a>
+
+        <div class="nav-menu">
+            <a href="dashboard.html" class="nav-link active">Dashboard</a>
+            <a href="peer-to-peer.html" class="nav-link">Peer-to-Peer</a>
+            <a href="about.html" class="nav-link">About</a>
+            <a href="#" class="btn-primary" onclick="logout()">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<!-- DASHBOARD CONTENT (PROTECTED AREA) -->
+<div class="dashboard-container">
+    <h2 class="section-title">Available Lenders</h2>
+
+    <!-- Dynamic content from backend -->
+    <div id="bidders-list">Loading lenders...</div>
+
+    <!-- Bottom Button -->
+    <div class="bottom-action">
+        <button class="lend-btn" onclick="window.location.href='lend_form.html'">Lend Money</button> 
+    </div>
+</div>
+
+<script>
+    // --- CHECK TOKEN ---
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        window.location.href = "login.html";
+    }
+
+    // --- FETCH DASHBOARD DATA ---
+fetch("http://localhost:3000/api/v1/borrower/dashboard",{
+    headers: {
+        "Authorization": "Bearer " + token
+    }
+})
+.then(res => {
+    if (res.status === 401) window.location.href = "login.html";
+    return res.json();
+})
+.then(investments => {
+    const container = document.getElementById("bidders-list");
+    container.innerHTML = "";
+
+    if (!investments || investments.length === 0) {
+        container.innerHTML = "<p>No lenders available yet.</p>";
+        return;
+    }
+
+    investments.forEach((inv, index) => {
+        container.innerHTML += `
+            <div class="bid-card">
+                <div class="bid-details">
+                    <h3>Lender #${index + 1} (${inv.lender_name})</h3>
+                    <p><strong>Amount:</strong> MWK ${inv.amount}</p>
+                    <p><strong>Interest:</strong> ${inv.interest_rate}% per month</p>
+                    <p><strong>Tenure:</strong> ${inv.tenure_months} months</p>
+                    <p><strong>Contact:</strong> ${inv.masked_contact}</p>
+                </div>
+                <button class="borrow-btn" onclick="borrow(${inv.id})">Borrow</button>
+            </div>
+        `;
+    });
+})
+.catch(err => {
+    console.error(err);
+    document.getElementById("bidders-list").innerHTML = "<p>Error loading lenders.</p>";
+});
+function borrow(investmentId) {
+    fetch(`http://localhost:3000/api/v1/p2p_investments/${investmentId}/borrow`, {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json"
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert("You successfully borrowed this investment!");
+        location.reload(); // refresh dashboard
+    })
+    .catch(err => console.error(err));
+}
+
+
+    // --- LOGOUT FUNCTION ---
+    function logout() {
+        localStorage.removeItem("token");
+        window.location.href = "login.html";
+    }
+</script>
+
+</body>
+</html>

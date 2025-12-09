@@ -1,679 +1,328 @@
+
+<div class="progress-bar">
+    <div id="progressFill"></div>
+</div>
+<style>
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #eee;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+#progressFill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #007bff, #28a745);
+    transition: width 0.5s ease-in-out;
+}
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apply for a Loan - Value Loans</title>
-    <link rel="stylesheet" href="styles/custom.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Apply for Loan</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* --- FORM WIZARD STYLE --- */
+        .form-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .step-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .btn-nav {
+            padding: 10px 18px;
+            border-radius: 6px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-submit {
+            background: #28a745;
+        }
+
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+    </style>
 </head>
-<body class="page-apply">
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
-            </a>
-            <div class="nav-menu">
-                <!-- Loans Dropdown -->
-                <div class="dropdown">
-                    <a href="#loans" class="nav-link dropdown-toggle">Loans</a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-column">
-                            <h4>Personal Loans</h4>
-                            <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
-                            <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
-                            <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
-                            <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
-                        </div>
-                        <div class="dropdown-column">
-                            <h4>Business Loans</h4>
-                            <a href="business-loans.html" class="dropdown-link">Business Loans</a>
-                            <a href="order-finance.html" class="dropdown-link">Order Finance</a>
-                            <a href="invoice-discounting.html" class="dropdown-link">Invoice Discounting</a>
-                        </div>
-                        <div class="dropdown-column">
-                            <h4>Special Loans</h4>
-                            <a href="agri-loans.html" class="dropdown-link">Agri Loans</a>
-                            <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
-                            <a href="asset-financing.html" class="dropdown-link">Asset Financing</a>
-                        </div>
-                    </div>
-                </div>
-                <a href="payments.html" class="nav-link">Payments</a>
-                <a href="investments.html" class="nav-link">Investments</a>
-                <a href="about.html" class="nav-link">About</a>
-                <a href="auth-landing.html" class="nav-link">Sign in / Sign up</a>
-                <a href="#loan-calculator" class="btn-primary">Quick Apply</a>
+
+
+<body>
+
+    <!-- YOUR NAVBAR HERE -->
+    <header>
+        <!-- replace this with your actual navbar -->
+    </header>
+
+    <div class="form-container">
+        <h2 style="text-align:center; margin-bottom:10px;">Loan Application</h2>
+
+        <!-- STEP 1 - PERSONAL DETAILS -->
+        <div class="form-step active" id="step-1">
+            <div class="step-title">1. Personal Details</div>
+
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" id="firstName">
+            </div>
+
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" id="lastName">
+            </div>
+
+            <div class="form-group">
+                <label>Occupation</label>
+                <input type="text" id="occupation">
+            </div>
+
+            <div class="form-group">
+                <label>Current Location</label>
+                <input type="text" id="location">
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="text" id="phone">
             </div>
         </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="hero" style="background-image: url('images/loan-application-hero.jpg');">
-        <div class="hero-container">
-            <div class="hero-content">
-                <h1>Apply for Your Loan Today</h1>
-                <p class="hero-subtitle">Quick approval. Flexible terms. Competitive rates.</p>
-                <p>Get the financial support you need in just a few simple steps. Choose from our range of loan products designed for your specific needs.</p>
-                <div class="hero-actions">
-                    <a href="#loan-calculator" class="btn-primary">Calculate Your Loan</a>
-                    <a href="#loan-options" class="btn-secondary">View All Options</a>
-                </div>
+        <!-- STEP 2 - GUARANTOR -->
+        <div class="form-step" id="step-2">
+            <div class="step-title">2. Guarantor Details</div>
+
+            <div class="form-group">
+                <label>Guarantor First Name</label>
+                <input type="text" id="g_first">
+            </div>
+
+            <div class="form-group">
+                <label>Guarantor Last Name</label>
+                <input type="text" id="g_last">
+            </div>
+
+            <div class="form-group">
+                <label>Guarantor Phone</label>
+                <input type="text" id="g_phone">
+            </div>
+
+            <div class="form-group">
+                <label>Guarantor Email</label>
+                <input type="email" id="g_email">
+            </div>
+
+            <div class="form-group">
+                <label>Guarantor Occupation</label>
+                <input type="text" id="g_occupation">
+            </div>
+
+            <div class="form-group">
+                <label>Guarantor Location</label>
+                <input type="text" id="g_location">
             </div>
         </div>
-    </section>
 
-    <!-- Quick Loan Calculator -->
-    <section class="section quick-loan" id="loan-calculator">
-        <div class="container">
-            <h2 class="section-title">Loan Calculator</h2>
-            <p class="section-subtitle">See how much you can borrow and what your repayments will be.</p>
-            
-            <div class="quick-loan-container">
-                <form id="loanCalculatorForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="loanType" class="form-label">Loan Type <span class="required">*</span></label>
-                            <div class="form-input-group">
-                                <i class="fas fa-hand-holding-usd form-input-icon"></i>
-                                <select id="loanType" name="loanType" class="form-input" required>
-                                    <option value="">Select loan type</option>
-                                    <option value="civil-servant">Civil Servant Loan</option>
-                                    <option value="collateral">Collateral Backed Loan</option>
-                                    <option value="instant">Instant Loan</option>
-                                    <option value="business">Business Loan</option>
-                                    <option value="agri">Agri Loan</option>
-                                    <option value="scheme">Scheme Loan</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="loanAmount" class="form-label">Loan Amount (MWK) <span class="required">*</span></label>
-                            <div class="form-input-group">
-                                <i class="fas fa-money-bill-wave form-input-icon"></i>
-                                <input type="number" id="loanAmount" name="loanAmount" class="form-input" placeholder="Enter amount" min="10000" max="50000000" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="loanTerm" class="form-label">Loan Term (Months) <span class="required">*</span></label>
-                            <div class="form-input-group">
-                                <i class="fas fa-calendar-alt form-input-icon"></i>
-                                <select id="loanTerm" name="loanTerm" class="form-input" required>
-                                    <option value="">Select term</option>
-                                    <option value="3">3 Months</option>
-                                    <option value="6">6 Months</option>
-                                    <option value="12">12 Months</option>
-                                    <option value="18">18 Months</option>
-                                    <option value="24">24 Months</option>
-                                    <option value="36">36 Months</option>
-                                    <option value="48">48 Months</option>
-                                    <option value="60">60 Months</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="purpose" class="form-label">Loan Purpose</label>
-                            <div class="form-input-group">
-                                <i class="fas fa-bullseye form-input-icon"></i>
-                                <select id="purpose" name="purpose" class="form-input">
-                                    <option value="">Select purpose</option>
-                                    <option value="education">Education</option>
-                                    <option value="medical">Medical Expenses</option>
-                                    <option value="business">Business Expansion</option>
-                                    <option value="home">Home Improvement</option>
-                                    <option value="vehicle">Vehicle Purchase</option>
-                                    <option value="agriculture">Agricultural Investment</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-actions" style="margin-top: 2rem;">
-                        <button type="submit" class="btn-primary" style="width: 100%; padding: 1.25rem;">
-                            <i class="fas fa-calculator"></i> Calculate Loan
-                        </button>
-                    </div>
-                </form>
-                  
-                <div class="loan-summary" id="loanSummary" style="display: none;">
-                    <h3>Loan Summary</h3>
-                    <div class="summary-item">
-                        <span>Monthly Repayment:</span>
-                        <strong id="monthlyRepayment">MWK 0.00</strong>
-                    </div>
-                    <div class="summary-item">
-                        <span>Total Repayment:</span>
-                        <strong id="totalRepayment">MWK 0.00</strong>
-                    </div>
-                    <div class="summary-item">
-                        <span>Total Interest:</span>
-                        <strong id="totalInterest">MWK 0.00</strong>
-                    </div>
-                    <div class="summary-item">
-                        <span>Interest Rate:</span>
-                        <strong id="interestRate">0%</strong>
-                    </div>
-                    <div class="summary-actions">
-                        <button type="button" onclick="proceedToApplication()" class="btn-primary" style="width: 100%; text-align: center;">
-                            <i class="fas fa-check-circle"></i> Apply Now
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+       <!-- STEP 3 - LOAN DETAILS -->
+<div class="form-step" id="step-3">
+    <div class="step-title">3. Loan Details</div>
 
-    <!-- Loan Options Section -->
-    <section class="section" id="loan-options">
-        <div class="container">
-            <h2 class="section-title">Our Loan Products</h2>
-            <p class="section-subtitle">Choose from our range of flexible loan options</p>
-            
-            <div class="loan-options-grid">
-                <!-- Civil Servant Loan -->
-                <div class="loan-option-card">
-                    <img src="images/civil1.avif" alt="Civil Servant Loan" class="loan-option-image">
-                    <div class="loan-option-content">
-                        <h3>Civil Servant Loan</h3>
-                        <p>Exclusive loans for government employees with competitive rates and flexible repayment terms.</p>
-                        <div class="loan-details">
-                            <div class="detail-item">
-                                <i class="fas fa-percentage"></i>
-                                <span>From 1.5% monthly</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-clock"></i>
-                                <span>3-36 months term</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-money-bill-wave"></i>
-                                <span>Up to MWK 10,000,000</span>
-                            </div>
-                        </div>
-                        <a href="civil-servant-loan.html" class="btn-primary">Learn More</a>
-                    </div>
-                </div>
-                
-                <!-- Collateral Loan -->
-                <div class="loan-option-card">
-                    <img src="images/collateral.avif" alt="Collateral Backed Loan" class="loan-option-image">
-                    <div class="loan-option-content">
-                        <h3>Collateral Backed Loan</h3>
-                        <p>Use your assets as collateral to secure larger loans with better terms and lower interest rates.</p>
-                        <div class="loan-details">
-                            <div class="detail-item">
-                                <i class="fas fa-percentage"></i>
-                                <span>From 1.2% monthly</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-clock"></i>
-                                <span>6-60 months term</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-money-bill-wave"></i>
-                                <span>Up to MWK 50,000,000</span>
-                            </div>
-                        </div>
-                        <a href="collateral-loans.html" class="btn-primary">Learn More</a>
-                    </div>
-                </div>
-                
-                <!-- Instant Loan -->
-                <div class="loan-option-card">
-                    <img src="images/civil3.jpg" alt="Instant Loan" class="loan-option-image">
-                    <div class="loan-option-content">
-                        <h3>Instant Loan</h3>
-                        <p>Quick access to funds with minimal documentation. Get approved within 24 hours.</p>
-                        <div class="loan-details">
-                            <div class="detail-item">
-                                <i class="fas fa-percentage"></i>
-                                <span>From 2.5% monthly</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-clock"></i>
-                                <span>1-12 months term</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-money-bill-wave"></i>
-                                <span>Up to MWK 2,000,000</span>
-                            </div>
-                        </div>
-                        <a href="instant-loan.html" class="btn-primary">Learn More</a>
-                    </div>
-                </div>
-                
-                <!-- Business Loan -->
-                <div class="loan-option-card">
-                    <img src="images/business-woman.avif" alt="Business Loan" class="loan-option-image">
-                    <div class="loan-option-content">
-                        <h3>Business Loan</h3>
-                        <p>Fuel your business growth with working capital, expansion funds, or equipment financing.</p>
-                        <div class="loan-details">
-                            <div class="detail-item">
-                                <i class="fas fa-percentage"></i>
-                                <span>From 1.8% monthly</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-clock"></i>
-                                <span>3-48 months term</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-money-bill-wave"></i>
-                                <span>Up to MWK 100,000,000</span>
-                            </div>
-                        </div>
-                        <a href="business-loans.html" class="btn-primary">Learn More</a>
-                    </div>
-                </div>
-                
-                <!-- Agri Loan -->
-                <div class="loan-option-card">
-                    <img src="images/agri4.jpg" alt="Agricultural Loan" class="loan-option-image">
-                    <div class="loan-option-content">
-                        <h3>Agricultural Loan</h3>
-                        <p>Specialized loans for farmers and agribusinesses. Invest in equipment, inputs, or expansion.</p>
-                        <div class="loan-details">
-                            <div class="detail-item">
-                                <i class="fas fa-percentage"></i>
-                                <span>From 1.3% monthly</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-clock"></i>
-                                <span>6-60 months term</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-money-bill-wave"></i>
-                                <span>Up to MWK 30,000,000</span>
-                            </div>
-                        </div>
-                        <a href="agri-loans.html" class="btn-primary">Learn More</a>
-                    </div>
-                </div>
-                
-                <!-- Scheme Loan -->
-                <div class="loan-option-card">
-                    <img src="images/scheme-loan.jpg" alt="Scheme Loan" class="loan-option-image">
-                    <div class="loan-option-content">
-                        <h3>Scheme Loan</h3>
-                        <p>Group-based lending for communities, cooperatives, and employee groups with special benefits.</p>
-                        <div class="loan-details">
-                            <div class="detail-item">
-                                <i class="fas fa-percentage"></i>
-                                <span>From 1.4% monthly</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-clock"></i>
-                                <span>3-24 months term</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-money-bill-wave"></i>
-                                <span>Up to MWK 10,000,000</span>
-                            </div>
-                        </div>
-                        <a href="scheme-loan.html" class="btn-primary">Learn More</a>
-                    </div>
-                </div>
-
-                <!-- Malawi Defence Forces Loans -->
-                <div class="loan-option-card">
-                    <img src="images/mdf3.jpg" alt="MDF Loan" class="loan-option-image">
-                    <div class="loan-option-content">
-                        <h3>Malawi Defence Forces Loans</h3>
-                        <p>A Loan that is offered specifically to Malawian Soldiers to boost their welfare per time.</p>
-                        <div class="loan-details">
-                            <div class="detail-item">
-                                <i class="fas fa-percentage"></i>
-                                <span>From 1.5% monthly</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-clock"></i>
-                                <span>3-24 months term</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-money-bill-wave"></i>
-                                <span>Up to MWK 5,000,000</span>
-                            </div>
-                        </div>
-                        <a href="defence-forces-loan.html" class="btn-primary">Learn More</a>
-                    </div>
-                </div>
-
-                
-                <!-- Order Finance -->
-                <div class="loan-option-card">
-                    <img src="images/order-finance.avif" alt="order-finance Loan" class="loan-option-image">
-                    <div class="loan-option-content">
-                        <h3>Order Finance Loan</h3>
-                        <p>Get instant funding to fulfill confirmed customer orders or purchase inventory for upcoming sales, with repayment tied directly to your order payments.</p>
-                        <div class="loan-details">
-                            <div class="detail-item">
-                                <i class="fas fa-percentage"></i>
-                                <span>From 1.6% monthly</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-clock"></i>
-                                <span>6-32 months term</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-money-bill-wave"></i>
-                                <span>Up to MWK 6,000,000</span>
-                            </div>
-                        </div>
-                        <a href="order-finance.html" class="btn-primary">Learn More</a>
-                    </div>
-                </div>
-
-                <!-- Invoice Discounting -->
-                <div class="loan-option-card">
-                    <img src="images/invoice-discounting.avif" alt="invoice-discounting Loan" class="loan-option-image">
-                    <div class="loan-option-content">
-                        <h3>Invoice Discounting Loan</h3>
-                        <p>Get cash now for your unpaid invoices.</p>
-                        <div class="loan-details">
-                            <div class="detail-item">
-                                <i class="fas fa-percentage"></i>
-                                <span>From 1.0% monthly</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-clock"></i>
-                                <span>1-6 months term</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-money-bill-wave"></i>
-                                <span>Up to MWK 600,000</span>
-                            </div>
-                        </div>
-                        <a href="invoice-discounting.html" class="btn-primary">Learn More</a>
-                    </div>
-                </div>
-                
-                <!-- Asset Finacing -->
-                <div class="loan-option-card">
-                    <img src="images/assets3.jpg" alt="order-finance Loan" class="loan-option-image">
-                    <div class="loan-option-content">
-                        <h3>Asset Financing Loan</h3>
-                        <p>Get the equipment, vehicles, or machinery you need now and pay for them over time through flexible installment plans secured against the assets themselves.</p>
-                        <div class="loan-details">
-                            <div class="detail-item">
-                                <i class="fas fa-percentage"></i>
-                                <span>From 1.5% monthly</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-clock"></i>
-                                <span>6-32 months term</span>
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-money-bill-wave"></i>
-                                <span>Up to MWK 1,100,000,000</span>
-                            </div>
-                        </div>
-                        <a href="asset-financing.html" class="btn-primary">Learn More</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-<!-- How to Apply Section -->
-<section class="section" style="background: linear-gradient(rgba(30, 58, 138, 0.85), rgba(30, 58, 138, 0.85)), url('images/how-to-apply-bg.jpg') center/cover no-repeat;">
-    <div class="container">
-        <h2 class="section-title" style="color: white;">How to Apply</h2>
-        <p class="section-subtitle" style="color: rgba(255, 255, 255, 0.9);">Simple steps to get your loan approved</p>
-        
-        <div class="steps-grid">
-            <div class="step-card" style="background: rgba(255, 255, 255, 0.95);">
-                <div class="step-number">1</div>
-                <h3>Choose Your Loan</h3>
-                <p>Select the loan product that best fits your needs from our range of options.</p>
-            </div>
-            
-            <div class="step-card" style="background: rgba(255, 255, 255, 0.95);">
-                <div class="step-number">2</div>
-                <h3>Check Requirements</h3>
-                <p>Review the eligibility criteria and required documents for your chosen loan.</p>
-            </div>
-            
-            <div class="step-card" style="background: rgba(255, 255, 255, 0.95);">
-                <div class="step-number">3</div>
-                <h3>Submit Application</h3>
-                <p>Fill out our online application form with your personal and financial details.</p>
-            </div>
-            
-            <div class="step-card" style="background: rgba(255, 255, 255, 0.95);">
-                <div class="step-number">4</div>
-                <h3>Upload Documents</h3>
-                <p>Submit required documents like ID, proof of income, and bank statements.</p>
-            </div>
-            
-            <div class="step-card" style="background: rgba(255, 255, 255, 0.95);">
-                <div class="step-number">5</div>
-                <h3>Get Approval</h3>
-                <p>Receive loan approval decision within 24-48 hours for most applications.</p>
-            </div>
-            
-            <div class="step-card" style="background: rgba(255, 255, 255, 0.95);">
-                <div class="step-number">6</div>
-                <h3>Receive Funds</h3>
-                <p>Once approved, funds are disbursed directly to your bank account.</p>
-            </div>
-        </div>
+    <div class="form-group">
+        <label>Loan Type</label>
+        <select id="loanType">
+            <option value="civil_servant">Civil Servant Loan</option>
+            <option value="group_business">Group Business Loan</option>
+            <option value="graduate_ayiphule">Graduate Ayiphule Loan</option>
+            <option value="payday">Payday Loan</option>
+        </select>
     </div>
-</section>
 
-    <!-- Requirements Section -->
-    <section class="section" id="apply-now">
-        <div class="container">
-            <h2 class="section-title">General Requirements</h2>
-            <p class="section-subtitle">What you need to apply for a loan</p>
-            
-            <div class="two-column-grid">
-                <div class="eligibility-container">
-                    <img src="images/collateral-eligibility.jpg" alt="Eligibility Requirements" class="card-image">
-                    <div class="eligibility-container-content">
-                        <h3>Eligibility Criteria</h3>
-                        <ul>
-                            <li>Malawian citizen or resident</li>
-                            <li>18-65 years of age</li>
-                            <li>Valid national ID or passport</li>
-                            <li>Proof of regular income</li>
-                            <li>Good credit history (for certain loans)</li>
-                            <li>Active bank account</li>
-                            <li>Valid mobile phone number</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="documentation-container">
-                    <img src="images/documentation.avif" alt="Required Documents" class="card-image">
-                    <div class="documentation-container-content">
-                        <h3>Required Documents</h3>
-                        <ul>
-                            <li>National ID/Passport (copy)</li>
-                            <li>Recent passport photo</li>
-                            <li>Proof of income (payslips, bank statements)</li>
-                            <li>Proof of residence (utility bill, rental agreement)</li>
-                            <li>Business registration documents (for business loans)</li>
-                            <li>Collateral documents (for secured loans)</li>
-                            <li>Employer confirmation letter (for civil servants)</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="cta-container" style="text-align: center; margin-top: 3rem;">
-                <a href="#loan-calculator" class="btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem;">
-                    <i class="fas fa-rocket"></i> Start Your Application
-                </a>
-                <p style="margin-top: 1rem; color: #64748b;">Need help? <a href="contact.html" style="color: #3498db; text-decoration: none;">Contact our support team</a></p>
-            </div>
-        </div>
-    </section>
+    <div class="form-group">
+        <label>Desired Amount (MWK)</label>
+        <input type="number" id="amount">
+    </div>
 
-        <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-section">
-                <!-- ADD: Company logo -->
-                <img src="images/Value-logo.png" alt="Value Financial Services" class="footer-logo">
-                <h3>Value</h3>
-                <p>"We are building the next generation of financial services for AFRICA."</p>
-                <p>Value is an award-winning, venture-backed fintech startup that provides online loans.</p>
-                <!-- ADD: Social media icons -->
-                <div class="social-icons">
-                    <a href="#"><img src="images/fb-icon.avif" alt="Facebook"></a>
-                    <a href="#"><img src="images/X-icon.avif" alt="Twitter"></a>
-                    <a href="#"><img src="images/in-icon.avif" alt="LinkedIn"></a>
-                    <a href="#"><img src="images/IG-icon.avif" alt="Instagram"></a>
-                </div>
+    <div class="form-group">
+        <label>Tenure (Months)</label>
+        <input type="number" id="tenure">
+    </div>
+
+    
+
+    <div class="form-group">
+        <label>Purpose</label>
+        <input type="text" id="purpose">
+    </div>
+    <div class="form-group">
+        <label>Interest Rate (%)</label>
+        <input type="text" id="interestRate" readonly>
+    </div>
+
+    <div class="form-group">
+      <label>Total Repayable (MWK)</label>
+      <input type="text" id="totalRepayable" readonly>
+    </div>
+
+</div>
+
+
+        <!-- STEP 4 - DOCUMENT UPLOAD -->
+        <div class="form-step" id="step-4">
+            <div class="step-title">4. Upload Updated Documents</div>
+
+            <p>Please upload the required documents (only if prompted).</p>
+
+            <div class="form-group">
+                <label>Payslip</label>
+                <input type="file" id="payslip">
             </div>
-            
-            <div class="footer-section">
-                <h3>PRODUCTS</h3>
-                <a href="#loans">Loans</a>
-                <a href="payments.html">Payments</a>
-                <a href="investments.html">Investments</a>
-            </div>
-            
-            <div class="footer-section">
-                <h3>RESOURCES</h3>
-                <a href="#blog">Blog</a>
-                <a href="#careers">Careers</a>
-                <a href="about.html">Loan Requirements</a>
-            </div>
-            
-            <div class="footer-section">
-                <h3>GET INVOLVED</h3>
-                <a href="contact.html">Become an Agent</a>
-                <h4>CONTACT</h4>
-                <p>Area 36, M1 Road, Opposite LUANAR City Campus, Lilongwe, Malawi</p>
-                <p>support@valueloans.org</p>
-                <p>+265 996 113 594</p>
-                <p>+265 897 325 815</p>
-                <!-- ADD: Payment method icons -->
-                <div class="payment-methods">
-                    <img src="images/visa-icon.avif" alt="Visa">
-                    <img src="images/mastercard-icon.jpg" alt="Mastercard">
-                    <img src="images/mobile-money-icon.avif" alt="Mobile Money">
-                </div>
+
+            <div class="form-group">
+                <label>Bank Statement</label>
+                <input type="file" id="bankStatement">
             </div>
         </div>
 
-        <div class="footer-disclaimer">
-            <p>Minimum Tenure: 62 days | Maximum Tenure: 60 months | Maximum APR: 40%</p>
-            <p>Representative Example of a MWK1,000,000 SME loan over 12 months:</p>
-            <div class="example-grid">
-                <div>INTEREST RATE: 2.5%</div>
-                <div>LOAN VALUE: MWK1,000,000</div>
-                <div>LOAN TERM: 12 Months</div>
-                <div>TOTAL AMOUNT: MWK1,169,845.52</div>
-                <div>MONTHLY REPAYMENT: MWK97,487.13</div>
-            </div>
+        <!-- STEP 5 SUBMIT -->
+        <div class="form-step" id="step-5">
+            <div class="step-title">Review & Submit</div>
+            <p>Click submit to finish application.</p>
         </div>
-        
-        <div class="footer-bottom">
-            <div class="footer-links">
-                <a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Use</a>
-            </div>
-            <p>&copy; 2024 Value Financial Services Limited. All rights reserved.</p>
+
+
+        <!-- NAVIGATION BUTTONS -->
+        <div class="form-navigation">
+            <button id="prevBtn" class="btn-nav" onclick="nextPrev(-1)">Back</button>
+            <button id="nextBtn" class="btn-nav" onclick="nextPrev(1)">Next</button>
         </div>
+
+    </div>
+
+
+    <!-- YOUR FOOTER HERE -->
+    <footer>
+        <!-- replace with your footer -->
     </footer>
 
+<script src="js/loan_application.js"></script>
+<script src="js/app.js"></script>
 <script>
-// Loan Calculator Functionality
-document.getElementById('loanCalculatorForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const loanType = document.getElementById('loanType').value;
-    const loanAmount = parseFloat(document.getElementById('loanAmount').value);
-    const loanTerm = parseInt(document.getElementById('loanTerm').value);
-    
-    if (!loanType || !loanAmount || !loanTerm) {
-        alert('Please fill in all required fields');
-        return;
-    }
-    
-    // Interest rates based on loan type
-    const interestRates = {
-        'civil-servant': 1.5,
-        'collateral': 1.2,
-        'instant': 2.5,
-        'business': 1.8,
-        'agri': 1.3,
-        'scheme': 1.4
-    };
-    
-    const monthlyInterestRate = interestRates[loanType] / 100;
-    const monthlyRepayment = loanAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, loanTerm) / 
-                            (Math.pow(1 + monthlyInterestRate, loanTerm) - 1);
-    const totalRepayment = monthlyRepayment * loanTerm;
-    const totalInterest = totalRepayment - loanAmount;
-    
-    // Display results
-    document.getElementById('monthlyRepayment').textContent = 'MWK ' + monthlyRepayment.toFixed(2);
-    document.getElementById('totalRepayment').textContent = 'MWK ' + totalRepayment.toFixed(2);
-    document.getElementById('totalInterest').textContent = 'MWK ' + totalInterest.toFixed(2);
-    document.getElementById('interestRate').textContent = interestRates[loanType] + '% monthly';
-    
-    // Store loan data for apply-now page
-    const loanData = {
-        type: loanType,
-        amount: loanAmount,
-        term: loanTerm,
-        purpose: document.getElementById('purpose').value,
-        monthlyRepayment: monthlyRepayment,
-        totalRepayment: totalRepayment,
-        interestRate: interestRates[loanType]
-    };
-    
-    localStorage.setItem('loanApplicationData', JSON.stringify(loanData));
-    
-    // Show summary
-    document.getElementById('loanSummary').style.display = 'block';
-    
-    // Scroll to summary
-    document.getElementById('loanSummary').scrollIntoView({ behavior: 'smooth' });
-});
+const BACKEND_URL = "http://localhost:3000";
 
-// Function to proceed to application
-function proceedToApplication() {
-    const loanData = localStorage.getItem('loanApplicationData');
-    
-    if (!loanData) {
-        alert('Please calculate your loan first using the calculator above');
-        return false;
-    }
-    
-    window.location.href = 'apply-now.html';
-    return true;
+async function testBackendConnection() {
+  try {
+    const response = await fetch(`${BACKEND_URL}/api/test`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    console.log("%cBackend Connected ✔", "color: green; font-weight: bold;");
+    console.log("Response:", data);
+  } catch (error) {
+    console.log("%cBackend NOT Connected ✖", "color: red; font-weight: bold;");
+    console.error("Error:", error);
+  }
 }
 
-// Update the "Apply Now" button to use this function
-document.querySelector('.loan-summary .btn-primary').addEventListener('click', function(e) {
-    e.preventDefault();
-    proceedToApplication();
-});
-
-// Smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            targetElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
+document.addEventListener('DOMContentLoaded', testBackendConnection);
 </script>
+
 </body>
 </html>
+<script>
+const loanTypeEl = document.getElementById("loanType");
+const amountEl = document.getElementById("amount");
+const tenureEl = document.getElementById("tenure");
+const interestRateEl = document.getElementById("interestRate");
+const totalRepayableEl = document.getElementById("totalRepayable");
+
+async function updateInterestAndRepayable() {
+    const tenure = tenureEl.value;
+    const amount = parseFloat(amountEl.value);
+    const loanType = loanTypeEl.value;
+
+    if (!tenure || !amount || !loanType) {
+        interestRateEl.value = "";
+        totalRepayableEl.value = "";
+        return;
+    }
+
+    try {
+        // Backend should accept loan_type & tenure
+        const response = await fetch(`${BACKEND_URL}/api/v1/loan_interest_configs?term_months=${tenure}`);
+;
+        const data = await response.json();
+
+        if (data && data.interest_rate) {
+            const rate = parseFloat(data.interest_rate);
+
+            // Show interest rate
+            interestRateEl.value = rate + "%";
+
+            // Calculate total repayable
+            const total = amount * (1 + rate / 100);
+            totalRepayableEl.value = total.toFixed(2);
+        } else {
+            interestRateEl.value = "Not Configured";
+            totalRepayableEl.value = "";
+        }
+    } catch (err) {
+        console.error(err);
+        interestRateEl.value = "Error";
+        totalRepayableEl.value = "";
+    }
+}
+
+// Trigger calculation whenever amount, tenure, or loan type changes
+amountEl.addEventListener("input", updateInterestAndRepayable);
+tenureEl.addEventListener("input", updateInterestAndRepayable);
+loanTypeEl.addEventListener("change", updateInterestAndRepayable);
+</script>
+
