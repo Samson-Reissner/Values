@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrow Options - Value</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+
+    <style>
+        body {
+            background: #f7f7f7;
+        }
+        .box {
+            max-width: 450px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+        .box h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .details p {
+            font-size: 15px;
+            margin: 6px 0;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+            background: #1e73ff;
+            border: none;
+            color: white;
+            font-size: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #005be0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Borrow Options</h2>
+
+    <div class="details" id="investment-details">
+        Loading...
+    </div>
+
+    <button onclick="borrowFullAmount()">Borrow Full Amount</button>
+
+    <input type="number" id="customAmount" placeholder="Enter custom amount">
+    <button onclick="borrowPartial()">Borrow Custom Amount</button>
+</div>
+
+<script>
+const token = localStorage.getItem("token");
+
+// Read ID from URL
+const params = new URLSearchParams(window.location.search);
+const investmentId = params.get("investment_id");
+
+// Fetch Investment Details
+fetch(`http://localhost:3000/api/v1/p2p_investments/${investmentId}`, {
+    headers: { "Authorization": "Bearer " + token }
+})
+.then(res => res.json())
+.then(inv => {
+    document.getElementById("investment-details").innerHTML = `
+        <p><strong>Lender:</strong> ${inv.lender_name}</p>
+        <p><strong>Amount Available:</strong> MWK ${inv.amount}</p>
+        <p><strong>Interest Rate:</strong> ${inv.interest_rate}% per month</p>
+        <p><strong>Tenure:</strong> ${inv.tenure_months} months</p>
+        <p><strong>Contact:</strong> ${inv.masked_contact}</p>
+    `;
+});
+
+// Borrow full amount
+function borrowFullAmount() {
+    sendBorrowRequest({ amount: "full" });
+}
+
+// Borrow custom amount
+function borrowPartial() {
+    const amount = document.getElementById("customAmount").value;
+
+    if (!amount || amount <= 0) {
+        alert("Enter a valid amount.");
+        return;
+    }
+
+    sendBorrowRequest({ amount });
+}
+
+function sendBorrowRequest(payload) {
+    fetch(`http://localhost:3000/api/v1/p2p_investments/${investmentId}/borrow`, {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + token,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(response => {
+        alert("Borrow request submitted!");
+        window.location.href = "dashboard.html";
+    })
+    .catch(err => console.error(err));
+}
+</script>
+
+</body>
+</html>
