@@ -158,22 +158,8 @@ fetch("http://localhost:3000/api/v1/borrower/dashboard",{
     document.getElementById("bidders-list").innerHTML = "<p>Error loading lenders.</p>";
 });
 function borrow(investmentId) {
-    fetch(`http://localhost:3000/api/v1/p2p_investments/${investmentId}/borrow`, {
-        method: "POST",
-        headers: {
-            "Authorization": "Bearer " + token,
-            "Content-Type": "application/json"
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert("You successfully borrowed this investment!");
-        location.reload(); // refresh dashboard
-    })
-    .catch(err => console.error(err));
+    window.location.href = `borrow_options.html?investment_id=${investmentId}`;
 }
-
-
     // --- LOGOUT FUNCTION ---
     function logout() {
         localStorage.removeItem("token");
