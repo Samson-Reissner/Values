@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Security - Value Wallet</title>
+    <link rel="stylesheet" href="styles/custom.css">
+    <link rel="stylesheet" href="styles/wallet-styles.css">
+    <link rel="stylesheet" href="styles/wallet-pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="wallet-page security-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <!-- REPLACE: Logo image -->
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
+            </a>
+            <div class="nav-menu">
+                <!-- Loans Dropdown -->
+                <div class="dropdown">
+                    <a href="#loans" class="nav-link dropdown-toggle">Loans</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <h4>Personal Loans</h4>
+                            <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
+                            <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
+                            <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
+                            <a href="yango-loans.html" class="dropdown-link">Value Loans on Yango</a>
+                            <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
+                            <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Business Loans</h4>
+                            <a href="business-loans.html" class="dropdown-link">Business Loans</a>
+                            <a href="order-finance.html" class="dropdown-link">Order Finance</a>
+                            <a href="invoice-discounting.html" class="dropdown-link">Invoice Discounting</a>
+                            <a href="asset-financing.html" class="dropdown-link">Asset Financing</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Agri Loans</h4>
+                            <a href="agri-loans.html" class="dropdown-link">Agri Loans</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Apps</h4>
+                            <a href="android-app.html" class="dropdown-link">Android App</a>
+                            <a href="ios-app.html" class="dropdown-link">iOS App</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="payments.html" class="nav-link">Payments</a>
+                <a href="wallet-dashboard.html" class="nav-link">My Wallet</a>
+                <a href="auth-landing.html" class="nav-link">Sign in / Sign up</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="apply.html" class="nav-link">Apply for a Loan</a>
+            </div>
+            
+        </div>
+    </nav>
+
+    <div class="wallet-container">
+        <!-- Page Header -->
+        <div class="section-header" style="margin-bottom: var(--spacing-xl);">
+            <div>
+                <h1 style="color: var(--black); margin-bottom: var(--spacing-sm);">Wallet Security</h1>
+                <p style="color: var(--black-light);">Protect your Value Wallet with advanced security features</p>
+            </div>
+            <a href="wallet/wallet-dashboard.html" class="btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Wallet
+            </a>
+        </div>
+
+        <!-- Security Overview -->
+        <div class="wallet-balance-card" style="margin-bottom: var(--spacing-xl); background: linear-gradient(135deg, #2c3e50, #3498db);">
+            <div class="balance-header">
+                <h2><i class="fas fa-shield-alt"></i> Security Status</h2>
+                <div class="security-status status-active" id="overallSecurityStatus">Excellent</div>
+            </div>
+            
+            <div class="balance-details" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="detail-item">
+                    <span>Last Security Scan:</span>
+                    <strong id="lastScan">Just now</strong>
+                </div>
+                <div class="detail-item">
+                    <span>Threats Detected:</span>
+                    <strong id="threatsCount" style="color: var(--green-main);">0</strong>
+                </div>
+                <div class="detail-item">
+                    <span>Last Login:</span>
+                    <strong id="lastLogin">Today, 10:30 AM</strong>
+                </div>
+                <div class="detail-item">
+                    <span>Security Score:</span>
+                    <strong id="securityScore" style="color: var(--green-main);">98/100</strong>
+                </div>
+            </div>
+            
+            <div class="wallet-actions">
+                <button class="btn-wallet-action primary" onclick="runSecurityScan()">
+                    <i class="fas fa-sync-alt"></i> Run Security Scan
+                </button>
+                <button class="btn-wallet-action" onclick="viewSecurityReport()">
+                    <i class="fas fa-file-alt"></i> View Full Report
+                </button>
+            </div>
+        </div>
+
+        <!-- Security Features Grid -->
+        <div class="security-grid">
+            <!-- Two-Factor Authentication -->
+            <div class="security-card">
+                <div class="security-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3 style="color: var(--black); margin-bottom: var(--spacing-sm);">Two-Factor Authentication</h3>
+                <div class="security-status status-active" id="2faStatus">Active</div>
+                <p style="color: var(--black-light); margin-bottom: var(--spacing-md); line-height: 1.6;">
+                    Adds an extra layer of security by requiring a code from your mobile device when logging in.
+                </p>
+                <div class="security-actions">
+                    <button class="btn-small" onclick="manage2FA()">
+                        <i class="fas fa-cog"></i> Manage 2FA
+                    </button>
+                    <button class="btn-small btn-danger" onclick="disable2FA()" style="display: none;" id="disable2faBtn">
+                        <i class="fas fa-times"></i> Disable
+                    </button>
+                </div>
+            </div>
+
+            <!-- Transaction PIN -->
+            <div class="security-card">
+                <div class="security-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3 style="color: var(--black); margin-bottom: var(--spacing-sm);">Transaction PIN</h3>
+                <div class="security-status status-active" id="pinStatus">Active</div>
+                <p style="color: var(--black-light); margin-bottom: var(--spacing-md); line-height: 1.6;">
+                    A 4-digit PIN is required for all transactions to prevent unauthorized access.
+                </p>
+                <div class="security-actions">
+                    <button class="btn-small" onclick="changePIN()">
+                        <i class="fas fa-key"></i> Change PIN
+                    </button>
+                    <button class="btn-small" onclick="resetPIN()">
+                        <i class="fas fa-redo"></i> Reset PIN
+                    </button>
+                </div>
+            </div>
+
+            <!-- Biometric Authentication -->
+            <div class="security-card">
+                <div class="security-icon">
+                    <i class="fas fa-fingerprint"></i>
+                </div>
+                <h3 style="color: var(--black); margin-bottom: var(--spacing-sm);">Biometric Login</h3>
+                <div class="security-status status-inactive" id="biometricStatus">Not Set Up</div>
+                <p style="color: var(--black-light); margin-bottom: var(--spacing-md); line-height: 1.6;">
+                    Use your fingerprint or face recognition for faster and more secure access.
+                </p>
+                <div class="security-actions">
+                    <button class="btn-small" onclick="setupBiometric()" id="setupBiometricBtn">
+                        <i class="fas fa-plus-circle"></i> Set Up
+                    </button>
+                    <button class="btn-small btn-danger" onclick="removeBiometric()" style="display: none;" id="removeBiometricBtn">
+                        <i class="fas fa-times"></i> Remove
+                    </button>
+                </div>
+            </div>
+
+            <!-- Login Alerts -->
+            <div class="security-card">
+                <div class="security-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <h3 style="color: var(--black); margin-bottom: var(--spacing-sm);">Login Alerts</h3>
+                <div class="security-status status-active" id="alertStatus">Active</div>
+                <p style="color: var(--black-light); margin-bottom: var(--spacing-md); line-height: 1.6;">
+                    Get notified instantly when someone logs into your account from a new device.
+                </p>
+                <div class="security-actions">
+                    <button class="btn-small" onclick="manageAlerts()">
+                        <i class="fas fa-cog"></i> Manage Alerts
+                    </button>
+                    <button class="btn-small" onclick="testAlert()">
+                        <i class="fas fa-bell"></i> Test Alert
+                    </button>
+                </div>
+            </div>
+
+            <!-- Session Management -->
+            <div class="security-card">
+                <div class="security-icon">
+                    <i class="fas fa-desktop"></i>
+                </div>
+                <h3 style="color: var(--black); margin-bottom: var(--spacing-sm);">Active Sessions</h3>
+                <div class="security-status status-warning" id="sessionStatus">2 Active</div>
+                <p style="color: var(--black-light); margin-bottom: var(--spacing-md); line-height: 1.6;">
+                    Monitor and manage all devices currently logged into your Value Wallet.
+                </p>
+                
+                <div class="session-list">
+                    <div class="session-item session-current">
+                        <div class="session-info">
+                            <div style="font-weight: var(--font-weight-medium); color: var(--black);">
+                                Chrome Browser
+                            </div>
+                            <div style="font-size: 0.85rem; color: var(--gray-500);">
+                                This device • Just now
+                            </div>
+                        </div>
+                        <button class="btn-small" disabled>
+                            <i class="fas fa-check-circle"></i> Current
+                        </button>
+                    </div>
+                    
+                    <div class="session-item">
+                        <div class="session-info">
+                            <div style="font-weight: var(--font-weight-medium); color: var(--black);">
+                                Mobile App
+                            </div>
+                            <div style="font-size: 0.85rem; color: var(--gray-500);">
+                                iPhone 13 • 2 hours ago
+                            </div>
+                        </div>
+                        <button class="btn-small btn-danger" onclick="endSession(this)">
+                            <i class="fas fa-sign-out-alt"></i> End
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="security-actions">
+                    <button class="btn-small" onclick="viewAllSessions()">
+                        <i class="fas fa-list"></i> View All
+                    </button>
+                    <button class="btn-small btn-danger" onclick="endAllSessions()">
+                        <i class="fas fa-power-off"></i> End All Others
+                    </button>
+                </div>
+            </div>
+
+            <!-- Backup & Recovery -->
+            <div class="security-card">
+                <div class="security-icon">
+                    <i class="fas fa-save"></i>
+                </div>
+                <h3 style="color: var(--black); margin-bottom: var(--spacing-sm);">Backup & Recovery</h3>
+                <div class="security-status status-warning" id="backupStatus">Backup Needed</div>
+                <p style="color: var(--black-light); margin-bottom: var(--spacing-md); line-height: 1.6;">
+                    Secure backup options to recover your wallet in case you lose access.
+                </p>
+                <div class="security-actions">
+                    <button class="btn-small" onclick="createBackup()">
+                        <i class="fas fa-download"></i> Create Backup
+                    </button>
+                    <button class="btn-small" onclick="setupRecovery()">
+                        <i class="fas fa-key"></i> Recovery Keys
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Password Management -->
+        <div class="lending-offer-form" style="margin-bottom: var(--spacing-xl);">
+            <h3>Password Management</h3>
+            
+            <div class="form-group">
+                <label for="currentPassword">Current Password</label>
+                <input type="password" id="currentPassword" placeholder="Enter your current password">
+            </div>
+            
+            <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" placeholder="Enter new password" onkeyup="checkPasswordStrength()">
+                <div class="password-strength">
+                    <div class="strength-bar" id="passwordStrength"></div>
+                </div>
+                <div class="form-hint" id="passwordHint">
+                    Use at least 8 characters with uppercase, lowercase, numbers, and symbols
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Confirm New Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm new password">
+            </div>
+            
+            <div class="form-actions">
+                <button class="btn-large" onclick="changePassword()">
+                    <i class="fas fa-key"></i> Change Password
+                </button>
+            </div>
+        </div>
+
+        <!-- Security Tips -->
+        <div class="security-tips">
+            <h3><i class="fas fa-lightbulb"></i> Security Best Practices</h3>
+            <ul>
+                <li>Never share your password, PIN, or 2FA codes with anyone</li>
+                <li>Use a unique password for your Value Wallet that you don't use elsewhere</li>
+                <li>Enable 2-factor authentication for maximum security</li>
+                <li>Log out from shared or public computers immediately after use</li>
+                <li>Regularly review your active sessions and end any you don't recognize</li>
+                <li>Keep your recovery keys in a safe place separate from your devices</li>
+                <li>Be cautious of phishing emails or messages asking for your credentials</li>
+                <li>Keep your devices and apps updated with the latest security patches</li>
+            </ul>
+        </div>
+
+        <!-- Report Suspicious Activity -->
+        <div class="eligibility-warning" style="margin-top: var(--spacing-xl); background: rgba(220, 38, 38, 0.1); border-color: rgba(220, 38, 38, 0.3);">
+            <i class="fas fa-exclamation-triangle" style="color: var(--error);"></i>
+            <div style="flex: 1;">
+                <p style="margin-bottom: var(--spacing-sm); font-weight: var(--font-weight-bold); color: var(--error);">
+                    Notice Suspicious Activity?
+                </p>
+                <p style="margin-bottom: var(--spacing-md);">
+                    If you notice any unauthorized transactions or suspect someone has accessed your account, 
+                    contact our security team immediately.
+                </p>
+                <div class="security-actions">
+                    <button class="btn-small btn-danger" onclick="reportSuspicious()">
+                        <i class="fas fa-flag"></i> Report Now
+                    </button>
+                    <button class="btn-small" onclick="freezeAccount()">
+                        <i class="fas fa-snowflake"></i> Freeze Account
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2FA Setup Modal -->
+    <div class="application-modal security-modal" id="2faModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="close2FAModal()">×</button>
+            
+            <div class="modal-icon">
+                <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h2>Two-Factor Authentication</h2>
+            <p>Scan the QR code with your authenticator app to set up 2FA.</p>
+            
+            <div class="qr-code" id="2faQrCode">
+                <!-- QR Code will be generated here -->
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; color: var(--gray-400); margin-bottom: var(--spacing-sm);">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <p style="color: var(--gray-500); font-size: 0.9rem;">QR Code Placeholder</p>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: var(--spacing-lg);">
+                <p style="color: var(--gray-500); font-size: 0.9rem; margin-bottom: var(--spacing-sm);">
+                    Or enter this code manually:
+                </p>
+                <div style="font-family: monospace; font-size: 1.2rem; font-weight: bold; letter-spacing: 2px; padding: var(--spacing-md); background: var(--gray-50); border-radius: var(--radius-sm); border: 1px solid var(--gray-300);">
+                    JBSW Y3DP EQHP K3PX
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="2faCode">Enter 6-digit code from your app</label>
+                <input type="text" id="2faCode" placeholder="000000" maxlength="6" pattern="[0-9]{6}">
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="close2FAModal()">Cancel</button>
+                <button class="btn-primary" onclick="verify2FASetup()">
+                    <i class="fas fa-check"></i> Verify & Activate
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Backup Codes Modal -->
+    <div class="application-modal security-modal" id="backupModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeBackupModal()">×</button>
+            
+            <div class="modal-icon success">
+                <i class="fas fa-key"></i>
+            </div>
+            <h2>Backup Recovery Codes</h2>
+            <p style="color: var(--error); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-lg);">
+                ⚠️ Save these codes in a safe place! ⚠️
+            </p>
+            
+            <p style="margin-bottom: var(--spacing-lg);">
+                These codes can be used to recover your account if you lose access to your 2FA device.
+                Each code can only be used once.
+            </p>
+            
+            <div class="backup-codes" id="backupCodes">
+                <!-- Backup codes will be generated here -->
+            </div>
+            
+            <div class="modal-actions" style="margin-top: var(--spacing-xl);">
+                <button class="btn-secondary" onclick="closeBackupModal()">
+                    <i class="fas fa-times"></i> Close
+                </button>
+                <button class="btn-primary" onclick="downloadBackupCodes()">
+                    <i class="fas fa-download"></i> Download Codes
+                </button>
+                <button class="btn-secondary" onclick="printBackupCodes()">
+                    <i class="fas fa-print"></i> Print
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Security data
+        let securityData = {
+            twoFactorEnabled: true,
+            biometricEnabled: false,
+            lastSecurityScan: new Date().toISOString(),
+            activeSessions: 2,
+            securityScore: 98,
+            backupCreated: false
+        };
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSecurityData();
+            updateSecurityDisplay();
+        });
+
+        // Load security data from localStorage
+        function loadSecurityData() {
+            const savedData = JSON.parse(localStorage.getItem('securityData'));
+            if (savedData) {
+                securityData = { ...securityData, ...savedData };
+            }
+            
+            // Update timestamps
+            const lastScan = new Date(securityData.lastSecurityScan);
+            const now = new Date();
+            const diffHours = Math.floor((now - lastScan) / (1000 * 60 * 60));
+            
+            let lastScanText;
+            if (diffHours < 1) {
+                lastScanText = 'Just now';
+            } else if (diffHours < 24) {
+                lastScanText = `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+            } else {
+                const diffDays = Math.floor(diffHours / 24);
+                lastScanText = `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+            }
+            
+            document.getElementById('lastScan').textContent = lastScanText;
+            document.getElementById('lastLogin').textContent = 'Today, ' + 
+                new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+
+        // Update security display
+        function updateSecurityDisplay() {
+            // 2FA Status
+            const twoFAStatus = document.getElementById('2faStatus');
+            const disable2FABtn = document.getElementById('disable2faBtn');
+            if (securityData.twoFactorEnabled) {
+                twoFAStatus.textContent = 'Active';
+                twoFAStatus.className = 'security-status status-active';
+                if (disable2FABtn) disable2FABtn.style.display = 'inline-flex';
+            } else {
+                twoFAStatus.textContent = 'Inactive';
+                twoFAStatus.className = 'security-status status-inactive';
+                if (disable2FABtn) disable2FABtn.style.display = 'none';
+            }
+            
+            // Biometric Status
+            const biometricStatus = document.getElementById('biometricStatus');
+            const setupBiometricBtn = document.getElementById('setupBiometricBtn');
+            const removeBiometricBtn = document.getElementById('removeBiometricBtn');
+            if (securityData.biometricEnabled) {
+                biometricStatus.textContent = 'Active';
+                biometricStatus.className = 'security-status status-active';
+                if (setupBiometricBtn) setupBiometricBtn.style.display = 'none';
+                if (removeBiometricBtn) removeBiometricBtn.style.display = 'inline-flex';
+            } else {
+                biometricStatus.textContent = 'Not Set Up';
+                biometricStatus.className = 'security-status status-inactive';
+                if (setupBiometricBtn) setupBiometricBtn.style.display = 'inline-flex';
+                if (removeBiometricBtn) removeBiometricBtn.style.display = 'none';
+            }
+            
+            // Backup Status
+            const backupStatus = document.getElementById('backupStatus');
+            if (securityData.backupCreated) {
+                backupStatus.textContent = 'Backed Up';
+                backupStatus.className = 'security-status status-active';
+            } else {
+                backupStatus.textContent = 'Backup Needed';
+                backupStatus.className = 'security-status status-warning';
+            }
+            
+            // Session Status
+            document.getElementById('sessionStatus').textContent = 
+                securityData.activeSessions + ' Active';
+            
+            // Overall Status
+            const overallStatus = document.getElementById('overallSecurityStatus');
+            if (securityData.securityScore >= 90) {
+                overallStatus.textContent = 'Excellent';
+                overallStatus.className = 'security-status status-active';
+            } else if (securityData.securityScore >= 70) {
+                overallStatus.textContent = 'Good';
+                overallStatus.className = 'security-status status-warning';
+            } else {
+                overallStatus.textContent = 'Needs Attention';
+                overallStatus.className = 'security-status status-inactive';
+            }
+            
+            // Update scores
+            document.getElementById('securityScore').textContent = securityData.securityScore + '/100';
+        }
+
+        // Save security data
+        function saveSecurityData() {
+            localStorage.setItem('securityData', JSON.stringify(securityData));
+            updateSecurityDisplay();
+        }
+
+        // Run security scan
+        function runSecurityScan() {
+            const scanBtn = event?.target || document.querySelector('.btn-wallet-action.primary');
+            const originalText = scanBtn.innerHTML;
+            
+            scanBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
+            scanBtn.disabled = true;
+            
+            // Simulate scan
+            setTimeout(() => {
+                // Update security data
+                securityData.lastSecurityScan = new Date().toISOString();
+                securityData.securityScore = Math.min(100, securityData.securityScore + 2);
+                
+                // Check for issues
+                const issues = [];
+                if (!securityData.twoFactorEnabled) issues.push('2FA not enabled');
+                if (!securityData.biometricEnabled) issues.push('Biometric auth not set up');
+                if (!securityData.backupCreated) issues.push('No backup created');
+                
+                // Update display
+                document.getElementById('threatsCount').textContent = issues.length;
+                
+                if (issues.length === 0) {
+                    alert('✅ Security scan completed: No issues found!');
+                } else {
+                    alert('⚠️ Security scan completed. Issues found:\n\n' + issues.join('\n'));
+                }
+                
+                // Save and reset button
+                saveSecurityData();
+                scanBtn.innerHTML = originalText;
+                scanBtn.disabled = false;
+            }, 2000);
+        }
+
+        // View security report
+        function viewSecurityReport() {
+            alert('Full security report would open here with detailed analysis and recommendations.');
+        }
+
+        // Manage 2FA
+        function manage2FA() {
+            if (securityData.twoFactorEnabled) {
+                // Show 2FA management options
+                const action = confirm('Two-Factor Authentication is currently enabled.\n\n' +
+                    'Options:\n' +
+                    '• View backup codes\n' +
+                    '• Change authenticator app\n' +
+                    '• Disable 2FA\n\n' +
+                    'What would you like to do?');
+                
+                if (action) {
+                    // In real app, this would open appropriate management interface
+                    setupRecovery();
+                }
+            } else {
+                // Setup 2FA
+                document.getElementById('2faModal').classList.add('active');
+            }
+        }
+
+        // Setup 2FA
+        function setup2FA() {
+            document.getElementById('2faModal').classList.add('active');
+        }
+
+        // Close 2FA modal
+        function close2FAModal() {
+            document.getElementById('2faModal').classList.remove('active');
+        }
+
+        // Verify 2FA setup
+        function verify2FASetup() {
+            const code = document.getElementById('2faCode').value;
+            
+            if (!code || code.length !== 6 || !/^\d+$/.test(code)) {
+                alert('Please enter a valid 6-digit code');
+                return;
+            }
+            
+            // In real app, verify with backend
+            // For demo, accept any 6-digit code
+            securityData.twoFactorEnabled = true;
+            saveSecurityData();
+            
+            close2FAModal();
+            alert('✅ Two-Factor Authentication has been successfully enabled!');
+            
+            // Show backup codes
+            setupRecovery();
+        }
+
+        // Disable 2FA
+        function disable2FA() {
+            if (confirm('⚠️ Are you sure you want to disable Two-Factor Authentication?\n\n' +
+                'This will make your account less secure.')) {
+                
+                const pin = prompt('Please enter your 4-digit PIN to confirm:');
+                if (pin && pin.length === 4 && /^\d+$/.test(pin)) {
+                    securityData.twoFactorEnabled = false;
+                    securityData.securityScore = Math.max(0, securityData.securityScore - 10);
+                    saveSecurityData();
+                    alert('2FA has been disabled.');
+                }
+            }
+        }
+
+        // Change PIN
+        function changePIN() {
+            const currentPin = prompt('Enter your current 4-digit PIN:');
+            if (!currentPin || currentPin.length !== 4 || !/^\d+$/.test(currentPin)) {
+                alert('Please enter a valid 4-digit PIN');
+                return;
+            }
+            
+            const newPin = prompt('Enter new 4-digit PIN:');
+            if (!newPin || newPin.length !== 4 || !/^\d+$/.test(newPin)) {
+                alert('Please enter a valid 4-digit PIN');
+                return;
+            }
+            
+            const confirmPin = prompt('Confirm new 4-digit PIN:');
+            if (newPin !== confirmPin) {
+                alert('PINs do not match');
+                return;
+            }
+            
+            // In real app, verify current PIN with backend
+            alert('✅ Your PIN has been changed successfully!');
+        }
+
+        // Reset PIN
+        function resetPIN() {
+            if (confirm('This will reset your transaction PIN. You will need to verify your identity.')) {
+                alert('PIN reset process would start here. You would need to verify via email or 2FA.');
+            }
+        }
+
+        // Setup biometric authentication
+        function setupBiometric() {
+            // Check if browser supports biometrics
+            if (typeof PublicKeyCredential !== 'undefined') {
+                // WebAuthn API is available
+                alert('Biometric setup would start here using your device\'s fingerprint/face recognition.');
+                
+                // Simulate successful setup
+                setTimeout(() => {
+                    securityData.biometricEnabled = true;
+                    securityData.securityScore = Math.min(100, securityData.securityScore + 5);
+                    saveSecurityData();
+                    alert('✅ Biometric authentication has been set up successfully!');
+                }, 1000);
+            } else {
+                alert('Biometric authentication is not supported by your browser/device.');
+            }
+        }
+
+        // Remove biometric authentication
+        function removeBiometric() {
+            if (confirm('Remove biometric authentication from your account?')) {
+                securityData.biometricEnabled = false;
+                securityData.securityScore = Math.max(0, securityData.securityScore - 5);
+                saveSecurityData();
+                alert('Biometric authentication has been removed.');
+            }
+        }
+
+        // Manage alerts
+        function manageAlerts() {
+            alert('Alert management interface would open here.\n\nYou can configure:\n' +
+                '• Email notifications\n' +
+                '• SMS alerts\n' +
+                '• Push notifications\n' +
+                '• Alert frequency\n' +
+                '• Transaction thresholds');
+        }
+
+        // Test alert
+        function testAlert() {
+            alert('A test alert has been sent to your registered email and mobile number.');
+        }
+
+        // End session
+        function endSession(button) {
+            const sessionItem = button.closest('.session-item');
+            if (confirm('End this session? The device will be logged out immediately.')) {
+                securityData.activeSessions--;
+                sessionItem.style.opacity = '0.5';
+                setTimeout(() => {
+                    sessionItem.remove();
+                    saveSecurityData();
+                }, 500);
+            }
+        }
+
+        // View all sessions
+        function viewAllSessions() {
+            alert('Full session history would open here with all devices and locations.');
+        }
+
+        // End all other sessions
+        function endAllSessions() {
+            if (confirm('This will log out all other devices except this one. Continue?')) {
+                securityData.activeSessions = 1;
+                saveSecurityData();
+                
+                // Remove all session items except current
+                document.querySelectorAll('.session-item:not(.session-current)').forEach(item => {
+                    item.style.opacity = '0.5';
+                    setTimeout(() => item.remove(), 500);
+                });
+                
+                alert('All other sessions have been ended.');
+            }
+        }
+
+        // Create backup
+        function createBackup() {
+            if (securityData.backupCreated) {
+                const action = confirm('Backup already exists. Would you like to:\n\n' +
+                    '1. Download existing backup\n' +
+                    '2. Create new backup (invalidates old one)\n' +
+                    '3. View recovery codes');
+                
+                if (action) {
+                    // In real app, handle based on user choice
+                    setupRecovery();
+                }
+            } else {
+                securityData.backupCreated = true;
+                securityData.securityScore = Math.min(100, securityData.securityScore + 8);
+                saveSecurityData();
+                
+                // Generate backup codes
+                setupRecovery();
+            }
+        }
+
+        // Setup recovery
+        function setupRecovery() {
+            // Generate backup codes
+            const backupCodes = generateBackupCodes();
+            const codesContainer = document.getElementById('backupCodes');
+            codesContainer.innerHTML = '';
+            
+            backupCodes.forEach(code => {
+                const codeDiv = document.createElement('div');
+                codeDiv.className = 'backup-code';
+                codeDiv.textContent = code;
+                codesContainer.appendChild(codeDiv);
+            });
+            
+            document.getElementById('backupModal').classList.add('active');
+        }
+
+        // Generate backup codes
+        function generateBackupCodes() {
+            const codes = [];
+            for (let i = 0; i < 10; i++) {
+                // Generate random 8-character alphanumeric code
+                const code = Math.random().toString(36).substring(2, 10).toUpperCase();
+                codes.push(code);
+            }
+            return codes;
+        }
+
+        // Close backup modal
+        function closeBackupModal() {
+            document.getElementById('backupModal').classList.remove('active');
+        }
+
+        // Download backup codes
+        function downloadBackupCodes() {
+            const codes = Array.from(document.querySelectorAll('.backup-code')).map(div => div.textContent);
+            const content = 'Value Wallet Backup Codes\n\n' +
+                'IMPORTANT: Save these codes in a secure location!\n' +
+                'Each code can be used only once to recover your account.\n\n' +
+                codes.map((code, index) => `${index + 1}. ${code}`).join('\n') +
+                '\n\nGenerated: ' + new Date().toLocaleString();
+            
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `value-wallet-backup-codes-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            alert('Backup codes downloaded successfully!');
+        }
+
+        // Print backup codes
+        function printBackupCodes() {
+            const printContent = document.getElementById('backupModal').innerHTML;
+            const originalContent = document.body.innerHTML;
+            
+            document.body.innerHTML = `
+                <div style="padding: 20mm; font-family: Arial, sans-serif;">
+                    <h1 style="text-align: center; color: #2c3e50;">Value Wallet Backup Codes</h1>
+                    <p style="color: red; font-weight: bold; text-align: center;">
+                        ⚠️ SECURE THESE CODES ⚠️
+                    </p>
+                    <p>
+                        Store this document in a safe, secure location. Each code can be used only once 
+                        to recover your account if you lose access to your 2FA device.
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 20px 0;">
+                        ${Array.from(document.querySelectorAll('.backup-code'))
+                            .map((div, i) => `<div style="border: 1px solid #000; padding: 10px; text-align: center; font-family: monospace; font-weight: bold;">
+                                ${i + 1}. ${div.textContent}
+                            </div>`).join('')}
+                    </div>
+                    <p style="margin-top: 30px; font-size: 0.9em; color: #666;">
+                        Generated: ${new Date().toLocaleString()}<br>
+                        Account: Value Wallet User
+                    </p>
+                </div>
+            `;
+            
+            window.print();
+            document.body.innerHTML = originalContent;
+            document.getElementById('backupModal').classList.add('active');
+        }
+
+        // Check password strength
+        function checkPasswordStrength() {
+            const password = document.getElementById('newPassword').value;
+            const strengthBar = document.getElementById('passwordStrength');
+            const hint = document.getElementById('passwordHint');
+            
+            let strength = 0;
+            let feedback = '';
+            
+            // Length check
+            if (password.length >= 8) strength += 25;
+            
+            // Complexity checks
+            if (/[A-Z]/.test(password)) strength += 25;
+            if (/[a-z]/.test(password)) strength += 25;
+            if (/[0-9]/.test(password)) strength += 15;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 10;
+            
+            // Update strength bar
+            strengthBar.className = 'strength-bar';
+            if (strength >= 75) {
+                strengthBar.classList.add('strength-strong');
+                feedback = 'Strong password';
+            } else if (strength >= 50) {
+                strengthBar.classList.add('strength-good');
+                feedback = 'Good password';
+            } else if (strength >= 25) {
+                strengthBar.classList.add('strength-fair');
+                feedback = 'Fair password - could be stronger';
+            } else {
+                strengthBar.classList.add('strength-weak');
+                feedback = 'Weak password - needs improvement';
+            }
+            
+            hint.textContent = feedback;
+        }
+
+        // Change password
+        function changePassword() {
+            const current = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+            
+            if (!current || !newPass || !confirmPass) {
+                alert('Please fill in all password fields');
+                return;
+            }
+            
+            if (newPass !== confirmPass) {
+                alert('New passwords do not match');
+                return;
+            }
+            
+            if (newPass.length < 8) {
+                alert('Password must be at least 8 characters long');
+                return;
+            }
+            
+            // In real app, verify current password with backend
+            // For demo, accept any current password
+            securityData.securityScore = Math.min(100, securityData.securityScore + 5);
+            saveSecurityData();
+            
+            // Clear form
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            document.getElementById('passwordStrength').className = 'strength-bar';
+            document.getElementById('passwordHint').textContent = 
+                'Password changed successfully!';
+            
+            alert('✅ Password changed successfully!');
+        }
+
+        // Report suspicious activity
+        function reportSuspicious() {
+            const details = prompt('Please describe the suspicious activity you noticed:');
+            if (details) {
+                alert('Thank you for reporting. Our security team has been notified and will investigate immediately.');
+                
+                // In real app, send report to backend
+                console.log('Suspicious activity reported:', details);
+            }
+        }
+
+        // Freeze account
+        function freezeAccount() {
+            if (confirm('⚠️ ACCOUNT FREEZE ⚠️\n\n' +
+                'This will immediately freeze your account and:\n' +
+                '• Stop all transactions\n' +
+                '• Log out all devices\n' +
+                '• Require identity verification to unfreeze\n\n' +
+                'Only do this if you suspect unauthorized access.\n\n' +
+                'Continue?')) {
+                
+                const reason = prompt('Briefly explain why you\'re freezing your account:');
+                if (reason) {
+                    alert('Account frozen. Contact customer support to unfreeze.');
+                    
+                    // In real app, call backend to freeze account
+                    console.log('Account freeze requested:', reason);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

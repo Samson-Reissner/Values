@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrow Money - Value P2P Lending</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link rel="stylesheet" href="../styles/wallet-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/borrow-styles.css">
+</head>
+<body class="borrow-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <img src="../images/Value-logo.png" alt="Value Financial Services" class="logo-image">
+            </a>
+            <div class="nav-menu">
+                <div class="dropdown">
+                    <a href="#wallet" class="nav-link dropdown-toggle">My Wallet</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <h4>Wallet</h4>
+                            <a href="wallet-dashboard.html" class="dropdown-link">Dashboard</a>
+                            <a href="add-money.html" class="dropdown-link">Add Money</a>
+                            <a href="send-money.html" class="dropdown-link">Send Money</a>
+                            <a href="withdraw-money.html" class="dropdown-link">Withdraw</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>B2B Marketplace</h4>
+                            <a href="become-lender.html" class="dropdown-link">Become a Lender</a>
+                            <a href="borrow-money.html" class="dropdown-link active">Borrow Money</a>
+                            <a href="my-loans.html" class="dropdown-link">My Loans</a>
+                            <a href="lender-dashboard.html" class="dropdown-link">Lender Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="../payments.html" class="nav-link">Payments</a>
+                <a href="../investments.html" class="nav-link">Investments</a>
+                <a href="../about.html" class="nav-link">About</a>
+                <a href="../profile.html" class="nav-link"><i class="fas fa-user-circle"></i> Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Application Status Modal -->
+    <div class="application-modal" id="applicationModal">
+        <div class="modal-content">
+            <i class="fas fa-clock modal-icon" id="modalIcon"></i>
+            <h2 id="modalTitle">Loan Application Submitted</h2>
+            <p id="modalMessage">Your loan application has been submitted and is pending lender approval.</p>
+            <div class="modal-details" id="modalDetails">
+                <!-- Details will be inserted here -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="closeApplicationModal()">Continue Browsing</button>
+                <button class="btn-secondary" onclick="viewMyLoans()">View My Loans</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loan Details Modal -->
+    <div class="loan-details-modal" id="loanDetailsModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeLoanDetailsModal()">&times;</span>
+            <div id="loanDetailsContent">
+                <!-- Loan details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="borrow-container">
+        <div class="borrow-header">
+            <h1><i class="fas fa-hand-holding-usd"></i> Borrow Money</h1>
+            <p>Get the funds you need from trusted lenders with competitive rates</p>
+        </div>
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <h3>Filter Loan Offers</h3>
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label for="loanAmount">Loan Amount (MWK)</label>
+                    <input type="range" id="loanAmount" min="500" max="1000000" value="50000" step="1000">
+                    <div class="range-display">
+                        <span id="amountValue">50,000</span> MWK
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label for="maxInterest">Max Interest Rate</label>
+                    <input type="range" id="maxInterest" min="1" max="6" value="4.5" step="0.1">
+                    <div class="range-display">
+                        Up to <span id="interestValue">4.5</span>%
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label for="loanTerm">Loan Term</label>
+                    <select id="loanTerm">
+                        <option value="any">Any Term</option>
+                        <option value="1">1 Month</option>
+                        <option value="3">3 Months</option>
+                        <option value="6">6 Months</option>
+                        <option value="12">12 Months</option>
+                        <option value="18">18 Months</option>
+                        <option value="24">24 Months</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="loanPurpose">Purpose</label>
+                    <select id="loanPurpose">
+                        <option value="any">Any Purpose</option>
+                        <option value="education">Education</option>
+                        <option value="business">Business</option>
+                        <option value="medical">Medical</option>
+                        <option value="agriculture">Agriculture</option>
+                        <option value="personal">Personal</option>
+                        <option value="debt">Debt Consolidation</option>
+                    </select>
+                </div>
+                <button class="btn-secondary" onclick="applyFilters()">
+                    <i class="fas fa-filter"></i> Apply Filters
+                </button>
+            </div>
+        </div>
+
+        <!-- Available Loan Offers -->
+        <div class="loan-offers-section">
+            <div class="section-header">
+                <h3>Available Loan Offers</h3>
+                <div class="sort-controls">
+                    <select id="sortBy" onchange="sortOffers()">
+                        <option value="interest-asc">Interest: Low to High</option>
+                        <option value="interest-desc">Interest: High to Low</option>
+                        <option value="amount-asc">Amount: Low to High</option>
+                        <option value="amount-desc">Amount: High to Low</option>
+                        <option value="term-asc">Term: Short to Long</option>
+                        <option value="term-desc">Term: Long to Short</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="offers-grid" id="offersGrid">
+                <!-- Loan offers will be loaded here -->
+            </div>
+            
+            <div class="no-offers" id="noOffersMessage" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h4>No Loan Offers Found</h4>
+                <p>Try adjusting your filters or check back later for new offers.</p>
+            </div>
+        </div>
+
+        <!-- Loan Application Form -->
+        <div class="loan-application-form">
+            <h3>Apply for a Loan</h3>
+            <p>Select a loan offer above or fill out the form below</p>
+            
+            <form id="loanApplicationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="selectedOffer">Select Loan Offer *</label>
+                        <select id="selectedOffer" required onchange="updateFormFromOffer()">
+                            <option value="">-- Select a loan offer --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="loanAmountInput">Loan Amount (MWK) *</label>
+                        <input type="number" id="loanAmountInput" min="500" max="1000000" required 
+                               placeholder="Enter amount (min: MWK 500)">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="interestRateDisplay">Interest Rate (%)</label>
+                        <input type="text" id="interestRateDisplay" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="termDisplay">Loan Term (Months)</label>
+                        <input type="text" id="termDisplay" readonly>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loanPurposeInput">Loan Purpose *</label>
+                    <select id="loanPurposeInput" required>
+                        <option value="">Select purpose</option>
+                        <option value="education">Education Expenses</option>
+                        <option value="business">Business Capital</option>
+                        <option value="medical">Medical Bills</option>
+                        <option value="agriculture">Agricultural Investment</option>
+                        <option value="personal">Personal Use</option>
+                        <option value="debt">Debt Consolidation</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="repaymentPlan">Repayment Plan *</label>
+                    <select id="repaymentPlan" required>
+                        <option value="">Select repayment plan</option>
+                        <option value="monthly">Monthly Installments</option>
+                        <option value="biweekly">Bi-weekly Installments</option>
+                        <option value="lumpsum">Lump Sum at Maturity</option>
+                        <option value="custom">Custom Plan</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loanReason">Reason for Loan *</label>
+                    <textarea id="loanReason" required 
+                              placeholder="Please explain why you need this loan and how you plan to use the funds..."
+                              rows="4"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="monthlyIncome">Monthly Income (MWK) *</label>
+                    <input type="number" id="monthlyIncome" min="0" required 
+                           placeholder="Enter your monthly income">
+                </div>
+                
+                <div class="form-group">
+                    <label for="employmentStatus">Employment Status *</label>
+                    <select id="employmentStatus" required>
+                        <option value="">Select status</option>
+                        <option value="employed">Employed</option>
+                        <option value="self-employed">Self-Employed</option>
+                        <option value="student">Student</option>
+                        <option value="unemployed">Unemployed</option>
+                        <option value="retired">Retired</option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary btn-large">
+                        <i class="fas fa-paper-plane"></i> Submit Loan Application
+                    </button>
+                    <p class="form-note">
+                        <i class="fas fa-info-circle"></i> Your application will be reviewed by lenders within 24-48 hours
+                    </p>
+                </div>
+            </form>
+        </div>
+
+        <!-- My Loan Applications -->
+        <div class="my-loans-section">
+            <h3>My Loan Applications</h3>
+            <div class="applications-list" id="applicationsList">
+                <!-- Applications will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // BORROW MONEY SYSTEM
+        // ============================================
+
+        class BorrowMoneySystem {
+            constructor() {
+                this.userId = this.getUserId();
+                this.userName = this.getUserName();
+                this.userLoans = [];
+                this.availableOffers = [];
+                this.filteredOffers = [];
+                this.currentFilters = {
+                    amount: 50000,
+                    maxInterest: 4.5,
+                    term: 'any',
+                    purpose: 'any'
+                };
+            }
+            
+            initialize() {
+                this.loadUserData();
+                this.loadMarketplace();
+                this.setupEventListeners();
+                this.updateStats();
+                this.loadUserApplications();
+                
+                // Initialize form with available offers
+                this.populateOfferSelect();
+                
+                // Set default values for form
+                this.updateFormFromOffer();
+            }
+            
+            getUserId() {
+                let userData = JSON.parse(localStorage.getItem('userData'));
+                if (!userData || !userData.userId) {
+                    userData = userData || {};
+                    userData.userId = 'borrower-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+                    userData.name = 'Value Borrower ' + Math.floor(Math.random() * 1000);
+                    userData.type = 'borrower';
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                }
+                return userData.userId;
+            }
+            
+            getUserName() {
+                const userData = JSON.parse(localStorage.getItem('userData')) || {};
+                return userData.name || 'Anonymous Borrower';
+            }
+            
+            loadUserData() {
+                // Load or initialize borrower data
+                let borrowerData = JSON.parse(localStorage.getItem('borrowerData'));
+                if (!borrowerData) {
+                    borrowerData = {
+                        userId: this.userId,
+                        userName: this.userName,
+                        creditScore: 650 + Math.floor(Math.random() * 150), // Random credit score 650-800
+                        approvedLoans: [],
+                        pendingApplications: [],
+                        totalBorrowed: 0,
+                        onTimeRepayments: 0,
+                        joinedDate: new Date().toISOString()
+                    };
+                    localStorage.setItem('borrowerData', JSON.stringify(borrowerData));
+                }
+                return borrowerData;
+            }
+            
+            loadMarketplace() {
+                // Load offers from marketplace (shared with lender page)
+                const marketplace = JSON.parse(localStorage.getItem('p2pMarketplace')) || [];
+                
+                // Filter only active offers
+                this.availableOffers = marketplace.filter(offer => 
+                    offer.status === 'active' && 
+                    offer.availableAmount > 0
+                );
+                
+                // Sort by best match (lowest interest rate first)
+                this.filteredOffers = [...this.availableOffers].sort((a, b) => a.interestRate - b.interestRate);
+                
+                // Apply initial filters
+                this.applyFilters();
+            }
+            
+            updateStats() {
+                // Update quick stats
+                document.getElementById('availableOffers').textContent = this.availableOffers.length;
+                
+                // Calculate average interest rate
+                const avgInterest = this.availableOffers.length > 0 
+                    ? (this.availableOffers.reduce((sum, offer) => sum + offer.interestRate, 0) / this.availableOffers.length).toFixed(1)
+                    : 0;
+                document.getElementById('avgInterestRate').textContent = avgInterest + '%';
+                
+                // Count unique lenders
+                const uniqueLenders = new Set(this.availableOffers.map(offer => offer.lenderId));
+                document.getElementById('activeLenders').textContent = uniqueLenders.size;
+                
+                // Count approved loans for this user
+                const userLoans = JSON.parse(localStorage.getItem('userLoanApplications')) || [];
+                const approvedCount = userLoans.filter(loan => loan.status === 'approved').length;
+                document.getElementById('approvedLoans').textContent = approvedCount;
+                
+                // Update range displays
+                this.updateRangeDisplays();
+            }
+            
+            updateRangeDisplays() {
+                const amountValue = document.getElementById('amountValue');
+                const interestValue = document.getElementById('interestValue');
+                
+                if (amountValue) {
+                    amountValue.textContent = this.currentFilters.amount.toLocaleString();
+                }
+                
+                if (interestValue) {
+                    interestValue.textContent = this.currentFilters.maxInterest.toFixed(1);
+                }
+            }
+            
+            setupEventListeners() {
+                // Setup filter sliders
+                const amountSlider = document.getElementById('loanAmount');
+                const interestSlider = document.getElementById('maxInterest');
+                
+                if (amountSlider) {
+                    amountSlider.value = this.currentFilters.amount;
+                    amountSlider.addEventListener('input', (e) => {
+                        this.currentFilters.amount = parseInt(e.target.value);
+                        this.updateRangeDisplays();
+                    });
+                }
+                
+                if (interestSlider) {
+                    interestSlider.value = this.currentFilters.maxInterest;
+                    interestSlider.addEventListener('input', (e) => {
+                        this.currentFilters.maxInterest = parseFloat(e.target.value);
+                        this.updateRangeDisplays();
+                    });
+                }
+                
+                // Setup form submission
+                const form = document.getElementById('loanApplicationForm');
+                if (form) {
+                    form.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.submitLoanApplication();
+                    });
+                }
+                
+                // Setup term and purpose filters
+                const termFilter = document.getElementById('loanTerm');
+                const purposeFilter = document.getElementById('loanPurpose');
+                
+                if (termFilter) {
+                    termFilter.addEventListener('change', (e) => {
+                        this.currentFilters.term = e.target.value;
+                    });
+                }
+                
+                if (purposeFilter) {
+                    purposeFilter.addEventListener('change', (e) => {
+                        this.currentFilters.purpose = e.target.value;
+                    });
+                }
+            }
+            
+            applyFilters() {
+                // Apply current filters to available offers
+                this.filteredOffers = this.availableOffers.filter(offer => {
+                    // Filter by amount (offer must have at least the requested amount)
+                    const amountMatch = offer.availableAmount >= this.currentFilters.amount;
+                    
+                    // Filter by interest rate
+                    const interestMatch = offer.interestRate <= this.currentFilters.maxInterest;
+                    
+                    // Filter by term
+                    const termMatch = this.currentFilters.term === 'any' || 
+                                    offer.term.toString() === this.currentFilters.term;
+                    
+                    // Filter by purpose
+                    const purposeMatch = this.currentFilters.purpose === 'any' || 
+                                    offer.purpose === this.currentFilters.purpose ||
+                                    offer.purpose === 'any';
+                    
+                    return amountMatch && interestMatch && termMatch && purposeMatch;
+                });
+                
+                // Sort by current sort option
+                this.sortOffers();
+                
+                // Display filtered offers
+                this.displayOffers();
+                
+                // Update offer select dropdown
+                this.populateOfferSelect();
+            }
+            
+            sortOffers() {
+                const sortSelect = document.getElementById('sortBy');
+                const sortValue = sortSelect ? sortSelect.value : 'interest-asc';
+                
+                this.filteredOffers.sort((a, b) => {
+                    switch (sortValue) {
+                        case 'interest-asc':
+                            return a.interestRate - b.interestRate;
+                        case 'interest-desc':
+                            return b.interestRate - a.interestRate;
+                        case 'amount-asc':
+                            return a.availableAmount - b.availableAmount;
+                        case 'amount-desc':
+                            return b.availableAmount - a.availableAmount;
+                        case 'term-asc':
+                            return a.term - b.term;
+                        case 'term-desc':
+                            return b.term - a.term;
+                        default:
+                            return 0;
+                    }
+                });
+            }
+            
+            displayOffers() {
+                const offersGrid = document.getElementById('offersGrid');
+                const noOffersMessage = document.getElementById('noOffersMessage');
+                
+                if (!offersGrid) return;
+                
+                if (this.filteredOffers.length === 0) {
+                    offersGrid.innerHTML = '';
+                    if (noOffersMessage) {
+                        noOffersMessage.style.display = 'block';
+                    }
+                    return;
+                }
+                
+                if (noOffersMessage) {
+                    noOffersMessage.style.display = 'none';
+                }
+                
+                let html = '';
+                
+                // Mark the first offer as best match (lowest interest rate)
+                const bestMatchId = this.filteredOffers.length > 0 ? this.filteredOffers[0].id : null;
+                
+                this.filteredOffers.forEach((offer, index) => {
+                    // Format purpose for display
+                    const purposeNames = {
+                        'any': 'Any Purpose',
+                        'education': 'Education',
+                        'business': 'Business',
+                        'medical': 'Medical',
+                        'agriculture': 'Agriculture',
+                        'personal': 'Personal',
+                        'debt': 'Debt Consolidation'
+                    };
+                    
+                    const purposeText = purposeNames[offer.purpose] || offer.purpose;
+                    const riskColor = offer.riskLevel === 'Low' ? '#27ae60' : 
+                                    offer.riskLevel === 'Medium' ? '#f39c12' : '#e74c3c';
+                    
+                    // Determine status
+                    const availablePercent = (offer.availableAmount / offer.amount) * 100;
+                    let status = 'available';
+                    let statusText = 'Available';
+                    
+                    if (availablePercent < 30) {
+                        status = 'limited';
+                        statusText = 'Limited';
+                    } else if (availablePercent < 10) {
+                        status = 'limited';
+                        statusText = 'Almost Gone';
+                    }
+                    
+                    // Generate random lender rating for demo
+                    const rating = 4.0 + Math.random() * 1.0; // 4.0 to 5.0
+                    
+                    html += `
+                        <div class="offer-card ${offer.id === bestMatchId ? 'best-match' : ''}" 
+                            onclick="borrowSystem.showLoanDetails('${offer.id}')">
+                            ${offer.id === bestMatchId ? '<div class="best-match-badge">Best Match</div>' : ''}
+                            
+                            <div class="offer-header">
+                                <div class="lender-code">${offer.lenderCode}</div>
+                                <div class="lender-rating" title="Lender Rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>${rating.toFixed(1)}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="offer-details">
+                                <div class="loan-detail-row">
+                                    <span>Available Amount:</span>
+                                    <strong>MWK ${offer.availableAmount.toLocaleString()}</strong>
+                                </div>
+                                <div class="loan-detail-row">
+                                    <span>Interest Rate:</span>
+                                    <strong class="interest-rate">${offer.interestRate}%</strong>
+                                </div>
+                                <div class="loan-detail-row">
+                                    <span>Term:</span>
+                                    <strong>${offer.term} Month${offer.term > 1 ? 's' : ''}</strong>
+                                </div>
+                                <div class="loan-detail-row">
+                                    <span>Purpose:</span>
+                                    <strong>${purposeText}</strong>
+                                </div>
+                                <div class="loan-detail-row">
+                                    <span>Risk Level:</span>
+                                    <strong style="color: ${riskColor}">${offer.riskLevel}</strong>
+                                </div>
+                                <div class="loan-detail-row">
+                                    <span>Lender:</span>
+                                    <strong>${offer.lenderName}</strong>
+                                </div>
+                            </div>
+                            
+                            <div class="offer-footer">
+                                <div class="offer-status ${status}">${statusText}</div>
+                                <button class="apply-button" onclick="event.stopPropagation(); borrowSystem.applyForLoan('${offer.id}')">
+                                    <i class="fas fa-paper-plane"></i> Apply Now
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                offersGrid.innerHTML = html;
+            }
+            
+            populateOfferSelect() {
+                const select = document.getElementById('selectedOffer');
+                if (!select) return;
+                
+                // Clear existing options except the first one
+                while (select.options.length > 1) {
+                    select.remove(1);
+                }
+                
+                // Add filtered offers
+                this.filteredOffers.forEach(offer => {
+                    const option = document.createElement('option');
+                    option.value = offer.id;
+                    option.textContent = `${offer.lenderCode}: MWK ${offer.availableAmount.toLocaleString()} @ ${offer.interestRate}% for ${offer.term} months`;
+                    select.appendChild(option);
+                });
+            }
+            
+            updateFormFromOffer() {
+                const offerId = document.getElementById('selectedOffer').value;
+                if (!offerId) return;
+                
+                const offer = this.availableOffers.find(o => o.id === offerId);
+                if (!offer) return;
+                
+                // Update form fields with offer details
+                document.getElementById('loanAmountInput').value = Math.min(offer.availableAmount, this.currentFilters.amount);
+                document.getElementById('interestRateDisplay').value = offer.interestRate + '%';
+                document.getElementById('termDisplay').value = offer.term + ' months';
+                
+                // Set max amount for input
+                document.getElementById('loanAmountInput').max = offer.availableAmount;
+            }
+            
+            applyForLoan(offerId) {
+                const offer = this.availableOffers.find(o => o.id === offerId);
+                if (!offer) {
+                    alert('Loan offer not found');
+                    return;
+                }
+                
+                // Set the selected offer in the form
+                const select = document.getElementById('selectedOffer');
+                if (select) {
+                    select.value = offerId;
+                    this.updateFormFromOffer();
+                }
+                
+                // Scroll to form
+                document.querySelector('.loan-application-form').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            }
+            
+            submitLoanApplication() {
+                // Get form data
+                const offerId = document.getElementById('selectedOffer').value;
+                const amount = parseFloat(document.getElementById('loanAmountInput').value);
+                const purpose = document.getElementById('loanPurposeInput').value;
+                const repaymentPlan = document.getElementById('repaymentPlan').value;
+                const loanReason = document.getElementById('loanReason').value;
+                const monthlyIncome = parseFloat(document.getElementById('monthlyIncome').value);
+                const employmentStatus = document.getElementById('employmentStatus').value;
+                
+                // Validate form
+                if (!this.validateApplication(amount, purpose, repaymentPlan, loanReason, monthlyIncome, employmentStatus)) {
+                    return;
+                }
+                
+                // Find selected offer
+                const offer = this.availableOffers.find(o => o.id === offerId);
+                if (!offer) {
+                    alert('Please select a valid loan offer');
+                    return;
+                }
+                
+                // Validate amount against offer
+                if (amount > offer.availableAmount) {
+                    alert(`Requested amount exceeds available amount. Maximum available: MWK ${offer.availableAmount.toLocaleString()}`);
+                    return;
+                }
+                
+                // Calculate monthly payment
+                const monthlyPayment = this.calculateMonthlyPayment(amount, offer.interestRate, offer.term);
+                
+                // Create application object
+                const application = {
+                    id: 'APP-' + Date.now() + '-' + this.userId.substring(this.userId.length - 6),
+                    borrowerId: this.userId,
+                    borrowerName: this.userName,
+                    offerId: offerId,
+                    lenderId: offer.lenderId,
+                    lenderCode: offer.lenderCode,
+                    lenderName: offer.lenderName,
+                    amount: amount,
+                    interestRate: offer.interestRate,
+                    term: offer.term,
+                    purpose: purpose,
+                    repaymentPlan: repaymentPlan,
+                    loanReason: loanReason,
+                    monthlyIncome: monthlyIncome,
+                    employmentStatus: employmentStatus,
+                    monthlyPayment: monthlyPayment,
+                    status: 'pending',
+                    appliedDate: new Date().toISOString(),
+                    creditScore: this.loadUserData().creditScore,
+                    // Loan terms from offer
+                    additionalTerms: offer.additionalTerms || '',
+                    riskLevel: offer.riskLevel
+                };
+                
+                // Save application
+                this.saveApplication(application);
+                
+                // Update offer's available amount
+                this.updateOfferAvailability(offerId, amount);
+                
+                // Show success modal
+                this.showApplicationModal(application);
+                
+                // Reset form
+                document.getElementById('loanApplicationForm').reset();
+                this.updateFormFromOffer();
+                
+                // Refresh lists
+                this.loadUserApplications();
+                this.loadMarketplace();
+                this.updateStats();
+                this.applyFilters();
+            }
+            
+            validateApplication(amount, purpose, repaymentPlan, loanReason, monthlyIncome, employmentStatus) {
+                if (!amount || amount < 500) {
+                    alert('Minimum loan amount is MWK 500');
+                    return false;
+                }
+                
+                if (!purpose) {
+                    alert('Please select a loan purpose');
+                    return false;
+                }
+                
+                if (!repaymentPlan) {
+                    alert('Please select a repayment plan');
+                    return false;
+                }
+                
+                if (!loanReason || loanReason.length < 20) {
+                    alert('Please provide a detailed reason for the loan (minimum 20 characters)');
+                    return false;
+                }
+                
+                if (!monthlyIncome || monthlyIncome <= 0) {
+                    alert('Please enter your monthly income');
+                    return false;
+                }
+                
+                if (!employmentStatus) {
+                    alert('Please select your employment status');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            calculateMonthlyPayment(principal, annualRate, months) {
+                const monthlyRate = annualRate / 100 / 12;
+                const payment = principal * monthlyRate * Math.pow(1 + monthlyRate, months) / 
+                            (Math.pow(1 + monthlyRate, months) - 1);
+                return Math.round(payment);
+            }
+            
+            saveApplication(application) {
+                let applications = JSON.parse(localStorage.getItem('userLoanApplications')) || [];
+                applications.push(application);
+                localStorage.setItem('userLoanApplications', JSON.stringify(applications));
+                
+                // Also save to marketplace for lender to see
+                let marketplace = JSON.parse(localStorage.getItem('p2pMarketplace')) || [];
+                const offerIndex = marketplace.findIndex(o => o.id === application.offerId);
+                
+                if (offerIndex !== -1) {
+                    // Initialize applications array if it doesn't exist
+                    marketplace[offerIndex].applications = marketplace[offerIndex].applications || [];
+                    marketplace[offerIndex].applications.push({
+                        applicationId: application.id,
+                        borrowerId: application.borrowerId,
+                        borrowerName: application.borrowerName,
+                        amount: application.amount,
+                        status: 'pending',
+                        appliedDate: application.appliedDate
+                    });
+                    
+                    // Update total applications count
+                    marketplace[offerIndex].totalApplications = marketplace[offerIndex].totalApplications || 0;
+                    marketplace[offerIndex].totalApplications++;
+                    
+                    localStorage.setItem('p2pMarketplace', JSON.stringify(marketplace));
+                }
+                
+                console.log('✅ Loan application saved:', application);
+                return true;
+            }
+            
+            updateOfferAvailability(offerId, amount) {
+                let marketplace = JSON.parse(localStorage.getItem('p2pMarketplace')) || [];
+                const offerIndex = marketplace.findIndex(o => o.id === offerId);
+                
+                if (offerIndex !== -1) {
+                    marketplace[offerIndex].availableAmount -= amount;
+                    localStorage.setItem('p2pMarketplace', JSON.stringify(marketplace));
+                    console.log(`📊 Updated offer ${offerId}: -MWK ${amount}`);
+                }
+            }
+            
+            showApplicationModal(application) {
+                const modal = document.getElementById('applicationModal');
+                const modalIcon = document.getElementById('modalIcon');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalMessage = document.getElementById('modalMessage');
+                const modalDetails = document.getElementById('modalDetails');
+                
+                if (!modal) return;
+                
+                // Set modal content
+                modalIcon.className = 'fas fa-clock modal-icon';
+                modalTitle.textContent = 'Application Submitted';
+                modalMessage.textContent = 'Your loan application has been submitted and is pending lender approval.';
+                
+                // Create details HTML
+                const detailsHTML = `
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Application ID:</span>
+                        <span class="modal-detail-value">${application.id}</span>
+                    </div>
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Amount:</span>
+                        <span class="modal-detail-value">MWK ${application.amount.toLocaleString()}</span>
+                    </div>
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Interest Rate:</span>
+                        <span class="modal-detail-value">${application.interestRate}%</span>
+                    </div>
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Term:</span>
+                        <span class="modal-detail-value">${application.term} months</span>
+                    </div>
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Lender:</span>
+                        <span class="modal-detail-value">${application.lenderName}</span>
+                    </div>
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Monthly Payment:</span>
+                        <span class="modal-detail-value">MWK ${application.monthlyPayment.toLocaleString()}</span>
+                    </div>
+                `;
+                
+                modalDetails.innerHTML = detailsHTML;
+                
+                // Show modal
+                modal.classList.add('active');
+                
+                // Auto-hide after 10 seconds
+                setTimeout(() => {
+                    this.closeApplicationModal();
+                }, 10000);
+            }
+            
+            closeApplicationModal() {
+                const modal = document.getElementById('applicationModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
+            }
+            
+            showLoanDetails(offerId) {
+                const offer = this.availableOffers.find(o => o.id === offerId);
+                if (!offer) return;
+                
+                const modal = document.getElementById('loanDetailsModal');
+                const contentDiv = document.getElementById('loanDetailsContent');
+                
+                if (!modal || !contentDiv) return;
+                
+                // Format purpose
+                const purposeNames = {
+                    'any': 'Any Purpose',
+                    'education': 'Education',
+                    'business': 'Business',
+                    'medical': 'Medical',
+                    'agriculture': 'Agriculture',
+                    'personal': 'Personal',
+                    'debt': 'Debt Consolidation'
+                };
+                
+                const purposeText = purposeNames[offer.purpose] || offer.purpose;
+                
+                // Calculate example payments
+                const exampleAmount = Math.min(offer.availableAmount, 50000);
+                const monthlyPayment = this.calculateMonthlyPayment(exampleAmount, offer.interestRate, offer.term);
+                const totalRepayment = monthlyPayment * offer.term;
+                const totalInterest = totalRepayment - exampleAmount;
+                
+                // Create content HTML
+                const contentHTML = `
+                    <div class="loan-details-header">
+                        <h3>${offer.lenderCode}</h3>
+                        <div class="offer-status available">Available</div>
+                    </div>
+                    
+                    <div class="loan-detail-row">
+                        <span>Lender:</span>
+                        <strong>${offer.lenderName}</strong>
+                    </div>
+                    <div class="loan-detail-row">
+                        <span>Available Amount:</span>
+                        <strong>MWK ${offer.availableAmount.toLocaleString()}</strong>
+                    </div>
+                    <div class="loan-detail-row">
+                        <span>Interest Rate:</span>
+                        <strong style="color: #27ae60">${offer.interestRate}% APR</strong>
+                    </div>
+                    <div class="loan-detail-row">
+                        <span>Loan Term:</span>
+                        <strong>${offer.term} Month${offer.term > 1 ? 's' : ''}</strong>
+                    </div>
+                    <div class="loan-detail-row">
+                        <span>Purpose:</span>
+                        <strong>${purposeText}</strong>
+                    </div>
+                    <div class="loan-detail-row">
+                        <span>Risk Level:</span>
+                        <strong style="color: ${offer.riskLevel === 'Low' ? '#27ae60' : offer.riskLevel === 'Medium' ? '#f39c12' : '#e74c3c'}">
+                            ${offer.riskLevel}
+                        </strong>
+                    </div>
+                    
+                    <div class="loan-terms-section">
+                        <h4>Example Payment</h4>
+                        <p>For a loan of MWK ${exampleAmount.toLocaleString()}:</p>
+                        <ul class="loan-terms-list">
+                            <li><i class="fas fa-check-circle"></i> Monthly Payment: MWK ${monthlyPayment.toLocaleString()}</li>
+                            <li><i class="fas fa-check-circle"></i> Total Repayment: MWK ${totalRepayment.toLocaleString()}</li>
+                            <li><i class="fas fa-check-circle"></i> Total Interest: MWK ${totalInterest.toLocaleString()}</li>
+                            <li><i class="fas fa-check-circle"></i> Term: ${offer.term} months</li>
+                        </ul>
+                    </div>
+                    
+                    ${offer.additionalTerms ? `
+                        <div class="loan-terms-section">
+                            <h4>Additional Terms</h4>
+                            <p>${offer.additionalTerms}</p>
+                        </div>
+                    ` : ''}
+                    
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <button class="btn-primary" onclick="borrowSystem.applyForLoan('${offer.id}'); closeLoanDetailsModal()" style="padding: 1rem 2rem;">
+                            <i class="fas fa-paper-plane"></i> Apply for This Loan
+                        </button>
+                    </div>
+                `;
+                
+                contentDiv.innerHTML = contentHTML;
+                modal.classList.add('active');
+            }
+            
+            closeLoanDetailsModal() {
+                const modal = document.getElementById('loanDetailsModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
+            }
+            
+            loadUserApplications() {
+                let applications = JSON.parse(localStorage.getItem('userLoanApplications')) || [];
+                
+                // Filter for current user
+                this.userLoans = applications.filter(app => app.borrowerId === this.userId);
+                
+                // Sort by date (newest first)
+                this.userLoans.sort((a, b) => new Date(b.appliedDate) - new Date(a.appliedDate));
+                
+                // Display applications
+                this.displayUserApplications();
+            }
+            
+            displayUserApplications() {
+                const container = document.getElementById('applicationsList');
+                if (!container) return;
+                
+                if (this.userLoans.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-offers" style="margin: 1rem 0;">
+                            <i class="fas fa-file-alt"></i>
+                            <h4>No Loan Applications</h4>
+                            <p>You haven't applied for any loans yet.</p>
+                            <p>Browse available offers above to get started!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = '';
+                
+                this.userLoans.forEach(application => {
+                    // Determine status class and text
+                    let statusClass = 'pending';
+                    let statusText = 'Pending';
+                    let cardClass = 'pending';
+                    
+                    switch (application.status) {
+                        case 'approved':
+                            statusClass = 'approved';
+                            statusText = 'Approved';
+                            cardClass = 'approved';
+                            break;
+                        case 'rejected':
+                            statusClass = 'rejected';
+                            statusText = 'Rejected';
+                            cardClass = 'rejected';
+                            break;
+                        case 'pending':
+                        default:
+                            statusClass = 'pending';
+                            statusText = 'Pending';
+                            cardClass = 'pending';
+                    }
+                    
+                    const appliedDate = new Date(application.appliedDate).toLocaleDateString();
+                    const purposeNames = {
+                        'education': 'Education',
+                        'business': 'Business',
+                        'medical': 'Medical',
+                        'agriculture': 'Agriculture',
+                        'personal': 'Personal',
+                        'debt': 'Debt Consolidation',
+                        'other': 'Other'
+                    };
+                    
+                    const purposeText = purposeNames[application.purpose] || application.purpose;
+                    
+                    html += `
+                        <div class="application-card ${cardClass}">
+                            <div class="application-header">
+                                <div class="application-id">${application.id}</div>
+                                <div class="application-status status-${statusClass}">${statusText}</div>
+                            </div>
+                            
+                            <div class="application-details">
+                                <div class="application-detail">
+                                    <div class="detail-label">Amount</div>
+                                    <div class="detail-value">MWK ${application.amount.toLocaleString()}</div>
+                                </div>
+                                <div class="application-detail">
+                                    <div class="detail-label">Interest Rate</div>
+                                    <div class="detail-value">${application.interestRate}%</div>
+                                </div>
+                                <div class="application-detail">
+                                    <div class="detail-label">Term</div>
+                                    <div class="detail-value">${application.term} months</div>
+                                </div>
+                                <div class="application-detail">
+                                    <div class="detail-label">Purpose</div>
+                                    <div class="detail-value">${purposeText}</div>
+                                </div>
+                                <div class="application-detail">
+                                    <div class="detail-label">Applied Date</div>
+                                    <div class="detail-value">${appliedDate}</div>
+                                </div>
+                                <div class="application-detail">
+                                    <div class="detail-label">Monthly Payment</div>
+                                    <div class="detail-value">MWK ${application.monthlyPayment.toLocaleString()}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="lender-info">
+                                <i class="fas fa-user-tie"></i>
+                                Lender: ${application.lenderName} (${application.lenderCode})
+                            </div>
+                            
+                            ${application.status === 'pending' ? `
+                                <div style="margin-top: 1rem; font-size: 0.9rem; color: #f39c12;">
+                                    <i class="fas fa-clock"></i> Awaiting lender approval
+                                </div>
+                            ` : ''}
+                            
+                            ${application.status === 'approved' ? `
+                                <div style="margin-top: 1rem; font-size: 0.9rem; color: #27ae60;">
+                                    <i class="fas fa-check-circle"></i> Loan approved! Funds will be disbursed shortly.
+                                </div>
+                            ` : ''}
+                            
+                            ${application.status === 'rejected' ? `
+                                <div style="margin-top: 1rem; font-size: 0.9rem; color: #e74c3c;">
+                                    <i class="fas fa-times-circle"></i> Application rejected by lender.
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = html;
+            }
+            
+            viewMyLoans() {
+                document.querySelector('.my-loans-section').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+                this.closeApplicationModal();
+            }
+        }
+
+        // ============================================
+        // GLOBAL FUNCTIONS AND INITIALIZATION
+        // ============================================
+
+        let borrowSystem = null;
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            borrowSystem = new BorrowMoneySystem();
+            borrowSystem.initialize();
+        });
+
+        // Global functions for HTML onclick handlers
+        function applyFilters() {
+            if (borrowSystem) {
+                borrowSystem.applyFilters();
+            }
+        }
+
+        function sortOffers() {
+            if (borrowSystem) {
+                borrowSystem.sortOffers();
+                borrowSystem.displayOffers();
+            }
+        }
+
+        function closeApplicationModal() {
+            if (borrowSystem) {
+                borrowSystem.closeApplicationModal();
+            }
+        }
+
+        function viewMyLoans() {
+            if (borrowSystem) {
+                borrowSystem.viewMyLoans();
+            }
+        }
+
+        function closeLoanDetailsModal() {
+            if (borrowSystem) {
+                borrowSystem.closeLoanDetailsModal();
+            }
+        }
+
+        // Export to global scope
+        window.borrowSystem = borrowSystem;
+        window.applyFilters = applyFilters;
+        window.sortOffers = sortOffers;
+        window.closeApplicationModal = closeApplicationModal;
+        window.viewMyLoans = viewMyLoans;
+        window.closeLoanDetailsModal = closeLoanDetailsModal;
+    </script>
+</body>
+</html>

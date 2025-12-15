@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdraw Money - Value Wallet</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link rel="stylesheet" href="../styles/wallet-styles.css">
+    <link rel="stylesheet" href="../styles/wallet-pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="wallet-page withdraw-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <!-- REPLACE: Logo image -->
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
+            </a>
+            <div class="nav-menu">
+                <!-- Loans Dropdown -->
+                <div class="dropdown">
+                    <a href="#loans" class="nav-link dropdown-toggle">Loans</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <h4>Personal Loans</h4>
+                            <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
+                            <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
+                            <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
+                            <a href="yango-loans.html" class="dropdown-link">Value Loans on Yango</a>
+                            <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
+                            <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Business Loans</h4>
+                            <a href="business-loans.html" class="dropdown-link">Business Loans</a>
+                            <a href="order-finance.html" class="dropdown-link">Order Finance</a>
+                            <a href="invoice-discounting.html" class="dropdown-link">Invoice Discounting</a>
+                            <a href="asset-financing.html" class="dropdown-link">Asset Financing</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Agri Loans</h4>
+                            <a href="agri-loans.html" class="dropdown-link">Agri Loans</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Apps</h4>
+                            <a href="android-app.html" class="dropdown-link">Android App</a>
+                            <a href="ios-app.html" class="dropdown-link">iOS App</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="payments.html" class="nav-link">Payments</a>
+                <a href="wallet-dashboard.html" class="nav-link">My Wallet</a>
+                <a href="auth-landing.html" class="nav-link">Sign in / Sign up</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="apply.html" class="nav-link">Apply for a Loan</a>
+            </div>
+            
+        </div>
+    </nav>
+
+    <div class="wallet-container">
+        <!-- Page Header -->
+        <div class="section-header" style="margin-bottom: var(--spacing-xl);">
+            <div>
+                <h1 style="color: var(--black); margin-bottom: var(--spacing-sm);">Withdraw Money</h1>
+                <p style="color: var(--black-light);">Transfer funds from your Value Wallet to your bank account or mobile money</p>
+            </div>
+            <a href="wallet-dashboard.html" class="btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Wallet
+            </a>
+        </div>
+
+        <div class="two-column-grid">
+            <!-- Left Column: Withdrawal Form -->
+            <div class="column">
+                <div class="lending-offer-form" style="height: 100%;">
+                    <h3>Make a Withdrawal</h3>
+                    
+                    <!-- Balance Summary -->
+                    <div class="balance-summary">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-sm);">
+                            <span style="color: var(--gray-500); font-weight: var(--font-weight-medium);">Available Balance:</span>
+                            <strong style="color: var(--black); font-size: 1.2rem;" id="availableBalance">MWK 0.00</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="color: var(--gray-500); font-weight: var(--font-weight-medium);">Pending Withdrawals:</span>
+                            <strong style="color: var(--warning);" id="pendingWithdrawals">MWK 0.00</strong>
+                        </div>
+                    </div>
+
+                    <!-- Withdrawal Form -->
+                    <form id="withdrawalForm">
+                        <div class="form-group">
+                            <label for="withdrawalMethod">Withdrawal Method</label>
+                            <select id="withdrawalMethod" class="withdrawal-method-select" required>
+                                <option value="">Select withdrawal method</option>
+                                <option value="airtel_money">Airtel Money</option>
+                                <option value="tnm_mpamba">TNM Mpamba</option>
+                                <option value="standard_bank">Standard Bank Malawi</option>
+                                <option value="national_bank">National Bank of Malawi</option>
+                                <option value="fdh_bank">FDH Bank</option>
+                                <option value="mobi_save">MobiSave</option>
+                            </select>
+                        </div>
+
+                        <!-- Mobile Money Fields (hidden by default) -->
+                        <div id="mobileMoneyFields" class="mobile-money-fields" style="display: none;">
+                            <div class="form-group">
+                                <label for="mobileNumber">Mobile Number</label>
+                                <input type="tel" id="mobileNumber" placeholder="Enter 10-digit mobile number" pattern="[0-9]{10}" maxlength="10">
+                            </div>
+                            <div class="form-group">
+                                <label for="mobileName">Account Name</label>
+                                <input type="text" id="mobileName" placeholder="Name as registered with mobile money">
+                            </div>
+                        </div>
+
+                        <!-- Bank Fields (hidden by default) -->
+                        <div id="bankFields" class="bank-fields" style="display: none;">
+                            <div class="form-group">
+                                <label for="accountNumber">Account Number</label>
+                                <input type="text" id="accountNumber" placeholder="Enter account number">
+                            </div>
+                            <div class="form-group">
+                                <label for="accountName">Account Name</label>
+                                <input type="text" id="accountName" placeholder="Name as per bank records">
+                            </div>
+                            <div class="form-group">
+                                <label for="bankBranch">Branch</label>
+                                <input type="text" id="bankBranch" placeholder="Bank branch (optional)">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="withdrawalAmount">Amount (MWK)</label>
+                            <div style="position: relative;">
+                                <input type="number" id="withdrawalAmount" min="100" max="1000000" step="100" placeholder="Enter amount" required style="padding-left: 2.5rem;">
+                                <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--gray-500); font-weight: bold;">MWK</span>
+                            </div>
+                            <div class="form-hint">Minimum: MWK 100 | Maximum: MWK 1,000,000</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Quick Amounts</label>
+                            <div class="quick-amounts">
+                                <button type="button" class="btn-small" onclick="setAmount(500)">MWK 500</button>
+                                <button type="button" class="btn-small" onclick="setAmount(1000)">MWK 1,000</button>
+                                <button type="button" class="btn-small" onclick="setAmount(5000)">MWK 5,000</button>
+                                <button type="button" class="btn-small" onclick="setAmount(10000)">MWK 10,000</button>
+                                <button type="button" class="btn-small" onclick="setAmount(50000)">MWK 50,000</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="withdrawalNote">Notes (Optional)</label>
+                            <textarea id="withdrawalNote" rows="3" placeholder="Add any notes for this withdrawal"></textarea>
+                        </div>
+
+                        <!-- Fee Display -->
+                        <div class="fee-display">
+                            <div>
+                                <span style="color: var(--gray-500);">Withdrawal Amount:</span>
+                                <span id="displayAmount">MWK 0.00</span>
+                            </div>
+                            <div>
+                                <span style="color: var(--gray-500);">Processing Fee:</span>
+                                <span id="displayFee">MWK 0.00</span>
+                            </div>
+                            <div>
+                                <span style="color: var(--black); font-weight: var(--font-weight-bold);">Total Deducted:</span>
+                                <span id="displayTotal" style="font-weight: var(--font-weight-bold);">MWK 0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="securityPin">
+                                <i class="fas fa-lock"></i> Security PIN
+                            </label>
+                            <input type="password" id="securityPin" placeholder="Enter your 4-digit PIN" pattern="[0-9]{4}" maxlength="4" required>
+                            <div class="form-hint">Enter the 4-digit PIN you created for your wallet</div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-large" onclick="processWithdrawal()">
+                                <i class="fas fa-paper-plane"></i> Process Withdrawal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Column: Withdrawal History & Info -->
+            <div class="column">
+                <!-- Recent Withdrawals -->
+                <div class="transactions-section" style="height: 100%;">
+                    <div class="section-header">
+                        <h3>Recent Withdrawals</h3>
+                        <a href="transaction-history.html?type=withdrawal" class="view-all">View All</a>
+                    </div>
+                    
+                    <div class="transaction-list" id="withdrawalHistory">
+                        <!-- Withdrawals will load here -->
+                    </div>
+
+                    <!-- No withdrawals message -->
+                    <div id="noWithdrawals" style="text-align: center; padding: var(--spacing-xl); color: var(--gray-500); display: none;">
+                        <i class="fas fa-money-bill-wave" style="font-size: 3rem; margin-bottom: var(--spacing-md); color: var(--gray-400);"></i>
+                        <p>No withdrawal history found</p>
+                    </div>
+                </div>
+
+                <!-- Processing Info -->
+                <div class="processing-info">
+                    <i class="fas fa-info-circle" style="color: var(--blue-main);"></i>
+                    <div style="flex: 1;">
+                        <p style="margin-bottom: var(--spacing-sm); font-weight: var(--font-weight-medium);">Withdrawal Processing Times</p>
+                        <div class="processing-times">
+                            <div>
+                                <span>Mobile Money:</span>
+                                <span style="font-weight: var(--font-weight-medium); color: var(--green-main);">Instant - 2 hours</span>
+                            </div>
+                            <div>
+                                <span>Bank Transfer:</span>
+                                <span style="font-weight: var(--font-weight-medium); color: var(--warning);">24 - 48 hours</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="application-modal" id="confirmationModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">×</button>
+            <div class="modal-icon success">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>Withdrawal Confirmed!</h2>
+            <p>Your withdrawal request has been submitted successfully.</p>
+            
+            <div class="modal-details">
+                <div class="modal-detail-row">
+                    <span class="modal-detail-label">Transaction ID:</span>
+                    <span class="modal-detail-value" id="modalTransactionId">WDL-123456</span>
+                </div>
+                <div class="modal-detail-row">
+                    <span class="modal-detail-label">Amount:</span>
+                    <span class="modal-detail-value" id="modalAmount">MWK 0.00</span>
+                </div>
+                <div class="modal-detail-row">
+                    <span class="modal-detail-label">Method:</span>
+                    <span class="modal-detail-value" id="modalMethod">Airtel Money</span>
+                </div>
+                <div class="modal-detail-row">
+                    <span class="modal-detail-label">Status:</span>
+                    <span class="modal-detail-value" style="color: var(--warning);">Processing</span>
+                </div>
+                <div class="modal-detail-row">
+                    <span class="modal-detail-label">Estimated Completion:</span>
+                    <span class="modal-detail-value" id="modalCompletion">Within 2 hours</span>
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeModal()">Back to Withdraw</button>
+                <button class="btn-primary" onclick="viewTransaction()">View Transaction</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Wallet data
+        let walletData = {
+            balance: 0,
+            pendingWithdrawals: 0,
+            withdrawalHistory: []
+        };
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadWalletData();
+            setupEventListeners();
+            loadWithdrawalHistory();
+            updateFeeDisplay();
+        });
+
+        // Load wallet data from localStorage
+        function loadWalletData() {
+            const savedWallet = JSON.parse(localStorage.getItem('userWallet')) || {
+                balance: 100000,
+                transactions: []
+            };
+            
+            walletData.balance = savedWallet.balance;
+            
+            // Calculate pending withdrawals
+            walletData.pendingWithdrawals = savedWallet.transactions
+                .filter(tx => tx.type === 'withdrawal' && tx.status === 'pending')
+                .reduce((sum, tx) => sum + tx.amount, 0);
+            
+            // Update display
+            document.getElementById('availableBalance').textContent = 
+                formatCurrency(walletData.balance);
+            document.getElementById('pendingWithdrawals').textContent = 
+                formatCurrency(walletData.pendingWithdrawals);
+        }
+
+        // Format currency
+        function formatCurrency(amount) {
+            return 'MWK ' + amount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            const methodSelect = document.getElementById('withdrawalMethod');
+            const amountInput = document.getElementById('withdrawalAmount');
+            
+            methodSelect.addEventListener('change', function() {
+                showMethodFields(this.value);
+                updateFeeDisplay();
+            });
+            
+            amountInput.addEventListener('input', updateFeeDisplay);
+        }
+
+        // Show appropriate fields based on withdrawal method
+        function showMethodFields(method) {
+            const mobileMoneyFields = document.getElementById('mobileMoneyFields');
+            const bankFields = document.getElementById('bankFields');
+            
+            mobileMoneyFields.style.display = 'none';
+            bankFields.style.display = 'none';
+            
+            if (method === 'airtel_money' || method === 'tnm_mpamba' || method === 'mobi_save') {
+                mobileMoneyFields.style.display = 'block';
+            } else if (method.includes('bank')) {
+                bankFields.style.display = 'block';
+            }
+        }
+
+        // Set quick amount
+        function setAmount(amount) {
+            document.getElementById('withdrawalAmount').value = amount;
+            updateFeeDisplay();
+        }
+
+        // Calculate and update fee display
+        function updateFeeDisplay() {
+            const amount = parseFloat(document.getElementById('withdrawalAmount').value) || 0;
+            const method = document.getElementById('withdrawalMethod').value;
+            
+            // Calculate fee based on method
+            let fee = 0;
+            if (method.includes('money') || method === 'mobi_save') {
+                // Mobile money: 1% fee, min MWK 50, max MWK 500
+                fee = amount * 0.01;
+                fee = Math.max(50, Math.min(fee, 500));
+            } else if (method.includes('bank')) {
+                // Bank transfer: flat fee MWK 200
+                fee = 200;
+            }
+            
+            const total = amount + fee;
+            
+            document.getElementById('displayAmount').textContent = formatCurrency(amount);
+            document.getElementById('displayFee').textContent = formatCurrency(fee);
+            document.getElementById('displayTotal').textContent = formatCurrency(total);
+            
+            // Check if sufficient balance
+            if (total > walletData.balance) {
+                document.getElementById('displayTotal').style.color = 'var(--error)';
+            } else {
+                document.getElementById('displayTotal').style.color = 'var(--black)';
+            }
+        }
+
+        // Load withdrawal history
+        function loadWithdrawalHistory() {
+            const savedWallet = JSON.parse(localStorage.getItem('userWallet')) || { transactions: [] };
+            const withdrawals = savedWallet.transactions
+                .filter(tx => tx.type === 'withdrawal')
+                .slice(0, 5);
+            
+            const container = document.getElementById('withdrawalHistory');
+            const noWithdrawals = document.getElementById('noWithdrawals');
+            
+            if (withdrawals.length === 0) {
+                container.innerHTML = '';
+                noWithdrawals.style.display = 'block';
+                return;
+            }
+            
+            noWithdrawals.style.display = 'none';
+            container.innerHTML = '';
+            
+            withdrawals.forEach(withdrawal => {
+                const div = document.createElement('div');
+                div.className = 'transaction-item';
+                
+                const statusColor = withdrawal.status === 'completed' ? 'var(--green-main)' : 
+                                  withdrawal.status === 'failed' ? 'var(--error)' : 'var(--warning)';
+                
+                div.innerHTML = `
+                    <div class="transaction-icon">
+                        <i class="fas fa-minus-circle" style="color: ${statusColor};"></i>
+                    </div>
+                    <div class="transaction-details">
+                        <div class="transaction-title">${formatMethod(withdrawal.method)}</div>
+                        <div class="transaction-date">${formatDate(withdrawal.timestamp)}</div>
+                        <div style="font-size: 0.8rem; color: var(--gray-500);">ID: ${withdrawal.id}</div>
+                    </div>
+                    <div class="transaction-amount" style="color: var(--black);">
+                        -MWK ${withdrawal.amount.toLocaleString('en-US', {minimumFractionDigits: 2})}
+                    </div>
+                `;
+                
+                container.appendChild(div);
+            });
+        }
+
+        // Format method for display
+        function formatMethod(method) {
+            const methods = {
+                'airtel_money': 'Airtel Money',
+                'tnm_mpamba': 'TNM Mpamba',
+                'standard_bank': 'Standard Bank',
+                'national_bank': 'National Bank',
+                'fdh_bank': 'FDH Bank',
+                'mobi_save': 'MobiSave',
+                'bank_transfer': 'Bank Transfer'
+            };
+            return methods[method] || method;
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString() + ', ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+
+        // Process withdrawal
+        function processWithdrawal() {
+            const form = document.getElementById('withdrawalForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            const method = document.getElementById('withdrawalMethod').value;
+            const amount = parseFloat(document.getElementById('withdrawalAmount').value);
+            const note = document.getElementById('withdrawalNote').value;
+            const pin = document.getElementById('securityPin').value;
+            
+            // Calculate fee
+            let fee = 0;
+            if (method.includes('money') || method === 'mobi_save') {
+                fee = amount * 0.01;
+                fee = Math.max(50, Math.min(fee, 500));
+            } else if (method.includes('bank')) {
+                fee = 200;
+            }
+            
+            const total = amount + fee;
+            
+            // Check balance
+            if (total > walletData.balance) {
+                alert('Insufficient funds. Please reduce the withdrawal amount.');
+                return;
+            }
+            
+            // In a real app, verify PIN with backend
+            if (!pin || pin.length !== 4) {
+                alert('Please enter a valid 4-digit PIN');
+                return;
+            }
+            
+            // Create withdrawal transaction
+            const withdrawal = {
+                id: 'WDL-' + Date.now(),
+                type: 'withdrawal',
+                amount: amount,
+                fee: fee,
+                total: total,
+                method: method,
+                note: note,
+                timestamp: new Date().toISOString(),
+                status: 'processing'
+            };
+            
+            // Update wallet balance
+            walletData.balance -= total;
+            walletData.pendingWithdrawals += amount;
+            
+            // Save to localStorage
+            const savedWallet = JSON.parse(localStorage.getItem('userWallet')) || { balance: 0, transactions: [] };
+            savedWallet.balance = walletData.balance;
+            savedWallet.transactions.unshift(withdrawal);
+            localStorage.setItem('userWallet', JSON.stringify(savedWallet));
+            
+            // Show confirmation modal
+            showConfirmationModal(withdrawal, method, amount);
+            
+            // Reset form
+            form.reset();
+            updateFeeDisplay();
+            loadWalletData();
+            loadWithdrawalHistory();
+        }
+
+        // Show confirmation modal
+        function showConfirmationModal(withdrawal, method, amount) {
+            const modal = document.getElementById('confirmationModal');
+            const completionTime = method.includes('bank') ? '24-48 hours' : 'Within 2 hours';
+            
+            document.getElementById('modalTransactionId').textContent = withdrawal.id;
+            document.getElementById('modalAmount').textContent = formatCurrency(amount);
+            document.getElementById('modalMethod').textContent = formatMethod(method);
+            document.getElementById('modalCompletion').textContent = completionTime;
+            
+            modal.classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('confirmationModal').classList.remove('active');
+        }
+
+        // View transaction details
+        function viewTransaction() {
+            closeModal();
+            // In a real app, this would navigate to transaction details
+            alert('Transaction details page would open here');
+        }
+    </script>
+</body>
+</html>

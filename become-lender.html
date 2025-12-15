@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a Lender - Value P2P Lending</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link rel="stylesheet" href="../styles/wallet-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+</head>
+<body class="lender-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">
+                <img src="../images/Value-logo.png" alt="Value Financial Services" class="logo-image">
+            </a>
+            <div class="nav-menu">
+                <div class="dropdown">
+                    <a href="#wallet" class="nav-link dropdown-toggle">My Wallet</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <h4>Wallet</h4>
+                            <a href="wallet-dashboard.html" class="dropdown-link">Dashboard</a>
+                            <a href="add-money.html" class="dropdown-link">Add Money</a>
+                            <a href="send-money.html" class="dropdown-link">Send Money</a>
+                            <a href="withdraw-money.html" class="dropdown-link">Withdraw</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>B2B Marketplace</h4>
+                            <a href="become-lender.html" class="dropdown-link active">Become a Lender</a>
+                            <a href="borrow-money.html" class="dropdown-link">Borrow Money</a>
+                            <a href="my-loans.html" class="dropdown-link">My Loans</a>
+                            <a href="lender-dashboard.html" class="dropdown-link">Lender Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="../payments.html" class="nav-link">Payments</a>
+                <a href="../investments.html" class="nav-link">Investments</a>
+                <a href="../about.html" class="nav-link">About</a>
+                <a href="../profile.html" class="nav-link"><i class="fas fa-user-circle"></i> Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="success-content">
+            <i class="fas fa-check-circle success-icon"></i>
+            <h2>Congratulations!</h2>
+            <p>All your lender requirements have been successfully uploaded and verified. You can now start lending money to borrowers and earn interest!</p>
+            <p><strong>Welcome to the Value Lending Community!</strong></p>
+            <button class="btn-primary btn-large" onclick="closeSuccessModal()" style="width: 100%; padding: 1rem;">
+                <i class="fas fa-rocket"></i> Start Lending Now
+            </button>
+        </div>
+    </div>
+
+    <div class="lender-container">
+        <div class="lender-header">
+            <h1><i class="fas fa-hand-holding-usd"></i> Become a P2P Lender</h1>
+            <p>Start lending from as low as MWK 500 and earn competitive interest rates</p>
+        </div>
+        
+        <!-- Lender Requirements & Document Upload -->
+        <div class="requirements-card">
+            <h3>Lender Requirements</h3>
+            <p style="color: #5a6c7d; margin-bottom: 1.5rem;">Upload the following documents to start lending:</p>
+            
+            <div class="verification-results" id="verificationStatus">
+                <!-- Requirements status will be shown here -->
+            </div>
+            
+            <div class="all-met-message" id="allMetMessage" style="display: none;">
+                <i class="fas fa-check-circle"></i>
+                <h4>All Requirements Met!</h4>
+                <p>You have successfully uploaded all required documents. You can now create lending offers.</p>
+            </div>
+        </div>
+        
+       
+        
+        <!-- Create Lending Offer -->
+        <div class="lending-offer-form">
+            <h3>Create Your Lending Offer</h3>
+            
+            <form id="lendingOfferForm">
+                <div class="form-group">
+                    <label for="lendingAmount">Amount Available to Lend (MWK) *</label>
+                    <input type="number" id="lendingAmount" name="lendingAmount" min="500" max="10000000" required 
+                           placeholder="Enter amount (min: MWK 500)" value="5000">
+                    <div class="form-hint">Minimum: MWK 500 | Maximum: MWK 10,000,000</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="interestRate">Interest Rate (%) *</label>
+                    <div class="rate-control">
+                        <input type="range" id="interestRate" name="interestRate" min="1" max="6" step="0.1" value="4" 
+                               oninput="updateRateDisplay()" style="width: 100%;">
+                        <div class="rate-display">
+                            <span id="rateValue">4.0</span>%
+                            <span class="rate-note">(Maximum allowed: 6%)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loanTerm">Loan Term (Months) *</label>
+                    <select id="loanTerm" name="loanTerm" required style="width: 100%;">
+                        <option value="">Select loan term</option>
+                        <option value="1">1 Month</option>
+                        <option value="3">3 Months</option>
+                        <option value="6">6 Months</option>
+                        <option value="12" selected>12 Months</option>
+                        <option value="18">18 Months</option>
+                        <option value="24">24 Months</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loanPurpose">Loan Purpose *</label>
+                    <select id="loanPurpose" name="loanPurpose" required style="width: 100%;">
+                        <option value="">Select preferred purpose</option>
+                        <option value="any" selected>Any Purpose</option>
+                        <option value="education">Education Expenses</option>
+                        <option value="business">Business Capital</option>
+                        <option value="medical">Medical Bills</option>
+                        <option value="agriculture">Agricultural Investment</option>
+                        <option value="personal">Personal Use</option>
+                        <option value="debt">Debt Consolidation</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="additionalTerms">Additional Terms & Conditions (Optional)</label>
+                    <textarea id="additionalTerms" name="additionalTerms" 
+                              placeholder="Example: Must be employed, minimum income MWK 100,000/month..."
+                              style="width: 100%; min-height: 100px;"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary btn-large" style="width: 100%; padding: 1rem;" id="submitOfferBtn">
+                        <i class="fas fa-rocket"></i> Publish Lending Offer
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Active Lending Offers -->
+        <div class="active-offers" id="activeOffers">
+            <h3>Your Active Lending Offers</h3>
+            <div class="offers-list" id="offersList">
+                <!-- Offers will load here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ALL JAVASCRIPT CODE IN SAME FILE -->
+    <script>
+        // ============================================
+        // 1. DOCUMENT UPLOAD AND VERIFICATION SYSTEM
+        // ============================================
+        class DocumentVerification {
+            constructor() {
+                // Initialize all documents as NOT uploaded initially
+                // This allows lenders to upload them as needed
+                this.documents = {
+                    nationalId: { uploaded: false, verified: false },
+                    proofOfAddress: { uploaded: false, verified: false },
+                    bankStatement: { uploaded: false, verified: false },
+                    taxClearance: { uploaded: false, verified: false }
+                };
+                this.allRequirementsMet = false;
+            }
+                        
+            initialize() {
+                this.loadDocumentStatus();
+                this.displayVerificationStatus();
+                this.updateSubmitButton();
+            }
+            
+            loadDocumentStatus() {
+                // Load from localStorage
+                const savedStatus = JSON.parse(localStorage.getItem('lenderDocuments'));
+                if (savedStatus) {
+                    this.documents = savedStatus;
+                    this.checkAllRequirements();
+                } else {
+                    // Initialize all documents as NOT uploaded (instead of marking as verified)
+                    this.documents = {
+                        nationalId: { uploaded: false, verified: false },
+                        proofOfAddress: { uploaded: false, verified: false },
+                        bankStatement: { uploaded: false, verified: false },
+                        taxClearance: { uploaded: false, verified: false }
+                    };
+                    this.allRequirementsMet = false;
+                }
+            }
+            
+            markAllAsVerified() {
+                // Mark all documents as uploaded and verified for demo
+                Object.keys(this.documents).forEach(doc => {
+                    this.documents[doc] = { uploaded: true, verified: true };
+                });
+                this.allRequirementsMet = true;
+                this.saveDocumentStatus();
+                this.displayVerificationStatus();
+                this.updateSubmitButton();
+            }
+            
+            checkAllRequirements() {
+                // Check if all documents are uploaded AND verified
+                const allUploaded = Object.values(this.documents).every(doc => doc.uploaded);
+                const allVerified = Object.values(this.documents).every(doc => doc.verified);
+                this.allRequirementsMet = allUploaded && allVerified;
+                
+                // Save status
+                this.saveDocumentStatus();
+                
+                // Update UI
+                this.displayVerificationStatus();
+                this.updateSubmitButton();
+                
+                // Show success modal if all requirements just got met
+                if (this.allRequirementsMet) {
+                    setTimeout(() => {
+                        this.showSuccessModal();
+                    }, 500);
+                }
+                
+                return this.allRequirementsMet;
+            }
+            
+            uploadDocument(documentType) {
+                // Trigger file input click
+                const fileInput = document.getElementById(`${documentType}Upload`);
+                if (fileInput) {
+                    fileInput.click();
+                }
+            }
+            
+            handleDocumentUpload(documentType, fileInput) {
+                if (fileInput.files.length > 0) {
+                    this.processDocumentUpload(documentType);
+                }
+            }
+            
+            processDocumentUpload(documentType) {
+                // Simulate document upload and verification
+                const documentItem = document.getElementById(`${documentType}Item`);
+                const statusElement = document.getElementById(`${documentType}Status`);
+                
+                if (documentItem && statusElement) {
+                    // Show uploading state
+                    statusElement.textContent = 'Uploading...';
+                    statusElement.className = 'document-status pending';
+                    documentItem.style.opacity = '0.7';
+                    
+                    // Simulate upload delay
+                    setTimeout(() => {
+                        // Mark as uploaded (verification will happen separately)
+                        this.documents[documentType].uploaded = true;
+                        this.documents[documentType].verified = false;
+                        
+                        // Update UI
+                        statusElement.textContent = '✓ Uploaded (Verifying...)';
+                        statusElement.className = 'document-status pending';
+                        documentItem.style.opacity = '0.8';
+                        documentItem.style.borderColor = '#f39c12';
+                        documentItem.style.background = '#fff8e1';
+                        
+                        // Simulate verification delay
+                        setTimeout(() => {
+                            this.documents[documentType].verified = true;
+                            statusElement.textContent = '✓ Uploaded & Verified';
+                            statusElement.className = 'document-status';
+                            documentItem.style.opacity = '1';
+                            documentItem.style.borderColor = '#27ae60';
+                            documentItem.style.background = '#e8f5e9';
+                            
+                            // Check if all requirements are now met
+                            this.checkAllRequirements();
+                            
+                        }, 1500); // Verification delay
+                        
+                    }, 1000); // Upload delay
+                }
+            }
+            
+            uploadAllDocuments() {
+                // Simulate uploading all documents at once
+                const documents = ['nationalId', 'proofOfAddress', 'bankStatement', 'taxClearance'];
+                let uploadedCount = 0;
+                
+                documents.forEach(docType => {
+                    if (!this.documents[docType].uploaded) {
+                        setTimeout(() => {
+                            this.processDocumentUpload(docType);
+                            uploadedCount++;
+                            
+                            // If this is the last document, show a summary
+                            if (uploadedCount === documents.length) {
+                                setTimeout(() => {
+                                    alert('All documents uploaded successfully! Verification in progress...');
+                                }, 2000);
+                            }
+                        }, uploadedCount * 500); // Stagger the uploads
+                    }
+                });
+                
+                if (uploadedCount === 0) {
+                    alert('All documents have already been uploaded!');
+                }
+            }
+            
+            displayVerificationStatus() {
+                const statusDiv = document.getElementById('verificationStatus');
+                const allMetDiv = document.getElementById('allMetMessage');
+                
+                if (!statusDiv) return;
+                
+                let html = '';
+                
+                // Display each requirement status
+                const requirements = [
+                    { key: 'nationalId', label: 'National ID / Passport' },
+                    { key: 'proofOfAddress', label: 'Proof of Address' },
+                    { key: 'bankStatement', label: 'Bank Statement (3 months)' },
+                    { key: 'taxClearance', label: 'Tax Clearance Certificate' }
+                ];
+                
+                requirements.forEach(req => {
+                    const doc = this.documents[req.key];
+                    const isComplete = doc.uploaded && doc.verified;
+                    const isUploadedOnly = doc.uploaded && !doc.verified;
+                    
+                    let icon = 'fa-circle';
+                    let color = '#95a5a6';
+                    let statusText = 'Not Uploaded';
+                    
+                    if (isComplete) {
+                        icon = 'fa-check-circle';
+                        color = '#27ae60';
+                        statusText = 'Verified';
+                    } else if (isUploadedOnly) {
+                        icon = 'fa-clock';
+                        color = '#f39c12';
+                        statusText = 'Verifying...';
+                    }
+                    
+                    html += `
+                        <div class="verification-item">
+                            <i class="fas ${icon}" style="color: ${color};"></i>
+                            ${req.label}: <strong>${statusText}</strong>
+                        </div>
+                    `;
+                });
+                
+                statusDiv.innerHTML = html;
+                
+                // Show/hide all met message
+                if (allMetDiv) {
+                    if (this.allRequirementsMet) {
+                        allMetDiv.style.display = 'block';
+                    } else {
+                        allMetDiv.style.display = 'none';
+                    }
+                }
+            }
+            
+            updateSubmitButton() {
+                const submitBtn = document.getElementById('submitOfferBtn');
+                if (submitBtn) {
+                    if (this.allRequirementsMet) {
+                        // All requirements met - enable button
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-rocket"></i> Publish Lending Offer';
+                        submitBtn.style.opacity = '1';
+                        submitBtn.style.cursor = 'pointer';
+                        submitBtn.title = 'Ready to publish your lending offer';
+                    } else {
+                        // Requirements not met - disable button with message
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<i class="fas fa-lock"></i> Complete Document Upload First';
+                        submitBtn.style.opacity = '0.7';
+                        submitBtn.style.cursor = 'not-allowed';
+                        submitBtn.title = 'Please upload all required documents first';
+                    }
+                }
+            }
+            
+            showSuccessModal() {
+                const modal = document.getElementById('successModal');
+                if (modal) {
+                    modal.classList.add('active');
+                    
+                    // Play success sound (simulated)
+                    console.log('🎉 All requirements met! Showing success modal.');
+                    
+                    // Auto-hide after 8 seconds
+                    setTimeout(() => {
+                        this.closeSuccessModal();
+                    }, 8000);
+                }
+            }
+            
+            closeSuccessModal() {
+                const modal = document.getElementById('successModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
+            }
+            
+            saveDocumentStatus() {
+                localStorage.setItem('lenderDocuments', JSON.stringify(this.documents));
+                localStorage.setItem('lenderRequirementsMet', this.allRequirementsMet.toString());
+            }
+            
+            areRequirementsMet() {
+                return this.allRequirementsMet;
+            }
+            
+            getDocumentStatus() {
+                return this.documents;
+            }
+        }
+
+        // ============================================
+        // 2. LENDER OFFER MANAGEMENT SYSTEM
+        // ============================================
+        class LenderOfferSystem {
+            constructor() {
+                this.userId = this.getUserId();
+                this.userName = this.getUserName();
+                this.docVerification = new DocumentVerification();
+                this.minimumAmount = 500; // MWK 500 minimum
+            }
+            
+            initialize() {
+                this.docVerification.initialize();
+                this.loadUserOffers();
+                this.setupForm();
+                this.setupWallet();
+                
+                // Set initial rate display
+                updateRateDisplay();
+                
+                //Comment out or remove the auto-welcome message
+                // setTimeout(() => {
+                //     if (this.docVerification.areRequirementsMet()) {
+                //         console.log('✅ Lender requirements already met. Ready for lending.');
+                //     }
+                // }, 1000);
+            }
+            
+            getUserId() {
+                let userData = JSON.parse(localStorage.getItem('userData'));
+                if (!userData || !userData.userId) {
+                    userData = userData || {};
+                    userData.userId = 'user-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+                    userData.name = 'Value Lender ' + Math.floor(Math.random() * 1000);
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                }
+                return userData.userId;
+            }
+            
+            getUserName() {
+                const userData = JSON.parse(localStorage.getItem('userData')) || {};
+                return userData.name || 'Anonymous Lender';
+            }
+            
+            generateLenderCode() {
+                const userId = this.userId;
+                const code = 'LDR-' + userId.substring(userId.length - 6).toUpperCase();
+                return code;
+            }
+            
+            setupWallet() {
+                // Initialize wallet with sufficient funds for demo
+                let walletData = JSON.parse(localStorage.getItem('userWallet')) || {};
+                if (!walletData.balance || walletData.balance < 10000) {
+                    walletData = {
+                        walletId: 'VAL-WLT-' + Math.floor(100000 + Math.random() * 900000),
+                        balance: 500000, // MWK 500,000 default balance
+                        currency: 'MWK',
+                        reservedFunds: 0,
+                        availableBalance: 500000,
+                        lastUpdated: new Date().toISOString()
+                    };
+                    localStorage.setItem('userWallet', JSON.stringify(walletData));
+                }
+                console.log('💰 Wallet initialized:', walletData);
+            }
+            
+            createOffer(formData) {
+                // Validate minimum amount
+                if (formData.amount < this.minimumAmount) {
+                    alert(`Minimum lending amount is MWK ${this.minimumAmount.toLocaleString()}`);
+                    return null;
+                }
+                
+                // Validate interest rate (max 6%)
+                if (formData.interestRate > 6) {
+                    alert('Maximum interest rate allowed is 6%');
+                    return null;
+                }
+                
+                // Check wallet balance
+                const walletData = JSON.parse(localStorage.getItem('userWallet')) || {};
+                const availableBalance = walletData.availableBalance || walletData.balance || 0;
+                
+                if (availableBalance < formData.amount) {
+                    alert(`Insufficient funds. Your available balance: MWK ${availableBalance.toLocaleString()}. Required: MWK ${formData.amount.toLocaleString()}\n\nPlease add funds to your wallet first.`);
+                    return null;
+                }
+                
+                // Generate offer ID
+                const offerId = 'OFFER-' + Date.now() + '-' + this.userId.substring(this.userId.length - 6);
+                
+                // Get document status
+                const docStatus = this.docVerification.getDocumentStatus();
+                const allDocsUploaded = Object.values(docStatus).every(doc => doc.uploaded);
+                const allDocsVerified = Object.values(docStatus).every(doc => doc.verified);
+                
+                // Create offer object
+                const offer = {
+                    id: offerId,
+                    lenderId: this.userId,
+                    lenderCode: this.generateLenderCode(),
+                    lenderName: this.userName,
+                    amount: formData.amount,
+                    interestRate: parseFloat(formData.interestRate.toFixed(1)),
+                    term: formData.term,
+                    purpose: formData.purpose,
+                    additionalTerms: formData.additionalTerms || '',
+                    status: 'active',
+                    createdAt: new Date().toISOString(),
+                    reservedAmount: formData.amount,
+                    availableAmount: formData.amount,
+                    totalApplications: 0,
+                    approvedApplications: 0,
+                    fundedAmount: 0,
+                    lenderVerified: allDocsVerified,
+                    documentsUploaded: allDocsUploaded,
+                    // Additional details
+                    minAmount: this.minimumAmount,
+                    currency: 'MWK',
+                    autoRenew: false,
+                    riskLevel: this.calculateRiskLevel(formData.interestRate, formData.term)
+                };
+                
+                // Save to marketplace
+                this.saveToMarketplace(offer);
+                
+                // Reserve funds in wallet
+                this.reserveFunds(formData.amount);
+                
+                return offer;
+            }
+            
+            calculateRiskLevel(interestRate, term) {
+                // Simple risk calculation for demo
+                if (interestRate <= 3) return 'Low';
+                if (interestRate <= 4.5) return 'Medium';
+                return 'High';
+            }
+            
+            saveToMarketplace(offer) {
+                let marketplace = JSON.parse(localStorage.getItem('p2pMarketplace')) || [];
+                
+                // Add new offer
+                marketplace.push(offer);
+                
+                // Save to localStorage
+                localStorage.setItem('p2pMarketplace', JSON.stringify(marketplace));
+                
+                console.log('✅ Offer saved to marketplace:', offer);
+                return true;
+            }
+            
+            reserveFunds(amount) {
+                const walletData = JSON.parse(localStorage.getItem('userWallet')) || {};
+                
+                // Update reserved funds
+                walletData.reservedFunds = (walletData.reservedFunds || 0) + amount;
+                walletData.availableBalance = (walletData.balance || 0) - walletData.reservedFunds;
+                
+                localStorage.setItem('userWallet', JSON.stringify(walletData));
+                
+                console.log(`💰 Reserved MWK ${amount.toLocaleString()}. New reserved funds: ${walletData.reservedFunds}`);
+                console.log('📊 Updated wallet:', walletData);
+            }
+            
+            loadUserOffers() {
+                const marketplace = JSON.parse(localStorage.getItem('p2pMarketplace')) || [];
+                const userOffers = marketplace.filter(offer => 
+                    offer.lenderId === this.userId && 
+                    offer.status === 'active'
+                );
+                
+                this.displayOffers(userOffers);
+            }
+            
+            displayOffers(offers) {
+                const container = document.getElementById('offersList');
+                if (!container) return;
+                
+                if (offers.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-offers">
+                            <i class="fas fa-hand-holding-usd"></i>
+                            <h4>No Active Offers</h4>
+                            <p>You haven't published any lending offers yet.</p>
+                            <p>Create your first offer above to start earning interest!</p>
+                            <p><small>Minimum amount: MWK ${this.minimumAmount.toLocaleString()}</small></p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = '<div class="offers-grid">';
+                
+                offers.forEach(offer => {
+                    // Format purpose for display
+                    const purposeNames = {
+                        'any': 'Any Purpose',
+                        'education': 'Education',
+                        'business': 'Business',
+                        'medical': 'Medical',
+                        'agriculture': 'Agriculture',
+                        'personal': 'Personal',
+                        'debt': 'Debt Consolidation'
+                    };
+                    
+                    const purposeText = purposeNames[offer.purpose] || offer.purpose;
+                    const riskColor = offer.riskLevel === 'Low' ? '#27ae60' : offer.riskLevel === 'Medium' ? '#f39c12' : '#e74c3c';
+                    
+                    html += `
+                        <div class="offer-card">
+                            <div class="offer-header">
+                                <h4>${offer.lenderCode}</h4>
+                                <span class="offer-status active">Active</span>
+                            </div>
+                            
+                            <div class="offer-details">
+                                <div class="detail-row">
+                                    <span>Amount:</span>
+                                    <strong>MWK ${offer.amount.toLocaleString()}</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Interest Rate:</span>
+                                    <strong class="rate" style="color: ${offer.interestRate <= 3 ? '#27ae60' : offer.interestRate <= 4.5 ? '#f39c12' : '#e74c3c'}">
+                                        ${offer.interestRate}%
+                                    </strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Term:</span>
+                                    <strong>${offer.term} Month${offer.term > 1 ? 's' : ''}</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Purpose:</span>
+                                    <strong>${purposeText}</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Risk Level:</span>
+                                    <strong style="color: ${riskColor}">${offer.riskLevel}</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Available:</span>
+                                    <strong>MWK ${offer.availableAmount.toLocaleString()}</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Created:</span>
+                                    <strong>${new Date(offer.createdAt).toLocaleDateString()}</strong>
+                                </div>
+                            </div>
+                            
+                            <div class="offer-actions">
+                                <button class="btn-small" onclick="viewOfferDetails('${offer.id}')">
+                                    <i class="fas fa-eye"></i> View Details
+                                </button>
+                                <button class="btn-small btn-danger" onclick="withdrawLenderOffer('${offer.id}')">
+                                    <i class="fas fa-times"></i> Withdraw
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                container.innerHTML = html;
+            }
+            
+            withdrawOffer(offerId) {
+                if (!confirm('Are you sure you want to withdraw this lending offer?\n\nAll pending applications will be cancelled and reserved funds will be released.')) {
+                    return;
+                }
+                
+                let marketplace = JSON.parse(localStorage.getItem('p2pMarketplace')) || [];
+                const offerIndex = marketplace.findIndex(o => o.id === offerId && o.lenderId === this.userId);
+                
+                if (offerIndex === -1) {
+                    alert('Offer not found');
+                    return;
+                }
+                
+                // Release reserved funds
+                this.releaseFunds(marketplace[offerIndex].reservedAmount);
+                
+                // Update offer status
+                marketplace[offerIndex].status = 'withdrawn';
+                marketplace[offerIndex].withdrawnAt = new Date().toISOString();
+                
+                // Save updated marketplace
+                localStorage.setItem('p2pMarketplace', JSON.stringify(marketplace));
+                
+                // Refresh display
+                this.loadUserOffers();
+                
+                alert('✅ Lending offer withdrawn successfully!\n\nFunds have been released back to your available balance.');
+            }
+            
+            releaseFunds(amount) {
+                const walletData = JSON.parse(localStorage.getItem('userWallet')) || {};
+                
+                if (walletData.reservedFunds) {
+                    walletData.reservedFunds = Math.max(0, walletData.reservedFunds - amount);
+                    walletData.availableBalance = (walletData.balance || 0) - walletData.reservedFunds;
+                    localStorage.setItem('userWallet', JSON.stringify(walletData));
+                    console.log(`💰 Released MWK ${amount.toLocaleString()} from reserved funds`);
+                }
+            }
+            
+            setupForm() {
+                const form = document.getElementById('lendingOfferForm');
+                if (!form) return;
+                
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleFormSubmit();
+                });
+                
+                // Add input validation
+                const amountInput = document.getElementById('lendingAmount');
+                if (amountInput) {
+                    amountInput.addEventListener('input', (e) => {
+                        const value = parseFloat(e.target.value) || 0;
+                        if (value < this.minimumAmount) {
+                            e.target.setCustomValidity(`Minimum amount is MWK ${this.minimumAmount}`);
+                        } else {
+                            e.target.setCustomValidity('');
+                        }
+                    });
+                }
+            }
+            
+            handleFormSubmit() {
+                // Collect form data
+                const formData = {
+                    amount: parseFloat(document.getElementById('lendingAmount').value) || 0,
+                    interestRate: parseFloat(document.getElementById('interestRate').value) || 4,
+                    term: parseInt(document.getElementById('loanTerm').value) || 12,
+                    purpose: document.getElementById('loanPurpose').value || 'any',
+                    additionalTerms: document.getElementById('additionalTerms').value || ''
+                };
+                
+                // Validate required fields
+                if (!formData.amount || !formData.term || !formData.purpose) {
+                    alert('Please fill all required fields marked with *');
+                    return;
+                }
+                
+                // Validate minimum amount
+                if (formData.amount < this.minimumAmount) {
+                    alert(`Minimum lending amount is MWK ${this.minimumAmount.toLocaleString()}`);
+                    return;
+                }
+                
+                // Create the offer
+                const offer = this.createOffer(formData);
+                
+                if (offer) {
+                    // Show success message
+                    const successMessage = `
+                        🎉 Success! Your lending offer has been published.
+                        
+                        Offer ID: ${offer.id}
+                        Amount: MWK ${offer.amount.toLocaleString()}
+                        Interest Rate: ${offer.interestRate}%
+                        Term: ${offer.term} Month${offer.term > 1 ? 's' : ''}
+                        Purpose: ${document.getElementById('loanPurpose').options[document.getElementById('loanPurpose').selectedIndex].text}
+                        
+                        Borrowers can now see and apply for your loan offer!
+                        
+                        Note: MWK ${offer.amount.toLocaleString()} has been reserved from your wallet balance.
+                    `;
+                    
+                    alert(successMessage.replace(/\n\s+/g, '\n'));
+                    
+                    // Reset form to default values
+                    document.getElementById('lendingAmount').value = '5000';
+                    document.getElementById('interestRate').value = '4';
+                    updateRateDisplay();
+                    document.getElementById('loanTerm').value = '12';
+                    document.getElementById('loanPurpose').value = 'any';
+                    document.getElementById('additionalTerms').value = '';
+                    
+                    // Refresh offers list
+                    this.loadUserOffers();
+                }
+            }
+        }
+
+        // ============================================
+        // 3. UI FUNCTIONS AND EVENT HANDLERS
+        // ============================================
+        // Global instances
+        let documentVerification = null;
+        let lenderSystem = null;
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize systems
+            documentVerification = new DocumentVerification();
+            lenderSystem = new LenderOfferSystem();
+            
+            // Initialize both systems
+            documentVerification.initialize();
+            lenderSystem.initialize();
+            
+            // Set initial rate display
+            updateRateDisplay();
+        });
+
+        // Update interest rate display
+        function updateRateDisplay() {
+            const slider = document.getElementById('interestRate');
+            const display = document.getElementById('rateValue');
+            if (slider && display) {
+                const rate = parseFloat(slider.value);
+                display.textContent = rate.toFixed(1);
+                
+                // Color coding based on rate
+                if (rate > 5.5) {
+                    display.style.color = '#e74c3c';
+                } else if (rate > 4) {
+                    display.style.color = '#f39c12';
+                } else {
+                    display.style.color = '#27ae60';
+                }
+            }
+        }
+
+        // Document upload functions
+        function uploadDocument(documentType) {
+            if (documentVerification) {
+                documentVerification.uploadDocument(documentType);
+            }
+        }
+        
+        function handleDocumentUpload(documentType, fileInput) {
+            if (documentVerification) {
+                documentVerification.handleDocumentUpload(documentType, fileInput);
+            }
+        }
+        
+        function uploadAllDocuments() {
+            if (documentVerification) {
+                documentVerification.uploadAllDocuments();
+            }
+        }
+        
+        function closeSuccessModal() {
+            if (documentVerification) {
+                documentVerification.closeSuccessModal();
+            }
+        }
+
+        // Lender offer functions
+        function viewOfferDetails(offerId) {
+            let marketplace = JSON.parse(localStorage.getItem('p2pMarketplace')) || [];
+            const offer = marketplace.find(o => o.id === offerId);
+            
+            if (offer) {
+                const purposeNames = {
+                    'any': 'Any Purpose',
+                    'education': 'Education',
+                    'business': 'Business',
+                    'medical': 'Medical',
+                    'agriculture': 'Agriculture',
+                    'personal': 'Personal',
+                    'debt': 'Debt Consolidation'
+                };
+                
+                const purposeText = purposeNames[offer.purpose] || offer.purpose;
+                const createdDate = new Date(offer.createdAt).toLocaleString();
+                
+                const details = `
+                    Lending Offer Details:
+                    
+                    Offer ID: ${offer.id}
+                    Lender Code: ${offer.lenderCode}
+                    
+                    Amount: MWK ${offer.amount.toLocaleString()}
+                    Interest Rate: ${offer.interestRate}%
+                    Term: ${offer.term} Month${offer.term > 1 ? 's' : ''}
+                    Purpose: ${purposeText}
+                    
+                    Status: ${offer.status}
+                    Created: ${createdDate}
+                    
+                    Available Amount: MWK ${offer.availableAmount.toLocaleString()}
+                    Reserved Amount: MWK ${offer.reservedAmount.toLocaleString()}
+                    
+                    Risk Level: ${offer.riskLevel}
+                    Currency: ${offer.currency}
+                    
+                    ${offer.additionalTerms ? `Additional Terms:\n${offer.additionalTerms}` : ''}
+                `;
+                
+                alert(details.replace(/\n\s+/g, '\n'));
+            } else {
+                alert('Offer not found');
+            }
+        }
+        
+        function withdrawLenderOffer(offerId) {
+            if (lenderSystem) {
+                lenderSystem.withdrawOffer(offerId);
+            }
+        }
+
+        // Export functions to global scope for HTML onclick handlers
+        window.uploadDocument = uploadDocument;
+        window.handleDocumentUpload = handleDocumentUpload;
+        window.uploadAllDocuments = uploadAllDocuments;
+        window.closeSuccessModal = closeSuccessModal;
+        window.updateRateDisplay = updateRateDisplay;
+        window.viewOfferDetails = viewOfferDetails;
+        window.withdrawLenderOffer = withdrawLenderOffer;
+    </script>
+</body>
+</html>
