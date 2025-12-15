@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        
+        .status-badge.pending {
+            background-color: #ffd700;
+            color: #333;
+        }
+        
+        .status-badge.approved {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .status-badge.rejected {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .status-badge.active {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .btn-approve {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin: 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        .btn-approve:hover {
+            background-color: #218838;
+        }
+        
+        .btn-reject {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin: 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        .btn-reject:hover {
+            background-color: #c82333;
+        }
+        
+        .btn-view {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin: 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        .btn-view:hover {
+            background-color: #0069d9;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .error {
+            color: #dc3545;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .actions-cell {
+            white-space: nowrap;
+        }
+        
+        .amount {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .loan-id {
+            font-family: monospace;
+            color: #666;
+        }
+        
+        .filters {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .filter-group {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        
+        label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        select {
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    
+    <div class="filters">
+        <div class="filter-group">
+            <label for="statusFilter">Status:</label>
+            <select id="statusFilter" onchange="filterLoans()">
+                <option value="pending">Pending Loans</option>
+                <option value="all">All Loans</option>
+                <option value="active">Active Loans</option>
+                <option value="rejected">Rejected Loans</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="sortBy">Sort by:</label>
+            <select id="sortBy" onchange="filterLoans()">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="amount_high">Amount (High to Low)</option>
+                <option value="amount_low">Amount (Low to High)</option>
+            </select>
+        </div>
+        <button onclick="filterLoans()" style="padding: 5px 15px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Apply Filters
+        </button>
+        <button onclick="resetFilters()" style="padding: 5px 15px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;">
+            Reset
+        </button>
+    </div>
+    
+    <table id="loans">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Amount</th>
+                <th>Borrower</th>
+                <th>Loan Type</th>
+                <th>Status</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="loans-body">
+            <tr>
+                <td colspan="7" class="loading">Loading loans...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        // Keep track of all loans for filtering
+        let allLoans = [];
+        let currentFilter = 'pending';
+        let currentSort = 'newest';
+
+        async function loadAdminLoans() {
+            const token = localStorage.getItem("authToken");
+            
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+
+            try {
+                const res = await fetch("http://localhost:3000/api/v1/admin/loans", {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                if (!res.ok) {
+                    if (res.status === 401) {
+                        localStorage.removeItem("authToken");
+                        window.location.href = '/login';
+                        return;
+                    }
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+
+                const loans = await res.json();
+                allLoans = loans;
+                filterLoans();
+                
+            } catch (error) {
+                console.error('Error loading loans:', error);
+                renderError(error.message);
+            }
+        }
+
+        function filterLoans() {
+            // Get current filter values
+            const statusFilter = document.getElementById('statusFilter').value;
+            const sortBy = document.getElementById('sortBy').value;
+            
+            currentFilter = statusFilter;
+            currentSort = sortBy;
+            
+            let filteredLoans = [...allLoans];
+            
+            // Apply status filter
+            if (statusFilter !== 'all') {
+                filteredLoans = filteredLoans.filter(loan => loan.status === statusFilter);
+            }
+            
+            // Apply sorting
+            filteredLoans.sort((a, b) => {
+                switch (sortBy) {
+                    case 'newest':
+                        return new Date(b.created_at) - new Date(a.created_at);
+                    case 'oldest':
+                        return new Date(a.created_at) - new Date(b.created_at);
+                    case 'amount_high':
+                        return (b.principal_amount || 0) - (a.principal_amount || 0);
+                    case 'amount_low':
+                        return (a.principal_amount || 0) - (b.principal_amount || 0);
+                    default:
+                        return 0;
+                }
+            });
+            
+            renderLoans(filteredLoans);
+        }
+
+        function resetFilters() {
+            document.getElementById('statusFilter').value = 'pending';
+            document.getElementById('sortBy').value = 'newest';
+            filterLoans();
+        }
+
+        function renderLoans(loans) {
+            const tableBody = document.getElementById("loans-body");
+            
+            // Clear existing rows
+            tableBody.innerHTML = '';
+            
+            if (loans.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="empty-state">
+                            No ${currentFilter === 'all' ? '' : currentFilter} loans found
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            loans.forEach(loan => {
+                const borrowerName = loan.borrower?.full_name || 
+                                    `${loan.borrower?.person?.first_name || ''} ${loan.borrower?.person?.last_name || ''}`.trim() || 
+                                    loan.borrower?.email || 'N/A';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="loan-id">#${loan.id}</td>
+                    <td class="amount">$${(loan.principal_amount || loan.approved_amount || 0).toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })}</td>
+                    <td>${borrowerName}</td>
+                    <td>${loan.loan_type || 'standard'}</td>
+                    <td><span class="status-badge ${loan.status}">${loan.status.toUpperCase()}</span></td>
+                    <td>${formatDate(loan.created_at)}</td>
+                    <td class="actions-cell">
+                        ${loan.status === 'pending' ? `
+                            <button onclick="viewLoan(${loan.id})" class="btn-view">View</button>
+                            <button onclick="approveLoan(${loan.id})" class="btn-approve">Approve</button>
+                            <button onclick="rejectLoan(${loan.id})" class="btn-reject">Reject</button>
+                        ` : `
+                            <button onclick="viewLoan(${loan.id})" class="btn-view">View Details</button>
+                            ${loan.status === 'active' ? `<button onclick="viewPayments(${loan.id})" style="background-color: #6f42c1; color: white; border: none; padding: 5px 10px; margin: 2px; cursor: pointer; border-radius: 4px;">Payments</button>` : ''}
+                        `}
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function renderError(message) {
+            const tableBody = document.getElementById("loans-body");
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="error">
+                        Error loading loans: ${message}<br>
+                        <button onclick="loadAdminLoans()" style="margin-top: 10px; padding: 5px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            Retry
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function viewLoan(loanId) {
+            window.location.href = `/admin/loans/${loanId}`;
+        }
+
+        function viewPayments(loanId) {
+            window.location.href = `/admin/loans/${loanId}/payments`;
+        }
+
+        async function approveLoan(loanId) {
+            const token = localStorage.getItem("authToken");
+            
+            if (!confirm(`Are you sure you want to approve loan #${loanId}? This action cannot be undone.`)) {
+                return;
+            }
+            
+            try {
+                const res = await fetch(`http://localhost:3000/api/v1/admin/loans/${loanId}/approve`, {
+                    method: 'POST',
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+                
+                if (res.ok) {
+                    alert('Loan approved successfully!');
+                    // Refresh the data
+                    await loadAdminLoans();
+                } else {
+                    const error = await res.json();
+                    alert(`Error: ${error.error || 'Failed to approve loan'}`);
+                }
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        async function rejectLoan(loanId) {
+            const token = localStorage.getItem("authToken");
+            
+            if (!confirm(`Are you sure you want to reject loan #${loanId}? This action cannot be undone.`)) {
+                return;
+            }
+            
+            try {
+                const res = await fetch(`http://localhost:3000/api/v1/admin/loans/${loanId}/reject`, {
+                    method: 'POST',
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+                
+                if (res.ok) {
+                    alert('Loan rejected successfully!');
+                    // Remove from current view immediately
+                    const currentLoans = allLoans.filter(loan => loan.id !== loanId);
+                    allLoans = currentLoans;
+                    filterLoans();
+                } else {
+                    const error = await res.json();
+                    alert(`Error: ${error.error || 'Failed to reject loan'}`);
+                }
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        // Logout functionality
+        function logout() {
+            localStorage.removeItem("authToken");
+            window.location.href = '/login';
+        }
+
+        // Add logout button to page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add logout button
+            const logoutBtn = document.createElement('button');
+            logoutBtn.textContent = 'Logout';
+            logoutBtn.style.cssText = 'position: absolute; top: 20px; right: 20px; padding: 8px 16px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;';
+            logoutBtn.onclick = logout;
+            document.body.appendChild(logoutBtn);
+            
+            // Load loans
+            loadAdminLoans();
+            
+            // Auto-refresh every 30 seconds
+            setInterval(loadAdminLoans, 30000);
+        });
+    </script>
+</body>
+</html>
