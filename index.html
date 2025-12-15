@@ -523,6 +523,36 @@ async function testBackendConnection() {
 
 document.addEventListener('DOMContentLoaded', testBackendConnection);
 </script>
+<script>
+const API_BASE = "http://localhost:3000/api/v1";
+
+async function redirectAfterLogin() {
+  const token = localStorage.getItem("authToken");
+  if (!token) return; // Not logged in → stay on marketing page
+
+  try {
+    const res = await fetch(`${API_BASE}/me`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) return;
+
+    const user = await res.json();
+
+    if (user.is_admin) {
+      window.location.href = "/admin/dashboard.html";
+    } else {
+      window.location.href = "/dashboard.html";
+    }
+  } catch (e) {
+    console.error("Auth check failed", e);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", redirectAfterLogin);
+</script>
 
 </body>
 </html>
