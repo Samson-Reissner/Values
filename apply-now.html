@@ -9,36 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="loan-application-page">
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
-            </a>
-            <div class="nav-menu">
-                <div class="dropdown">
-                    <a href="#loans" class="nav-link dropdown-toggle">Loans</a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-column">
-                            <h4>Personal Loans</h4>
-                            <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
-                            <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
-                            <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
-                        </div>
-                        <div class="dropdown-column">
-                            <h4>Business Loans</h4>
-                            <a href="business-loans.html" class="dropdown-link">Business Loans</a>
-                            <a href="order-finance.html" class="dropdown-link">Order Finance</a>
-                        </div>
-                    </div>
-                </div>
-                <a href="payments.html" class="nav-link">Payments</a>
-                <a href="investments.html" class="nav-link">Investments</a>
-                <a href="about.html" class="nav-link">About</a>
-                <a href="auth-landing.html" class="nav-link">Sign in / Sign up</a>
-            </div>
-        </div>
-    </nav>
+
 
     <div class="application-container">
         <!-- Header with Progress Steps -->
@@ -72,7 +43,6 @@
             <div class="application-form active" id="step1">
                 <h2 class="section-title">Confirm Loan Details</h2>
                 <p class="section-subtitle">Please review and confirm your loan details. You can edit them if needed.</p>
-                
                 <div class="loan-summary-card">
                     <div class="summary-item">
                         <span class="summary-label">Loan Type:</span>
@@ -296,6 +266,11 @@
                 <button class="btn-prev" id="prevBtn" onclick="prevStep()">
                     <i class="fas fa-arrow-left"></i> Previous
                 </button>
+                
+                    <a href="index.html" class="btn-next" id="homeBtn">
+                        <i class="fas fa-home"></i> Home
+                    </a>                
+                
                 <button class="btn-next" id="nextBtn" onclick="nextStep()">
                     Next <i class="fas fa-arrow-right"></i>
                 </button>
@@ -587,6 +562,13 @@ function updateStepDisplay() {
     document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'inline-flex' : 'none';
     
     document.getElementById('currentStepNumber').textContent = currentStep;
+
+    // Show Home button ONLY on Step 1
+    const homeBtn = document.getElementById('homeBtn');
+    if (homeBtn) {
+        homeBtn.style.display = currentStep === 1 ? 'inline-flex' : 'none';
+    }
+
 }
 
 function validateCurrentStep() {

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Value Wallet - Digital Wallet</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link rel="stylesheet" href="../styles/wallet-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Additional inline styles if needed */
+        .wallet-nav {
+            background: #fff;
+            border-bottom: 1px solid #e9ecef;
+            padding: 1rem 0;
+        }
+        
+        .wallet-nav .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+    </style>
+</head>
+<body class="wallet-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <!-- REPLACE: Logo image -->
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
+            </a>
+            <div class="nav-menu">
+                <!-- Loans Dropdown -->
+                <div class="dropdown">
+                    <a href="#loans" class="nav-link dropdown-toggle">Loans</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <h4>Personal Loans</h4>
+                            <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
+                            <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
+                            <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
+                            <a href="yango-loans.html" class="dropdown-link">Value Loans on Yango</a>
+                            <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
+                            <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Business Loans</h4>
+                            <a href="business-loans.html" class="dropdown-link">Business Loans</a>
+                            <a href="order-finance.html" class="dropdown-link">Order Finance</a>
+                            <a href="invoice-discounting.html" class="dropdown-link">Invoice Discounting</a>
+                            <a href="asset-financing.html" class="dropdown-link">Asset Financing</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Agri Loans</h4>
+                            <a href="agri-loans.html" class="dropdown-link">Agri Loans</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Apps</h4>
+                            <a href="android-app.html" class="dropdown-link">Android App</a>
+                            <a href="ios-app.html" class="dropdown-link">iOS App</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="payments.html" class="nav-link">Payments</a>
+                <a href="wallet-dashboard.html" class="nav-link">My Wallet</a>
+                <a href="auth-landing.html" class="nav-link">Sign in / Sign up</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="apply.html" class="nav-link">Apply for a Loan</a>
+            </div>
+            
+        </div>
+    </nav>
+
+    <div class="wallet-container">
+        <!-- Wallet Balance Card -->
+        <div class="wallet-balance-card">
+            <div class="balance-header">
+                <h2><i class="fas fa-wallet"></i> My Value Wallet</h2>
+                <span class="wallet-id">Wallet ID: <strong id="walletId">VAL-2024-USER123</strong></span>
+            </div>
+            
+            <div class="balance-display">
+                <div class="available-balance">
+                    <span class="balance-label">Available Balance</span>
+                    <div class="balance-amount">MWK <span id="walletBalance">0.00</span></div>
+                </div>
+                
+                <div class="balance-details">
+                    <div class="detail-item">
+                        <span>Total Deposits:</span>
+                        <strong id="totalDeposits">MWK 0.00</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>Total Withdrawals:</span>
+                        <strong id="totalWithdrawals">MWK 0.00</strong>
+                    </div>
+                    <div class="detail-item">
+                        <span>Active Loans:</span>
+                        <strong id="activeLoans">MWK 0.00</strong>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="wallet-actions">
+                <button class="btn-wallet-action primary" onclick="addMoney()">
+                    <i class="fas fa-plus-circle"></i> Add Money
+                </button>
+                <button class="btn-wallet-action" onclick="sendMoney()">
+                    <i class="fas fa-paper-plane"></i> Send Money
+                </button>
+                <button class="btn-wallet-action" onclick="withdrawMoney()">
+                    <i class="fas fa-minus-circle"></i> Withdraw
+                </button>
+                <button class="btn-wallet-action" onclick="viewTransactions()">
+                    <i class="fas fa-history"></i> Transactions
+                </button>
+            </div>
+        </div>
+        
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+            <div class="stat-card">
+                <i class="fas fa-hand-holding-usd stat-icon"></i>
+                <div class="stat-content">
+                    <h4>P2P Lending</h4>
+                    <p>Earn up to 6% interest by lending</p>
+                    <a href="become-lender.html" class="btn-stat">Start Lending →</a>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <i class="fas fa-money-bill-wave stat-icon"></i>
+                <div class="stat-content">
+                    <h4>Need Funds?</h4>
+                    <p>Borrow from verified lenders</p>
+                    <a href="borrow-money.html" class="btn-stat">Apply Now →</a>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <i class="fas fa-shield-alt stat-icon"></i>
+                <div class="stat-content">
+                    <h4>Wallet Security</h4>
+                    <p>Your funds are 100% secure</p>
+                    <a href="../security.html" class="btn-stat">View Details →</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Transactions -->
+        <div class="transactions-section">
+            <div class="section-header">
+                <h3>Recent Transactions</h3>
+                <a href="transaction-history.html" class="view-all">View All</a>
+            </div>
+            
+            <div class="transaction-list" id="transactionList">
+                <!-- Transactions will load here -->
+            </div>
+        </div>
+        
+        <!-- B2B Marketplace Preview -->
+        <div class="marketplace-preview">
+            <div class="section-header">
+                <h3>P2P Lending Marketplace</h3>
+                <a href="marketplace.html" class="view-all">Explore Marketplace</a>
+            </div>
+            
+            <div class="marketplace-stats">
+                <div class="market-stat">
+                    <div class="stat-value">MWK 15.2M</div>
+                    <div class="stat-label">Total Loans Funded</div>
+                </div>
+                <div class="market-stat">
+                    <div class="stat-value">6%</div>
+                    <div class="stat-label">Max Interest Rate</div>
+                </div>
+                <div class="market-stat">
+                    <div class="stat-value">245</div>
+                    <div class="stat-label">Active Lenders</div>
+                </div>
+                <div class="market-stat">
+                    <div class="stat-value">98.7%</div>
+                    <div class="stat-label">Repayment Rate</div>
+                </div>
+            </div>
+            
+            <div class="eligibility-warning" id="eligibilityWarning" style="display: none;">
+                <i class="fas fa-info-circle"></i>
+                <p>Complete KYC and maintain MWK 50,000 balance for 30 days to access P2P lending.</p>
+                <a href="../verification.html" class="btn-small">Complete Verification</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ALL JAVASCRIPT CODE IN SAME FILE -->
+    <script>
+        // Wallet Management System
+        class ValueWallet {
+            constructor() {
+                this.balance = 0;
+                this.transactions = [];
+                this.userId = null;
+                this.walletId = null;
+            }
+            
+            initialize() {
+                this.loadWalletData();
+                this.updateDisplay();
+                this.loadTransactions();
+                this.checkP2PEligibility();
+            }
+            
+            loadWalletData() {
+                const userData = JSON.parse(localStorage.getItem('userWallet')) || {
+                    balance: 100000,
+                    walletId: 'VAL-' + new Date().getFullYear() + '-' + Math.floor(10000 + Math.random() * 90000),
+                    transactions: [
+                        {
+                            id: 'TX-1',
+                            type: 'deposit',
+                            amount: 100000,
+                            method: 'airtel_money',
+                            timestamp: new Date().toISOString(),
+                            status: 'completed'
+                        }
+                    ]
+                };
+                
+                this.balance = userData.balance;
+                this.walletId = userData.walletId;
+                this.transactions = userData.transactions;
+                
+                document.getElementById('walletId').textContent = this.walletId;
+                document.getElementById('walletBalance').textContent = this.formatCurrency(this.balance);
+            }
+            
+            formatCurrency(amount) {
+                return amount.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            }
+            
+            addMoney(amount, method = 'mobile_money') {
+                this.balance += amount;
+                
+                const transaction = {
+                    id: 'TX-' + Date.now(),
+                    type: 'deposit',
+                    amount: amount,
+                    method: method,
+                    timestamp: new Date().toISOString(),
+                    status: 'completed'
+                };
+                
+                this.transactions.unshift(transaction);
+                this.updateWallet();
+                this.saveToStorage();
+                
+                return transaction;
+            }
+            
+            sendMoney(amount, recipientWalletId, description = '') {
+                if (this.balance < amount) {
+                    throw new Error('Insufficient funds');
+                }
+                
+                this.balance -= amount;
+                
+                const transaction = {
+                    id: 'TX-' + Date.now(),
+                    type: 'send',
+                    amount: amount,
+                    recipient: recipientWalletId,
+                    description: description,
+                    timestamp: new Date().toISOString(),
+                    status: 'completed'
+                };
+                
+                this.transactions.unshift(transaction);
+                this.updateWallet();
+                this.saveToStorage();
+                
+                return transaction;
+            }
+            
+            withdrawMoney(amount, method = 'bank_transfer') {
+                if (this.balance < amount) {
+                    throw new Error('Insufficient funds');
+                }
+                
+                this.balance -= amount;
+                
+                const transaction = {
+                    id: 'TX-' + Date.now(),
+                    type: 'withdrawal',
+                    amount: amount,
+                    method: method,
+                    timestamp: new Date().toISOString(),
+                    status: 'pending'
+                };
+                
+                this.transactions.unshift(transaction);
+                this.updateWallet();
+                this.saveToStorage();
+                
+                return transaction;
+            }
+            
+            updateDisplay() {
+                document.getElementById('walletBalance').textContent = this.formatCurrency(this.balance);
+                this.displayTransactions();
+            }
+            
+            displayTransactions() {
+                const container = document.getElementById('transactionList');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                this.transactions.slice(0, 5).forEach(transaction => {
+                    const div = document.createElement('div');
+                    div.className = 'transaction-item';
+                    
+                    const isReceived = transaction.type === 'deposit' || transaction.type === 'receive';
+                    const icon = isReceived ? 'fa-arrow-down' : 'fa-paper-plane';
+                    const amountClass = isReceived ? 'received' : 'sent';
+                    const amountSign = isReceived ? '+' : '-';
+                    
+                    div.innerHTML = `
+                        <div class="transaction-icon">
+                            <i class="fas ${icon} ${amountClass}"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <div class="transaction-title">${this.getTransactionTitle(transaction)}</div>
+                            <div class="transaction-date">${this.formatDate(transaction.timestamp)}</div>
+                        </div>
+                        <div class="transaction-amount ${amountClass}">
+                            ${amountSign}MWK ${this.formatCurrency(transaction.amount)}
+                        </div>
+                    `;
+                    
+                    container.appendChild(div);
+                });
+            }
+            
+            getTransactionTitle(transaction) {
+                switch(transaction.type) {
+                    case 'deposit': return `Deposit via ${transaction.method}`;
+                    case 'send': return `Sent to ${transaction.recipient?.substring(0, 8)}...`;
+                    case 'receive': return `Received from ${transaction.sender?.substring(0, 8)}...`;
+                    case 'withdrawal': return `Withdrawal to ${transaction.method}`;
+                    default: return 'Transaction';
+                }
+            }
+            
+            formatDate(dateString) {
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffHours = (now - date) / (1000 * 60 * 60);
+                
+                if (diffHours < 24) {
+                    return 'Today, ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                } else if (diffHours < 48) {
+                    return 'Yesterday, ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                } else {
+                    return date.toLocaleDateString() + ', ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                }
+            }
+            
+            saveToStorage() {
+                const walletData = {
+                    balance: this.balance,
+                    walletId: this.walletId,
+                    transactions: this.transactions
+                };
+                
+                localStorage.setItem('userWallet', JSON.stringify(walletData));
+            }
+            
+            updateWallet() {
+                this.updateDisplay();
+                this.saveToStorage();
+            }
+            
+            loadTransactions() {
+                // Load transaction history
+                this.displayTransactions();
+            }
+            
+            checkP2PEligibility() {
+                const userData = JSON.parse(localStorage.getItem('userData')) || {};
+                const walletData = JSON.parse(localStorage.getItem('userWallet')) || {};
+                
+                const hasWallet = !!walletData.walletId;
+                const hasKYC = userData.kycVerified || false;
+                const hasMinimumBalance = walletData.balance >= 50000;
+                const accountAge = userData.accountAgeDays || 0;
+                
+                const eligibilityWarning = document.getElementById('eligibilityWarning');
+                
+                if (hasWallet && hasKYC && hasMinimumBalance && accountAge > 30) {
+                    if (eligibilityWarning) eligibilityWarning.style.display = 'none';
+                } else {
+                    if (eligibilityWarning) eligibilityWarning.style.display = 'flex';
+                }
+            }
+        }
+        
+        // Initialize wallet when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const wallet = new ValueWallet();
+            window.valueWallet = wallet;
+            wallet.initialize();
+        });
+        
+        // UI Functions
+        function addMoney() {
+            const amount = prompt('Enter amount to add (MWK):');
+            if (amount && !isNaN(amount) && amount > 0) {
+                const parsedAmount = parseFloat(amount);
+                window.valueWallet.addMoney(parsedAmount);
+                alert(`MWK ${amount} added successfully!`);
+            }
+        }
+        
+        function sendMoney() {
+            const recipient = prompt("Enter recipient's Wallet ID:");
+            const amount = prompt('Enter amount to send (MWK):');
+            
+            if (recipient && amount && !isNaN(amount) && amount > 0) {
+                try {
+                    window.valueWallet.sendMoney(parseFloat(amount), recipient);
+                    alert(`MWK ${amount} sent to ${recipient.substring(0, 8)}...`);
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                }
+            }
+        }
+        
+        function withdrawMoney() {
+            window.location.href = 'withdraw-money.html';
+        }
+        
+        function viewTransactions() {
+            window.location.href = 'transaction-history.html';
+        }
+    </script>
+</body>
+</html>

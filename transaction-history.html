@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History - Value Wallet</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link rel="stylesheet" href="../styles/wallet-styles.css">
+    <link rel="stylesheet" href="../styles/wallet-pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="wallet-page transaction-history-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <!-- REPLACE: Logo image -->
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
+            </a>
+            <div class="nav-menu">
+                <!-- Loans Dropdown -->
+                <div class="dropdown">
+                    <a href="#loans" class="nav-link dropdown-toggle">Loans</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <h4>Personal Loans</h4>
+                            <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
+                            <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
+                            <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
+                            <a href="yango-loans.html" class="dropdown-link">Value Loans on Yango</a>
+                            <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
+                            <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Business Loans</h4>
+                            <a href="business-loans.html" class="dropdown-link">Business Loans</a>
+                            <a href="order-finance.html" class="dropdown-link">Order Finance</a>
+                            <a href="invoice-discounting.html" class="dropdown-link">Invoice Discounting</a>
+                            <a href="asset-financing.html" class="dropdown-link">Asset Financing</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Agri Loans</h4>
+                            <a href="agri-loans.html" class="dropdown-link">Agri Loans</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Apps</h4>
+                            <a href="android-app.html" class="dropdown-link">Android App</a>
+                            <a href="ios-app.html" class="dropdown-link">iOS App</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="payments.html" class="nav-link">Payments</a>
+                <a href="wallet-dashboard.html" class="nav-link">My Wallet</a>
+                <a href="auth-landing.html" class="nav-link">Sign in / Sign up</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="apply.html" class="nav-link">Apply for a Loan</a>
+            </div>
+            
+        </div>
+    </nav>
+
+    <div class="wallet-container">
+        <!-- Page Header -->
+        <div class="section-header" style="margin-bottom: var(--spacing-xl);">
+            <div>
+                <h1 style="color: var(--black); margin-bottom: var(--spacing-sm);">Transaction History</h1>
+                <p style="color: var(--black-light);">View and manage all your Value Wallet transactions</p>
+            </div>
+            <div style="display: flex; gap: var(--spacing-md); align-items: center;">
+                <a href="wallet-dashboard.html" class="btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Wallet
+                </a>
+                <a href="#" class="export-btn" onclick="exportTransactions()">
+                    <i class="fas fa-download"></i> Export CSV
+                </a>
+            </div>
+        </div>
+
+        <!-- Filters and Search -->
+        <div class="filter-section" style="margin-bottom: var(--spacing-xl);">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchTransactions" placeholder="Search by ID, amount, or description..." onkeyup="filterTransactions()">
+            </div>
+            
+            <div class="filter-tabs" id="filterTabs">
+                <div class="filter-tab active" onclick="filterByType('all')">All Transactions</div>
+                <div class="filter-tab" onclick="filterByType('deposit')">Deposits</div>
+                <div class="filter-tab" onclick="filterByType('send')">Sent Money</div>
+                <div class="filter-tab" onclick="filterByType('withdrawal')">Withdrawals</div>
+                <div class="filter-tab" onclick="filterByType('loan')">Loan Transactions</div>
+                <div class="filter-tab" onclick="filterByType('interest')">Interest Earned</div>
+            </div>
+            
+            <div style="display: flex; gap: var(--spacing-md); margin-top: var(--spacing-lg); flex-wrap: wrap;">
+                <div class="filter-group" style="flex: 1; min-width: 200px;">
+                    <label for="dateFilter">Date Range</label>
+                    <select id="dateFilter" onchange="filterByDate()">
+                        <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="quarter">Last 3 Months</option>
+                        <option value="year">This Year</option>
+                        <option value="custom">Custom Range</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group" style="flex: 1; min-width: 200px;">
+                    <label for="statusFilter">Status</label>
+                    <select id="statusFilter" onchange="filterByStatus()">
+                        <option value="all">All Status</option>
+                        <option value="completed">Completed</option>
+                        <option value="processing">Processing</option>
+                        <option value="pending">Pending</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group" style="flex: 1; min-width: 200px;">
+                    <label for="sortFilter">Sort By</label>
+                    <select id="sortFilter" onchange="sortTransactions()">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="amount-high">Amount (High to Low)</option>
+                        <option value="amount-low">Amount (Low to High)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Custom Date Range (hidden by default) -->
+            <div id="customDateRange" class="custom-date-range" style="display: none; margin-top: var(--spacing-lg);">
+                <div style="display: flex; gap: var(--spacing-md); flex-wrap: wrap;">
+                    <div class="filter-group" style="flex: 1; min-width: 200px;">
+                        <label for="startDate">From Date</label>
+                        <input type="date" id="startDate" onchange="applyCustomDateRange()">
+                    </div>
+                    <div class="filter-group" style="flex: 1; min-width: 200px;">
+                        <label for="endDate">To Date</label>
+                        <input type="date" id="endDate" onchange="applyCustomDateRange()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction Statistics -->
+        <div class="quick-stats" style="margin-bottom: var(--spacing-xl);">
+            <div class="stat-card">
+                <i class="fas fa-arrow-down stat-icon" style="color: var(--green-main);"></i>
+                <div class="stat-content">
+                    <h4>Total Deposits</h4>
+                    <p id="totalDepositsStat">MWK 0.00</p>
+                    <span style="font-size: 0.9rem; color: var(--gray-500);">All time</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <i class="fas fa-arrow-up stat-icon" style="color: var(--error);"></i>
+                <div class="stat-content">
+                    <h4>Total Withdrawals</h4>
+                    <p id="totalWithdrawalsStat">MWK 0.00</p>
+                    <span style="font-size: 0.9rem; color: var(--gray-500);">All time</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <i class="fas fa-exchange-alt stat-icon" style="color: var(--blue-main);"></i>
+                <div class="stat-content">
+                    <h4>Transactions Count</h4>
+                    <p id="transactionsCount">0</p>
+                    <span style="font-size: 0.9rem; color: var(--gray-500);">Showing <span id="showingCount">0</span> of <span id="totalCount">0</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions List -->
+        <div class="transactions-section">
+            <div class="section-header">
+                <h3>All Transactions</h3>
+                <div style="display: flex; align-items: center; gap: var(--spacing-sm);">
+                    <span style="color: var(--gray-500); font-size: 0.9rem;" id="currentFilter">Showing all transactions</span>
+                </div>
+            </div>
+            
+            <div class="transaction-list" id="allTransactionsList">
+                <!-- All transactions will load here -->
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loadingTransactions" style="text-align: center; padding: var(--spacing-2xl);">
+                <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--blue-main); margin-bottom: var(--spacing-md);"></i>
+                <p style="color: var(--gray-500);">Loading transactions...</p>
+            </div>
+            
+            <!-- No Transactions Message -->
+            <div id="noTransactions" style="text-align: center; padding: var(--spacing-2xl); display: none;">
+                <i class="fas fa-receipt" style="font-size: 3rem; color: var(--gray-400); margin-bottom: var(--spacing-md);"></i>
+                <h4 style="color: var(--black); margin-bottom: var(--spacing-sm);">No transactions found</h4>
+                <p style="color: var(--gray-500); margin-bottom: var(--spacing-lg);">Try adjusting your filters or make your first transaction</p>
+                <div style="display: flex; gap: var(--spacing-md); justify-content: center;">
+                    <a href="add-money.html" class="btn-primary">Add Money</a>
+                    <a href="send-money.html" class="btn-secondary">Send Money</a>
+                </div>
+            </div>
+            
+            <!-- Load More Button -->
+            <div style="text-align: center; margin-top: var(--spacing-xl);">
+                <button id="loadMoreBtn" class="btn-secondary" onclick="loadMoreTransactions()" style="display: none;">
+                    <i class="fas fa-arrow-down"></i> Load More Transactions
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Detail Modal -->
+    <div class="application-modal transaction-detail-modal" id="transactionDetailModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeDetailModal()">×</button>
+            
+            <div id="transactionDetailContent">
+                <!-- Transaction details will load here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Transaction data
+        let allTransactions = [];
+        let filteredTransactions = [];
+        let currentPage = 1;
+        const transactionsPerPage = 10;
+        let currentFilter = 'all';
+        let currentSort = 'newest';
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllTransactions();
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            const dateFilter = document.getElementById('dateFilter');
+            dateFilter.addEventListener('change', function() {
+                if (this.value === 'custom') {
+                    document.getElementById('customDateRange').style.display = 'block';
+                    // Set default dates (last 30 days)
+                    const endDate = new Date();
+                    const startDate = new Date();
+                    startDate.setDate(startDate.getDate() - 30);
+                    
+                    document.getElementById('startDate').value = startDate.toISOString().split('T')[0];
+                    document.getElementById('endDate').value = endDate.toISOString().split('T')[0];
+                    applyCustomDateRange();
+                } else {
+                    document.getElementById('customDateRange').style.display = 'none';
+                    filterByDate();
+                }
+            });
+        }
+
+        // Load all transactions
+        function loadAllTransactions() {
+            const savedWallet = JSON.parse(localStorage.getItem('userWallet')) || { transactions: [] };
+            allTransactions = savedWallet.transactions || [];
+            
+            // Add sample data if empty
+            if (allTransactions.length === 0) {
+                generateSampleTransactions();
+            }
+            
+            // Sort by newest first initially
+            allTransactions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            // Calculate statistics
+            calculateStatistics();
+            
+            // Apply initial filters
+            filterTransactions();
+        }
+
+        // Generate sample transactions for demo
+        function generateSampleTransactions() {
+            const now = new Date();
+            const sampleTransactions = [
+                {
+                    id: 'TX-' + Date.now(),
+                    type: 'deposit',
+                    amount: 50000,
+                    method: 'airtel_money',
+                    timestamp: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                    status: 'completed',
+                    description: 'Initial wallet deposit'
+                },
+                {
+                    id: 'TX-' + (Date.now() + 1),
+                    type: 'send',
+                    amount: 15000,
+                    recipient: 'VAL-2024-USER456',
+                    timestamp: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                    status: 'completed',
+                    description: 'Payment for goods'
+                },
+                {
+                    id: 'WDL-' + Date.now(),
+                    type: 'withdrawal',
+                    amount: 10000,
+                    method: 'standard_bank',
+                    timestamp: new Date(now.getTime() - 12 * 60 * 60 * 1000).toISOString(),
+                    status: 'processing',
+                    description: 'Withdrawal to bank account'
+                },
+                {
+                    id: 'TX-' + (Date.now() + 2),
+                    type: 'deposit',
+                    amount: 25000,
+                    method: 'tnm_mpamba',
+                    timestamp: new Date(now.getTime() - 6 * 60 * 60 * 1000).toISOString(),
+                    status: 'completed',
+                    description: 'Mobile money deposit'
+                },
+                {
+                    id: 'LN-' + Date.now(),
+                    type: 'loan',
+                    amount: 50000,
+                    timestamp: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+                    status: 'completed',
+                    description: 'Loan disbursement'
+                },
+                {
+                    id: 'INT-' + Date.now(),
+                    type: 'interest',
+                    amount: 1500,
+                    timestamp: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    status: 'completed',
+                    description: 'Interest earned from lending'
+                },
+                {
+                    id: 'TX-' + (Date.now() + 3),
+                    type: 'send',
+                    amount: 5000,
+                    recipient: 'VAL-2024-USER789',
+                    timestamp: new Date(now.getTime() - 1 * 60 * 60 * 1000).toISOString(),
+                    status: 'completed',
+                    description: 'Money transfer to friend'
+                },
+                {
+                    id: 'WDL-' + (Date.now() + 1),
+                    type: 'withdrawal',
+                    amount: 20000,
+                    method: 'airtel_money',
+                    timestamp: new Date(now.getTime() - 30 * 60 * 1000).toISOString(),
+                    status: 'completed',
+                    description: 'Withdrawal to mobile money'
+                }
+            ];
+            
+            allTransactions = sampleTransactions;
+            
+            // Save to localStorage for demo
+            const savedWallet = JSON.parse(localStorage.getItem('userWallet')) || { balance: 100000, transactions: [] };
+            savedWallet.transactions = sampleTransactions;
+            localStorage.setItem('userWallet', JSON.stringify(savedWallet));
+        }
+
+        // Calculate statistics
+        function calculateStatistics() {
+            const totalDeposits = allTransactions
+                .filter(tx => tx.type === 'deposit' && tx.status === 'completed')
+                .reduce((sum, tx) => sum + tx.amount, 0);
+                
+            const totalWithdrawals = allTransactions
+                .filter(tx => tx.type === 'withdrawal' && tx.status === 'completed')
+                .reduce((sum, tx) => sum + tx.amount, 0);
+            
+            document.getElementById('totalDepositsStat').textContent = formatCurrency(totalDeposits);
+            document.getElementById('totalWithdrawalsStat').textContent = formatCurrency(totalWithdrawals);
+            document.getElementById('totalCount').textContent = allTransactions.length;
+        }
+
+        // Format currency
+        function formatCurrency(amount) {
+            return 'MWK ' + amount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Format relative time
+        function formatRelativeTime(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffHours = diffMs / (1000 * 60 * 60);
+            const diffDays = diffHours / 24;
+            
+            if (diffHours < 1) {
+                const diffMins = Math.floor(diffMs / (1000 * 60));
+                return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
+            } else if (diffHours < 24) {
+                return `${Math.floor(diffHours)} hour${Math.floor(diffHours) !== 1 ? 's' : ''} ago`;
+            } else if (diffDays < 7) {
+                return `${Math.floor(diffDays)} day${Math.floor(diffDays) !== 1 ? 's' : ''} ago`;
+            } else {
+                return formatDate(dateString);
+            }
+        }
+
+        // Format method for display
+        function formatMethod(method) {
+            if (!method) return '';
+            const methods = {
+                'airtel_money': 'Airtel Money',
+                'tnm_mpamba': 'TNM Mpamba',
+                'standard_bank': 'Standard Bank',
+                'national_bank': 'National Bank',
+                'fdh_bank': 'FDH Bank',
+                'mobi_save': 'MobiSave',
+                'bank_transfer': 'Bank Transfer'
+            };
+            return methods[method] || method;
+        }
+
+        // Filter transactions by search term
+        function filterTransactions() {
+            const searchTerm = document.getElementById('searchTransactions').value.toLowerCase();
+            
+            filteredTransactions = allTransactions.filter(tx => {
+                const matchesSearch = !searchTerm || 
+                    tx.id.toLowerCase().includes(searchTerm) ||
+                    (tx.description && tx.description.toLowerCase().includes(searchTerm)) ||
+                    tx.amount.toString().includes(searchTerm) ||
+                    (tx.recipient && tx.recipient.toLowerCase().includes(searchTerm)) ||
+                    (tx.method && tx.method.toLowerCase().includes(searchTerm));
+                
+                return matchesSearch;
+            });
+            
+            // Apply current filters
+            applyCurrentFilters();
+        }
+
+        // Filter by transaction type
+        function filterByType(type) {
+            currentFilter = type;
+            
+            // Update active tab
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            applyCurrentFilters();
+        }
+
+        // Filter by date
+        function filterByDate() {
+            const filterValue = document.getElementById('dateFilter').value;
+            const now = new Date();
+            
+            filteredTransactions = allTransactions.filter(tx => {
+                const txDate = new Date(tx.timestamp);
+                
+                switch(filterValue) {
+                    case 'today':
+                        return txDate.toDateString() === now.toDateString();
+                    case 'week':
+                        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                        return txDate >= weekAgo;
+                    case 'month':
+                        const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+                        return txDate >= monthAgo;
+                    case 'quarter':
+                        const quarterAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+                        return txDate >= quarterAgo;
+                    case 'year':
+                        const yearAgo = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+                        return txDate >= yearAgo;
+                    default:
+                        return true;
+                }
+            });
+            
+            applyCurrentFilters();
+        }
+
+        // Apply custom date range
+        function applyCustomDateRange() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            if (!startDate || !endDate) return;
+            
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            end.setHours(23, 59, 59, 999);
+            
+            filteredTransactions = allTransactions.filter(tx => {
+                const txDate = new Date(tx.timestamp);
+                return txDate >= start && txDate <= end;
+            });
+            
+            applyCurrentFilters();
+        }
+
+        // Filter by status
+        function filterByStatus() {
+            const status = document.getElementById('statusFilter').value;
+            
+            if (status === 'all') {
+                filteredTransactions = allTransactions;
+            } else {
+                filteredTransactions = allTransactions.filter(tx => tx.status === status);
+            }
+            
+            applyCurrentFilters();
+        }
+
+        // Sort transactions
+        function sortTransactions() {
+            const sortBy = document.getElementById('sortFilter').value;
+            currentSort = sortBy;
+            
+            filteredTransactions.sort((a, b) => {
+                switch(sortBy) {
+                    case 'newest':
+                        return new Date(b.timestamp) - new Date(a.timestamp);
+                    case 'oldest':
+                        return new Date(a.timestamp) - new Date(b.timestamp);
+                    case 'amount-high':
+                        return b.amount - a.amount;
+                    case 'amount-low':
+                        return a.amount - b.amount;
+                    default:
+                        return 0;
+                }
+            });
+            
+            displayTransactions();
+        }
+
+        // Apply all current filters
+        function applyCurrentFilters() {
+            let tempTransactions = [...filteredTransactions];
+            
+            // Apply type filter
+            if (currentFilter !== 'all') {
+                tempTransactions = tempTransactions.filter(tx => tx.type === currentFilter);
+            }
+            
+            // Apply status filter
+            const statusFilter = document.getElementById('statusFilter').value;
+            if (statusFilter !== 'all') {
+                tempTransactions = tempTransactions.filter(tx => tx.status === statusFilter);
+            }
+            
+            // Apply sort
+            filteredTransactions = tempTransactions;
+            sortTransactions();
+            
+            // Update filter text
+            updateFilterText();
+        }
+
+        // Update filter text display
+        function updateFilterText() {
+            const typeText = currentFilter === 'all' ? 'all transactions' : currentFilter + 's';
+            const statusFilter = document.getElementById('statusFilter').value;
+            const statusText = statusFilter === 'all' ? '' : ` (${statusFilter})`;
+            const dateFilter = document.getElementById('dateFilter').value;
+            const dateText = dateFilter === 'all' ? '' : ` in ${dateFilter}`;
+            
+            document.getElementById('currentFilter').textContent = 
+                `Showing ${typeText}${statusText}${dateText}`;
+        }
+
+        // Display transactions
+        function displayTransactions() {
+            const container = document.getElementById('allTransactionsList');
+            const loading = document.getElementById('loadingTransactions');
+            const noTransactions = document.getElementById('noTransactions');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            
+            // Hide loading
+            loading.style.display = 'none';
+            
+            if (filteredTransactions.length === 0) {
+                container.innerHTML = '';
+                noTransactions.style.display = 'block';
+                loadMoreBtn.style.display = 'none';
+                return;
+            }
+            
+            noTransactions.style.display = 'none';
+            
+            // Calculate pagination
+            const startIndex = 0;
+            const endIndex = currentPage * transactionsPerPage;
+            const transactionsToShow = filteredTransactions.slice(startIndex, endIndex);
+            
+            container.innerHTML = '';
+            
+            transactionsToShow.forEach(transaction => {
+                const div = document.createElement('div');
+                div.className = 'transaction-item';
+                div.onclick = () => showTransactionDetail(transaction);
+                
+                const icon = getTransactionIcon(transaction.type);
+                const amountClass = transaction.type === 'deposit' || transaction.type === 'interest' || transaction.type === 'receive' ? 'received' : 'sent';
+                const amountSign = amountClass === 'received' ? '+' : '-';
+                
+                div.innerHTML = `
+                    <div class="transaction-icon">
+                        <i class="fas ${icon} ${amountClass}"></i>
+                    </div>
+                    <div class="transaction-details">
+                        <div class="transaction-title">
+                            ${getTransactionTitle(transaction)}
+                            <span class="transaction-status status-${transaction.status}">
+                                ${transaction.status}
+                            </span>
+                        </div>
+                        <div class="transaction-date">
+                            ${formatRelativeTime(transaction.timestamp)}
+                            <span style="margin-left: var(--spacing-sm); color: var(--gray-500); font-size: 0.85rem;">
+                                ${transaction.id}
+                            </span>
+                        </div>
+                        ${transaction.description ? `<div style="font-size: 0.9rem; color: var(--gray-500); margin-top: 0.25rem;">${transaction.description}</div>` : ''}
+                    </div>
+                    <div class="transaction-amount ${amountClass}">
+                        ${amountSign}MWK ${transaction.amount.toLocaleString('en-US', {minimumFractionDigits: 2})}
+                    </div>
+                `;
+                
+                container.appendChild(div);
+            });
+            
+            // Update counts
+            document.getElementById('showingCount').textContent = transactionsToShow.length;
+            document.getElementById('transactionsCount').textContent = filteredTransactions.length;
+            
+            // Show/hide load more button
+            if (endIndex < filteredTransactions.length) {
+                loadMoreBtn.style.display = 'inline-flex';
+            } else {
+                loadMoreBtn.style.display = 'none';
+            }
+        }
+
+        // Get transaction icon
+        function getTransactionIcon(type) {
+            switch(type) {
+                case 'deposit': return 'fa-arrow-down';
+                case 'send': return 'fa-paper-plane';
+                case 'receive': return 'fa-arrow-down';
+                case 'withdrawal': return 'fa-minus-circle';
+                case 'loan': return 'fa-hand-holding-usd';
+                case 'interest': return 'fa-percentage';
+                default: return 'fa-exchange-alt';
+            }
+        }
+
+        // Get transaction title
+        function getTransactionTitle(transaction) {
+            switch(transaction.type) {
+                case 'deposit': return `Deposit via ${formatMethod(transaction.method)}`;
+                case 'send': return `Sent to ${transaction.recipient?.substring(0, 8)}...`;
+                case 'receive': return `Received from ${transaction.sender?.substring(0, 8)}...`;
+                case 'withdrawal': return `Withdrawal to ${formatMethod(transaction.method)}`;
+                case 'loan': return transaction.description || 'Loan Transaction';
+                case 'interest': return 'Interest Earned';
+                default: return 'Transaction';
+            }
+        }
+
+        // Load more transactions
+        function loadMoreTransactions() {
+            currentPage++;
+            displayTransactions();
+        }
+
+        // Show transaction detail modal
+        function showTransactionDetail(transaction) {
+            const modal = document.getElementById('transactionDetailModal');
+            const content = document.getElementById('transactionDetailContent');
+            
+            const amountClass = transaction.type === 'deposit' || transaction.type === 'interest' || transaction.type === 'receive' ? 'received' : 'sent';
+            const amountSign = amountClass === 'received' ? '+' : '-';
+            
+            content.innerHTML = `
+                <div style="text-align: center; margin-bottom: var(--spacing-xl);">
+                    <div style="font-size: 3rem; color: ${amountClass === 'received' ? 'var(--green-main)' : 'var(--error)'}; margin-bottom: var(--spacing-md);">
+                        <i class="fas ${getTransactionIcon(transaction.type)}"></i>
+                    </div>
+                    <h2 style="color: var(--black); margin-bottom: var(--spacing-sm);">
+                        ${getTransactionTitle(transaction)}
+                    </h2>
+                    <div style="font-size: 2rem; font-weight: var(--font-weight-bold); color: ${amountClass === 'received' ? 'var(--green-main)' : 'var(--error)'}; margin-bottom: var(--spacing-md);">
+                        ${amountSign}MWK ${transaction.amount.toLocaleString('en-US', {minimumFractionDigits: 2})}
+                    </div>
+                    <div class="transaction-status status-${transaction.status}" style="display: inline-block; margin-bottom: var(--spacing-lg);">
+                        ${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
+                    </div>
+                </div>
+                
+                <div class="modal-details">
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Transaction ID:</span>
+                        <span class="modal-detail-value">${transaction.id}</span>
+                    </div>
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Date & Time:</span>
+                        <span class="modal-detail-value">${formatDate(transaction.timestamp)}</span>
+                    </div>
+                    ${transaction.description ? `
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Description:</span>
+                        <span class="modal-detail-value">${transaction.description}</span>
+                    </div>
+                    ` : ''}
+                    ${transaction.method ? `
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Method:</span>
+                        <span class="modal-detail-value">${formatMethod(transaction.method)}</span>
+                    </div>
+                    ` : ''}
+                    ${transaction.recipient ? `
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Recipient:</span>
+                        <span class="modal-detail-value">${transaction.recipient}</span>
+                    </div>
+                    ` : ''}
+                    ${transaction.sender ? `
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Sender:</span>
+                        <span class="modal-detail-value">${transaction.sender}</span>
+                    </div>
+                    ` : ''}
+                    ${transaction.fee ? `
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Fee:</span>
+                        <span class="modal-detail-value">MWK ${transaction.fee.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
+                    </div>
+                    ` : ''}
+                    ${transaction.total ? `
+                    <div class="modal-detail-row">
+                        <span class="modal-detail-label">Total Amount:</span>
+                        <span class="modal-detail-value">MWK ${transaction.total.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
+                    </div>
+                    ` : ''}
+                </div>
+                
+                <div class="modal-actions" style="margin-top: var(--spacing-xl);">
+                    <button class="btn-secondary" onclick="closeDetailModal()">Close</button>
+                    <button class="btn-primary" onclick="shareTransaction('${transaction.id}')">
+                        <i class="fas fa-share-alt"></i> Share Receipt
+                    </button>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        // Close detail modal
+        function closeDetailModal() {
+            document.getElementById('transactionDetailModal').classList.remove('active');
+        }
+
+        // Share transaction receipt
+        function shareTransaction(transactionId) {
+            // In a real app, this would generate and share a receipt
+            alert(`Receipt for transaction ${transactionId} would be shared here`);
+        }
+
+        // Export transactions to CSV
+        function exportTransactions() {
+            if (filteredTransactions.length === 0) {
+                alert('No transactions to export');
+                return;
+            }
+            
+            const csvRows = [];
+            const headers = ['ID', 'Type', 'Amount', 'Status', 'Date', 'Description', 'Method', 'Recipient'];
+            csvRows.push(headers.join(','));
+            
+            filteredTransactions.forEach(tx => {
+                const row = [
+                    tx.id,
+                    tx.type,
+                    tx.amount,
+                    tx.status,
+                    new Date(tx.timestamp).toLocaleString(),
+                    tx.description || '',
+                    tx.method || '',
+                    tx.recipient || ''
+                ].map(field => `"${field}"`).join(',');
+                csvRows.push(row);
+            });
+            
+            const csvContent = csvRows.join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `value-wallet-transactions-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
