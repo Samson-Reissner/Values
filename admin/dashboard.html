@@ -68,6 +68,17 @@
             color: #dc3545;
         }
         
+        .balance-amount.updating {
+            color: #17a2b8;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
         .account-email {
             font-size: 16px;
             font-weight: bold;
@@ -337,6 +348,56 @@
         .refresh-btn:hover {
             background-color: #138496;
         }
+        
+        .refresh-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease;
+        }
+        
+        .notification.success {
+            background-color: #28a745;
+        }
+        
+        .notification.error {
+            background-color: #dc3545;
+        }
+        
+        .notification.info {
+            background-color: #17a2b8;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .status-updating {
+            opacity: 0.6;
+        }
+        
+        .approve-processing {
+            background-color: #17a2b8 !important;
+            cursor: wait !important;
+        }
     </style>
 </head>
 <body>
@@ -435,7 +496,7 @@
     </table>
 
     <script>
-        // Keep track of all data
+        // Global data store
         let dashboardData = {
             system_account: { balance: 0, email: 'system@value.mw' },
             loans: {
@@ -457,6 +518,27 @@
         let currentFilter = 'pending';
         let currentSort = 'newest';
 
+        // Utility function to show notifications
+        function showNotification(message, type = 'info') {
+            // Remove any existing notifications
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(n => n.remove());
+            
+            // Create new notification
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+        }
+
+        // Load dashboard summary data
         async function loadDashboardData() {
             const token = localStorage.getItem("authToken");
             
@@ -466,7 +548,13 @@
             }
 
             try {
-                // Load dashboard summary from the new endpoint
+                // Show loading state on balance
+                const balanceElement = document.getElementById('system-balance');
+                if (balanceElement.textContent !== 'Loading...') {
+                    balanceElement.classList.add('updating');
+                }
+
+                // Load dashboard summary
                 const summaryRes = await fetch("http://localhost:3000/api/v1/admin/dashboard/summary", {
                     headers: {
                         "Authorization": `Bearer ${token}`
@@ -497,12 +585,16 @@
             } catch (error) {
                 console.error('Error loading dashboard data:', error);
                 renderError(error.message);
+            } finally {
+                // Remove loading state
+                const balanceElement = document.getElementById('system-balance');
+                balanceElement.classList.remove('updating');
             }
         }
 
+        // Load loans data
         async function loadLoans(token) {
             try {
-                // Load all loans for the table
                 const loansRes = await fetch("http://localhost:3000/api/v1/admin/loans?status=all", {
                     headers: {
                         "Authorization": `Bearer ${token}`
@@ -518,7 +610,6 @@
                 }
             } catch (error) {
                 console.error('Error loading loans:', error);
-                // Don't show error if loans fail but dashboard loaded
                 if (allLoans.length === 0) {
                     document.getElementById("loans-body").innerHTML = `
                         <tr>
@@ -534,6 +625,7 @@
             }
         }
 
+        // Update dashboard display with current data
         function updateDashboardDisplay() {
             // Update system balance
             const system = dashboardData.system_account;
@@ -561,15 +653,58 @@
             document.getElementById('total-users').textContent = users.total_users;
             
             // Check if system has enough funds for pending loans
+            const warningElement = document.getElementById('insufficient-warning');
             if (system.balance < loans.pending_amount) {
-                balanceElement.className = 'balance-amount insufficient';
-                document.getElementById('insufficient-warning').style.display = 'block';
+                balanceElement.classList.add('insufficient');
+                warningElement.style.display = 'block';
             } else {
-                balanceElement.className = 'balance-amount';
-                document.getElementById('insufficient-warning').style.display = 'none';
+                balanceElement.classList.remove('insufficient');
+                warningElement.style.display = 'none';
             }
         }
 
+        // Update dashboard after loan approval (immediate UI update)
+        function updateDashboardAfterApproval(loanId, loanAmount) {
+            // Update dashboard data object immediately
+            dashboardData.loans.pending_count = Math.max(0, dashboardData.loans.pending_count - 1);
+            dashboardData.loans.pending_amount = Math.max(0, dashboardData.loans.pending_amount - loanAmount);
+            dashboardData.loans.active_count += 1;
+            dashboardData.loans.active_amount += loanAmount;
+            
+            // Update system balance immediately
+            dashboardData.system_account.balance = Math.max(0, dashboardData.system_account.balance - loanAmount);
+            
+            // Update display immediately
+            updateDashboardDisplay();
+            
+            // Update the specific loan in the table
+            const loanIndex = allLoans.findIndex(l => l.id === loanId);
+            if (loanIndex !== -1) {
+                allLoans[loanIndex].status = 'active';
+                allLoans[loanIndex].approved_amount = loanAmount;
+                filterLoans();
+            }
+        }
+
+        // Update dashboard after loan rejection
+        function updateDashboardAfterRejection(loanId, loanAmount) {
+            // Update dashboard data object
+            dashboardData.loans.pending_count = Math.max(0, dashboardData.loans.pending_count - 1);
+            dashboardData.loans.pending_amount = Math.max(0, dashboardData.loans.pending_amount - loanAmount);
+            dashboardData.loans.rejected_count += 1;
+            
+            // Update display immediately
+            updateDashboardDisplay();
+            
+            // Update the specific loan in the table
+            const loanIndex = allLoans.findIndex(l => l.id === loanId);
+            if (loanIndex !== -1) {
+                allLoans[loanIndex].status = 'rejected';
+                filterLoans();
+            }
+        }
+
+        // Filter and render loans
         function filterLoans() {
             // Get current filter values
             const statusFilter = document.getElementById('statusFilter').value;
@@ -593,9 +728,9 @@
                     case 'oldest':
                         return new Date(a.created_at) - new Date(b.created_at);
                     case 'amount_high':
-                        return (b.principal_amount || 0) - (a.principal_amount || 0);
+                        return (b.principal_amount || b.approved_amount || 0) - (a.principal_amount || a.approved_amount || 0);
                     case 'amount_low':
-                        return (a.principal_amount || 0) - (b.principal_amount || 0);
+                        return (a.principal_amount || a.approved_amount || 0) - (b.principal_amount || b.approved_amount || 0);
                     default:
                         return 0;
                 }
@@ -604,16 +739,45 @@
             renderLoans(filteredLoans);
         }
 
+        // Reset filters to default
         function resetFilters() {
             document.getElementById('statusFilter').value = 'pending';
             document.getElementById('sortBy').value = 'newest';
             filterLoans();
         }
 
-        function refreshAllData() {
-            loadDashboardData();
+        // Refresh all data from server
+        async function refreshAllData() {
+            const token = localStorage.getItem("authToken");
+            if (!token) return;
+            
+            // Show loading state
+            const refreshBtn = document.querySelector('.refresh-btn');
+            const originalText = refreshBtn.textContent;
+            refreshBtn.disabled = true;
+            refreshBtn.textContent = 'Refreshing...';
+            
+            // Update system balance immediately
+            const balanceElement = document.getElementById('system-balance');
+            const originalBalance = balanceElement.textContent;
+            balanceElement.textContent = 'Updating...';
+            balanceElement.classList.add('updating');
+            
+            try {
+                await loadDashboardData();
+                showNotification('Dashboard data refreshed successfully!', 'success');
+            } catch (error) {
+                console.error('Refresh failed:', error);
+                showNotification(`Refresh failed: ${error.message}`, 'error');
+                balanceElement.textContent = originalBalance;
+            } finally {
+                refreshBtn.disabled = false;
+                refreshBtn.textContent = originalText;
+                balanceElement.classList.remove('updating');
+            }
         }
 
+        // Render loans to table
         function renderLoans(loans) {
             const tableBody = document.getElementById("loans-body");
             
@@ -642,6 +806,7 @@
                 const canApprove = systemBalance >= loanAmount && loan.status === 'pending';
                 
                 const row = document.createElement('tr');
+                row.id = `loan-row-${loan.id}`;
                 row.innerHTML = `
                     <td class="loan-id">#${loan.id}</td>
                     <td class="amount">$${loanAmount.toLocaleString('en-US', {
@@ -655,10 +820,10 @@
                     <td class="actions-cell">
                         ${loan.status === 'pending' ? `
                             <button onclick="viewLoan(${loan.id})" class="btn-view">View</button>
-                            <button onclick="approveLoan(${loan.id})" class="btn-approve" ${!canApprove ? 'disabled' : ''}>
+                            <button onclick="approveLoan(${loan.id})" class="btn-approve" id="approve-btn-${loan.id}" ${!canApprove ? 'disabled' : ''}>
                                 ${canApprove ? 'Approve' : 'Insufficient Funds'}
                             </button>
-                            <button onclick="rejectLoan(${loan.id})" class="btn-reject">Reject</button>
+                            <button onclick="rejectLoan(${loan.id})" class="btn-reject" id="reject-btn-${loan.id}">Reject</button>
                             ${!canApprove ? `<small style="display: block; color: #dc3545; font-size: 11px;">Needs: $${loanAmount.toLocaleString()}</small>` : ''}
                         ` : `
                             <button onclick="viewLoan(${loan.id})" class="btn-view">View Details</button>
@@ -670,6 +835,7 @@
             });
         }
 
+        // Show error in table
         function renderError(message) {
             const tableBody = document.getElementById("loans-body");
             tableBody.innerHTML = `
@@ -684,6 +850,7 @@
             `;
         }
 
+        // Format date for display
         function formatDate(dateString) {
             const date = new Date(dateString);
             return date.toLocaleDateString('en-US', {
@@ -695,14 +862,17 @@
             });
         }
 
+        // View loan details
         function viewLoan(loanId) {
             window.location.href = `/admin/loans/${loanId}`;
         }
 
+        // View loan payments
         function viewPayments(loanId) {
             window.location.href = `/admin/loans/${loanId}/payments`;
         }
 
+        // Approve loan function
         async function approveLoan(loanId) {
             const token = localStorage.getItem("authToken");
             
@@ -715,6 +885,21 @@
                 return;
             }
             
+            // Disable buttons and show processing state
+            const approveBtn = document.getElementById(`approve-btn-${loanId}`);
+            const rejectBtn = document.getElementById(`reject-btn-${loanId}`);
+            const row = document.getElementById(`loan-row-${loanId}`);
+            
+            if (approveBtn) approveBtn.disabled = true;
+            if (rejectBtn) rejectBtn.disabled = true;
+            if (row) row.classList.add('status-updating');
+            
+            const originalApproveText = approveBtn ? approveBtn.textContent : 'Approve';
+            if (approveBtn) {
+                approveBtn.classList.add('approve-processing');
+                approveBtn.textContent = 'Processing...';
+            }
+            
             try {
                 const res = await fetch(`http://localhost:3000/api/v1/admin/loans/${loanId}/approve`, {
                     method: 'POST',
@@ -725,24 +910,55 @@
                 });
                 
                 if (res.ok) {
-                    alert('Loan approved successfully!');
-                    // Refresh all data
-                    await refreshAllData();
+                    // Update UI immediately
+                    updateDashboardAfterApproval(loanId, loanAmount);
+                    
+                    // Show success notification
+                    showNotification(`Loan #${loanId} approved successfully! System balance updated.`, 'success');
+                    
+                    // Refresh from server after a short delay to ensure consistency
+                    setTimeout(() => {
+                        refreshAllData();
+                    }, 1000);
+                    
                 } else {
                     const error = await res.json();
-                    alert(`Error: ${error.error || 'Failed to approve loan'}`);
+                    throw new Error(error.error || 'Failed to approve loan');
                 }
             } catch (error) {
-                alert(`Error: ${error.message}`);
+                console.error('Loan approval error:', error);
+                showNotification(`Error: ${error.message}`, 'error');
+                
+                // Re-enable buttons on error
+                if (approveBtn) {
+                    approveBtn.disabled = false;
+                    approveBtn.classList.remove('approve-processing');
+                    approveBtn.textContent = originalApproveText;
+                }
+                if (rejectBtn) rejectBtn.disabled = false;
+                if (row) row.classList.remove('status-updating');
             }
         }
 
+        // Reject loan function
         async function rejectLoan(loanId) {
             const token = localStorage.getItem("authToken");
             
             if (!confirm(`Are you sure you want to reject loan #${loanId}? This action cannot be undone.`)) {
                 return;
             }
+            
+            // Disable buttons and show processing state
+            const approveBtn = document.getElementById(`approve-btn-${loanId}`);
+            const rejectBtn = document.getElementById(`reject-btn-${loanId}`);
+            const row = document.getElementById(`loan-row-${loanId}`);
+            
+            if (approveBtn) approveBtn.disabled = true;
+            if (rejectBtn) rejectBtn.disabled = true;
+            if (row) row.classList.add('status-updating');
+            
+            const originalRejectText = rejectBtn ? rejectBtn.textContent : 'Reject';
+            if (rejectBtn) rejectBtn.textContent = 'Processing...';
             
             try {
                 const res = await fetch(`http://localhost:3000/api/v1/admin/loans/${loanId}/reject`, {
@@ -754,15 +970,30 @@
                 });
                 
                 if (res.ok) {
-                    alert('Loan rejected successfully!');
-                    // Update data
-                    await refreshAllData();
+                    const loan = allLoans.find(l => l.id === loanId);
+                    const loanAmount = loan?.principal_amount || 0;
+                    
+                    // Update UI immediately
+                    updateDashboardAfterRejection(loanId, loanAmount);
+                    
+                    // Show success notification
+                    showNotification(`Loan #${loanId} rejected successfully!`, 'success');
+                    
                 } else {
                     const error = await res.json();
-                    alert(`Error: ${error.error || 'Failed to reject loan'}`);
+                    throw new Error(error.error || 'Failed to reject loan');
                 }
             } catch (error) {
-                alert(`Error: ${error.message}`);
+                console.error('Loan rejection error:', error);
+                showNotification(`Error: ${error.message}`, 'error');
+                
+                // Re-enable buttons on error
+                if (approveBtn) approveBtn.disabled = false;
+                if (rejectBtn) {
+                    rejectBtn.disabled = false;
+                    rejectBtn.textContent = originalRejectText;
+                }
+                if (row) row.classList.remove('status-updating');
             }
         }
 
@@ -772,13 +1003,24 @@
             window.location.href = '/login';
         }
 
-        // Add event listeners
+        // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {
             // Load initial data
             loadDashboardData();
             
-            // Auto-refresh every 30 seconds
-            setInterval(loadDashboardData, 30000);
+            // Auto-refresh every 60 seconds
+            setInterval(() => {
+                if (document.visibilityState === 'visible') {
+                    loadDashboardData();
+                }
+            }, 60000);
+            
+            // Add visibility change listener
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') {
+                    refreshAllData();
+                }
+            });
         });
     </script>
 </body>
