@@ -83,9 +83,8 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     // 🔑 THIS is the backend connection
     localStorage.setItem("authToken", data.token);
 
-    window.location.href = data.user.is_admin
-      ? "/admin/dashboard.html"
-      : "/dashboard.html";
+    // stay on same page
+    window.location.href = "index.html";
 
   } catch (err) {
     console.error(err);
