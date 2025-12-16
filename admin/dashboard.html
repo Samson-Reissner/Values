@@ -11,10 +11,68 @@
             background-color: #f5f5f5;
         }
         
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
         h1 {
             color: #333;
             border-bottom: 2px solid #4CAF50;
             padding-bottom: 10px;
+            margin: 0;
+            flex-grow: 1;
+        }
+        
+        .system-info {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .system-balance {
+            background-color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            min-width: 200px;
+        }
+        
+        .system-account {
+            background-color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            min-width: 200px;
+        }
+        
+        .balance-label, .account-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .balance-amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: #28a745;
+        }
+        
+        .balance-amount.insufficient {
+            color: #dc3545;
+        }
+        
+        .account-email {
+            font-size: 16px;
+            font-weight: bold;
+            color: #007bff;
+            word-break: break-all;
         }
         
         .status-badge {
@@ -57,6 +115,11 @@
         
         .btn-approve:hover {
             background-color: #218838;
+        }
+        
+        .btn-approve:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
         }
         
         .btn-reject {
@@ -167,10 +230,162 @@
             border-radius: 4px;
             border: 1px solid #ddd;
         }
+        
+        .stats-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .stat-card.pending {
+            border-top: 4px solid #ffd700;
+        }
+        
+        .stat-card.active {
+            border-top: 4px solid #007bff;
+        }
+        
+        .stat-card.rejected {
+            border-top: 4px solid #dc3545;
+        }
+        
+        .stat-card.total {
+            border-top: 4px solid #28a745;
+        }
+        
+        .stat-card.total-amount {
+            border-top: 4px solid #6f42c1;
+        }
+        
+        .stat-card.users {
+            border-top: 4px solid #17a2b8;
+        }
+        
+        .insufficient-warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            display: none;
+        }
+        
+        .fund-loan-btn {
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin: 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        .fund-loan-btn:hover {
+            background-color: #138496;
+        }
+        
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+        
+        .refresh-btn {
+            padding: 5px 15px;
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .refresh-btn:hover {
+            background-color: #138496;
+        }
     </style>
 </head>
 <body>
-    <h1>Admin Dashboard</h1>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+    
+    <div class="header-container">
+        <h1>Admin Dashboard</h1>
+        <div class="system-info">
+            <div class="system-balance">
+                <div class="balance-label">System Account Balance</div>
+                <div id="system-balance" class="balance-amount">Loading...</div>
+            </div>
+            <div class="system-account">
+                <div class="account-label">System Account</div>
+                <div id="system-email" class="account-email">system@value.mw</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="stats-container" id="stats-container">
+        <div class="stat-card pending">
+            <div class="stat-label">Pending Loans</div>
+            <div id="pending-count" class="stat-value">0</div>
+        </div>
+        <div class="stat-card active">
+            <div class="stat-label">Active Loans</div>
+            <div id="active-count" class="stat-value">0</div>
+        </div>
+        <div class="stat-card rejected">
+            <div class="stat-label">Rejected Loans</div>
+            <div id="rejected-count" class="stat-value">0</div>
+        </div>
+        <div class="stat-card total">
+            <div class="stat-label">Total Loans</div>
+            <div id="total-count" class="stat-value">0</div>
+        </div>
+        <div class="stat-card total-amount">
+            <div class="stat-label">Pending Amount</div>
+            <div id="pending-amount" class="stat-value">$0</div>
+        </div>
+        <div class="stat-card users">
+            <div class="stat-label">Total Users</div>
+            <div id="total-users" class="stat-value">0</div>
+        </div>
+    </div>
+    
+    <div class="insufficient-warning" id="insufficient-warning">
+        ⚠️ Insufficient system funds to approve all pending loans. Please top up the system account.
+    </div>
     
     <div class="filters">
         <div class="filter-group">
@@ -197,6 +412,7 @@
         <button onclick="resetFilters()" style="padding: 5px 15px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;">
             Reset
         </button>
+        <button onclick="refreshAllData()" class="refresh-btn">↻ Refresh All Data</button>
     </div>
     
     <table id="loans">
@@ -219,12 +435,29 @@
     </table>
 
     <script>
-        // Keep track of all loans for filtering
+        // Keep track of all data
+        let dashboardData = {
+            system_account: { balance: 0, email: 'system@value.mw' },
+            loans: {
+                pending_count: 0,
+                pending_amount: 0,
+                active_count: 0,
+                active_amount: 0,
+                rejected_count: 0,
+                total_count: 0
+            },
+            users: {
+                total_users: 0,
+                active_users: 0,
+                borrowers: 0,
+                lenders: 0
+            }
+        };
         let allLoans = [];
         let currentFilter = 'pending';
         let currentSort = 'newest';
 
-        async function loadAdminLoans() {
+        async function loadDashboardData() {
             const token = localStorage.getItem("authToken");
             
             if (!token) {
@@ -233,28 +466,107 @@
             }
 
             try {
-                const res = await fetch("http://localhost:3000/api/v1/admin/loans", {
+                // Load dashboard summary from the new endpoint
+                const summaryRes = await fetch("http://localhost:3000/api/v1/admin/dashboard/summary", {
                     headers: {
                         "Authorization": `Bearer ${token}`
                     }
                 });
 
-                if (!res.ok) {
-                    if (res.status === 401) {
+                if (!summaryRes.ok) {
+                    if (summaryRes.status === 401) {
                         localStorage.removeItem("authToken");
                         window.location.href = '/login';
                         return;
                     }
-                    throw new Error(`HTTP error! status: ${res.status}`);
+                    throw new Error(`Failed to load dashboard: ${summaryRes.status}`);
                 }
 
-                const loans = await res.json();
-                allLoans = loans;
-                filterLoans();
+                const response = await summaryRes.json();
+                
+                if (response.success) {
+                    dashboardData = response.summary;
+                    updateDashboardDisplay();
+                } else {
+                    throw new Error(response.error || 'Failed to load dashboard data');
+                }
+                
+                // Load loans separately for the table
+                await loadLoans(token);
                 
             } catch (error) {
-                console.error('Error loading loans:', error);
+                console.error('Error loading dashboard data:', error);
                 renderError(error.message);
+            }
+        }
+
+        async function loadLoans(token) {
+            try {
+                // Load all loans for the table
+                const loansRes = await fetch("http://localhost:3000/api/v1/admin/loans?status=all", {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                if (loansRes.ok) {
+                    const loans = await loansRes.json();
+                    allLoans = loans;
+                    filterLoans();
+                } else {
+                    throw new Error('Failed to load loans');
+                }
+            } catch (error) {
+                console.error('Error loading loans:', error);
+                // Don't show error if loans fail but dashboard loaded
+                if (allLoans.length === 0) {
+                    document.getElementById("loans-body").innerHTML = `
+                        <tr>
+                            <td colspan="7" class="error">
+                                Error loading loans: ${error.message}<br>
+                                <button onclick="refreshAllData()" style="margin-top: 10px; padding: 5px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                    Retry
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+        }
+
+        function updateDashboardDisplay() {
+            // Update system balance
+            const system = dashboardData.system_account;
+            const balanceElement = document.getElementById('system-balance');
+            const emailElement = document.getElementById('system-email');
+            
+            balanceElement.textContent = `$${system.balance.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}`;
+            emailElement.textContent = system.email;
+            
+            // Update statistics
+            const loans = dashboardData.loans;
+            const users = dashboardData.users;
+            
+            document.getElementById('pending-count').textContent = loans.pending_count;
+            document.getElementById('active-count').textContent = loans.active_count;
+            document.getElementById('rejected-count').textContent = loans.rejected_count;
+            document.getElementById('total-count').textContent = loans.total_count;
+            document.getElementById('pending-amount').textContent = `$${loans.pending_amount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}`;
+            document.getElementById('total-users').textContent = users.total_users;
+            
+            // Check if system has enough funds for pending loans
+            if (system.balance < loans.pending_amount) {
+                balanceElement.className = 'balance-amount insufficient';
+                document.getElementById('insufficient-warning').style.display = 'block';
+            } else {
+                balanceElement.className = 'balance-amount';
+                document.getElementById('insufficient-warning').style.display = 'none';
             }
         }
 
@@ -298,6 +610,10 @@
             filterLoans();
         }
 
+        function refreshAllData() {
+            loadDashboardData();
+        }
+
         function renderLoans(loans) {
             const tableBody = document.getElementById("loans-body");
             
@@ -315,15 +631,20 @@
                 return;
             }
             
+            const systemBalance = dashboardData.system_account.balance;
+            
             loans.forEach(loan => {
                 const borrowerName = loan.borrower?.full_name || 
                                     `${loan.borrower?.person?.first_name || ''} ${loan.borrower?.person?.last_name || ''}`.trim() || 
                                     loan.borrower?.email || 'N/A';
                 
+                const loanAmount = loan.principal_amount || loan.approved_amount || 0;
+                const canApprove = systemBalance >= loanAmount && loan.status === 'pending';
+                
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td class="loan-id">#${loan.id}</td>
-                    <td class="amount">$${(loan.principal_amount || loan.approved_amount || 0).toLocaleString('en-US', {
+                    <td class="amount">$${loanAmount.toLocaleString('en-US', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2
                     })}</td>
@@ -334,11 +655,14 @@
                     <td class="actions-cell">
                         ${loan.status === 'pending' ? `
                             <button onclick="viewLoan(${loan.id})" class="btn-view">View</button>
-                            <button onclick="approveLoan(${loan.id})" class="btn-approve">Approve</button>
+                            <button onclick="approveLoan(${loan.id})" class="btn-approve" ${!canApprove ? 'disabled' : ''}>
+                                ${canApprove ? 'Approve' : 'Insufficient Funds'}
+                            </button>
                             <button onclick="rejectLoan(${loan.id})" class="btn-reject">Reject</button>
+                            ${!canApprove ? `<small style="display: block; color: #dc3545; font-size: 11px;">Needs: $${loanAmount.toLocaleString()}</small>` : ''}
                         ` : `
                             <button onclick="viewLoan(${loan.id})" class="btn-view">View Details</button>
-                            ${loan.status === 'active' ? `<button onclick="viewPayments(${loan.id})" style="background-color: #6f42c1; color: white; border: none; padding: 5px 10px; margin: 2px; cursor: pointer; border-radius: 4px;">Payments</button>` : ''}
+                            ${loan.status === 'active' ? `<button onclick="viewPayments(${loan.id})" class="fund-loan-btn">Payments</button>` : ''}
                         `}
                     </td>
                 `;
@@ -351,8 +675,8 @@
             tableBody.innerHTML = `
                 <tr>
                     <td colspan="7" class="error">
-                        Error loading loans: ${message}<br>
-                        <button onclick="loadAdminLoans()" style="margin-top: 10px; padding: 5px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                        Error: ${message}<br>
+                        <button onclick="refreshAllData()" style="margin-top: 10px; padding: 5px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
                             Retry
                         </button>
                     </td>
@@ -382,7 +706,12 @@
         async function approveLoan(loanId) {
             const token = localStorage.getItem("authToken");
             
-            if (!confirm(`Are you sure you want to approve loan #${loanId}? This action cannot be undone.`)) {
+            const loan = allLoans.find(l => l.id === loanId);
+            if (!loan) return;
+            
+            const loanAmount = loan.principal_amount || 0;
+            
+            if (!confirm(`Are you sure you want to approve loan #${loanId} for $${loanAmount.toLocaleString()}? This will use system funds.`)) {
                 return;
             }
             
@@ -397,8 +726,8 @@
                 
                 if (res.ok) {
                     alert('Loan approved successfully!');
-                    // Refresh the data
-                    await loadAdminLoans();
+                    // Refresh all data
+                    await refreshAllData();
                 } else {
                     const error = await res.json();
                     alert(`Error: ${error.error || 'Failed to approve loan'}`);
@@ -426,10 +755,8 @@
                 
                 if (res.ok) {
                     alert('Loan rejected successfully!');
-                    // Remove from current view immediately
-                    const currentLoans = allLoans.filter(loan => loan.id !== loanId);
-                    allLoans = currentLoans;
-                    filterLoans();
+                    // Update data
+                    await refreshAllData();
                 } else {
                     const error = await res.json();
                     alert(`Error: ${error.error || 'Failed to reject loan'}`);
@@ -445,20 +772,13 @@
             window.location.href = '/login';
         }
 
-        // Add logout button to page
+        // Add event listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Add logout button
-            const logoutBtn = document.createElement('button');
-            logoutBtn.textContent = 'Logout';
-            logoutBtn.style.cssText = 'position: absolute; top: 20px; right: 20px; padding: 8px 16px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;';
-            logoutBtn.onclick = logout;
-            document.body.appendChild(logoutBtn);
-            
-            // Load loans
-            loadAdminLoans();
+            // Load initial data
+            loadDashboardData();
             
             // Auto-refresh every 30 seconds
-            setInterval(loadAdminLoans, 30000);
+            setInterval(loadDashboardData, 30000);
         });
     </script>
 </body>
