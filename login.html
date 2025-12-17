@@ -61,11 +61,6 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
 
-  if (!email || !password) {
-    alert("Please enter both email and password.");
-    return;
-  }
-
   try {
     const res = await fetch(`${API_BASE}/login`, {
       method: "POST",
@@ -74,24 +69,31 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     });
 
     const data = await res.json();
-
     if (!res.ok) {
       alert(data.error || "Login failed");
       return;
     }
 
-    // 🔑 THIS is the backend connection
     localStorage.setItem("authToken", data.token);
 
-    // stay on same page
-    window.location.href = "index.html";
+    // 🔑 Fetch profile
+    const meRes = await fetch(`${API_BASE}/me`, {
+      headers: { Authorization: `Bearer ${data.token}` }
+    });
+
+    const user = await meRes.json();
+
+    // 🔥 ADMIN → ADMIN DASHBOARD
+    if (user.is_admin) {
+      window.location.href = "/admin/dashboard.html";
+    } else {
+      window.location.href = "index.html";
+    }
 
   } catch (err) {
-    console.error(err);
     alert("Server error");
   }
 });
 </script>
-
 </body>
 </html>
