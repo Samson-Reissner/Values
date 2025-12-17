@@ -99,6 +99,11 @@
             color: #333;
         }
         
+        .status-badge.submitted {
+            background-color: #ff9800;
+            color: white;
+        }
+        
         .status-badge.approved {
             background-color: #28a745;
             color: white;
@@ -419,7 +424,7 @@
     
     <div class="stats-container" id="stats-container">
         <div class="stat-card pending">
-            <div class="stat-label">Pending Loans</div>
+            <div class="stat-label">Pending/Submitted Loans</div>
             <div id="pending-count" class="stat-value">0</div>
         </div>
         <div class="stat-card active">
@@ -453,6 +458,7 @@
             <label for="statusFilter">Status:</label>
             <select id="statusFilter" onchange="filterLoans()">
                 <option value="pending">Pending Loans</option>
+                <option value="submitted">Submitted Loans</option>
                 <option value="all">All Loans</option>
                 <option value="active">Active Loans</option>
                 <option value="rejected">Rejected Loans</option>
@@ -517,6 +523,11 @@
         let allLoans = [];
         let currentFilter = 'pending';
         let currentSort = 'newest';
+
+        // Helper function to check if loan can be approved/rejected
+        function shouldShowApproveReject(loanStatus) {
+            return loanStatus === 'pending' || loanStatus === 'submitted';
+        }
 
         // Utility function to show notifications
         function showNotification(message, type = 'info') {
@@ -803,7 +814,8 @@
                                     loan.borrower?.email || 'N/A';
                 
                 const loanAmount = loan.principal_amount || loan.approved_amount || 0;
-                const canApprove = systemBalance >= loanAmount && loan.status === 'pending';
+                const showApproveReject = shouldShowApproveReject(loan.status);
+                const canApprove = systemBalance >= loanAmount && showApproveReject;
                 
                 const row = document.createElement('tr');
                 row.id = `loan-row-${loan.id}`;
@@ -818,7 +830,7 @@
                     <td><span class="status-badge ${loan.status}">${loan.status.toUpperCase()}</span></td>
                     <td>${formatDate(loan.created_at)}</td>
                     <td class="actions-cell">
-                        ${loan.status === 'pending' ? `
+                        ${showApproveReject ? `
                             <button onclick="viewLoan(${loan.id})" class="btn-view">View</button>
                             <button onclick="approveLoan(${loan.id})" class="btn-approve" id="approve-btn-${loan.id}" ${!canApprove ? 'disabled' : ''}>
                                 ${canApprove ? 'Approve' : 'Insufficient Funds'}
@@ -873,72 +885,96 @@
         }
 
         // Approve loan function
-        async function approveLoan(loanId) {
-            const token = localStorage.getItem("authToken");
-            
-            const loan = allLoans.find(l => l.id === loanId);
-            if (!loan) return;
-            
-            const loanAmount = loan.principal_amount || 0;
-            
-            if (!confirm(`Are you sure you want to approve loan #${loanId} for $${loanAmount.toLocaleString()}? This will use system funds.`)) {
-                return;
+        // Approve loan function
+async function approveLoan(loanId) {
+    const token = localStorage.getItem("authToken");
+    
+    const loan = allLoans.find(l => l.id === loanId);
+    if (!loan) return;
+    
+    // Check if loan can be approved
+    const loanStatus = loan.status;
+    if (loanStatus !== 'pending' && loanStatus !== 'submitted') {
+        showNotification(`Cannot approve loan #${loanId}. Status is already "${loanStatus}".`, 'error');
+        return;
+    }
+    
+    const loanAmount = loan.principal_amount || 0;
+    
+    if (!confirm(`Are you sure you want to approve loan #${loanId} for $${loanAmount.toLocaleString()}? This will use system funds.`)) {
+        return;
+    }
+    
+    // Disable buttons and show processing state
+    const approveBtn = document.getElementById(`approve-btn-${loanId}`);
+    const rejectBtn = document.getElementById(`reject-btn-${loanId}`);
+    const row = document.getElementById(`loan-row-${loanId}`);
+    
+    if (approveBtn) approveBtn.disabled = true;
+    if (rejectBtn) rejectBtn.disabled = true;
+    if (row) row.classList.add('status-updating');
+    
+    const originalApproveText = approveBtn ? approveBtn.textContent : 'Approve';
+    if (approveBtn) {
+        approveBtn.classList.add('approve-processing');
+        approveBtn.textContent = 'Processing...';
+    }
+    
+    try {
+        const res = await fetch(`http://localhost:3000/api/v1/admin/loans/${loanId}/approve`, {
+            method: 'POST',
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
             }
+        });
+        
+        const response = await res.json();
+        
+        if (res.ok) {
+            // Update UI immediately
+            updateDashboardAfterApproval(loanId, loanAmount);
             
-            // Disable buttons and show processing state
-            const approveBtn = document.getElementById(`approve-btn-${loanId}`);
-            const rejectBtn = document.getElementById(`reject-btn-${loanId}`);
-            const row = document.getElementById(`loan-row-${loanId}`);
+            // Show success notification
+            showNotification(`Loan #${loanId} approved successfully! System balance updated.`, 'success');
             
-            if (approveBtn) approveBtn.disabled = true;
-            if (rejectBtn) rejectBtn.disabled = true;
-            if (row) row.classList.add('status-updating');
+            // Refresh from server after a short delay to ensure consistency
+            setTimeout(() => {
+                refreshAllData();
+            }, 1000);
             
-            const originalApproveText = approveBtn ? approveBtn.textContent : 'Approve';
-            if (approveBtn) {
-                approveBtn.classList.add('approve-processing');
-                approveBtn.textContent = 'Processing...';
-            }
+        } else {
+            // Handle specific error messages
+            const errorMsg = response.error || 'Failed to approve loan';
             
-            try {
-                const res = await fetch(`http://localhost:3000/api/v1/admin/loans/${loanId}/approve`, {
-                    method: 'POST',
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                });
-                
-                if (res.ok) {
-                    // Update UI immediately
-                    updateDashboardAfterApproval(loanId, loanAmount);
-                    
-                    // Show success notification
-                    showNotification(`Loan #${loanId} approved successfully! System balance updated.`, 'success');
-                    
-                    // Refresh from server after a short delay to ensure consistency
-                    setTimeout(() => {
-                        refreshAllData();
-                    }, 1000);
-                    
-                } else {
-                    const error = await res.json();
-                    throw new Error(error.error || 'Failed to approve loan');
+            if (errorMsg.includes('already approved') || errorMsg.includes('already active')) {
+                // Loan was already approved elsewhere, update local data
+                const loanIndex = allLoans.findIndex(l => l.id === loanId);
+                if (loanIndex !== -1) {
+                    allLoans[loanIndex].status = 'active';
+                    filterLoans();
                 }
-            } catch (error) {
-                console.error('Loan approval error:', error);
-                showNotification(`Error: ${error.message}`, 'error');
-                
-                // Re-enable buttons on error
-                if (approveBtn) {
-                    approveBtn.disabled = false;
-                    approveBtn.classList.remove('approve-processing');
-                    approveBtn.textContent = originalApproveText;
-                }
-                if (rejectBtn) rejectBtn.disabled = false;
-                if (row) row.classList.remove('status-updating');
+                showNotification(`Loan #${loanId} was already approved. Updating display...`, 'info');
+            } else if (errorMsg.includes('insufficient funds')) {
+                showNotification(`Cannot approve: ${errorMsg}`, 'error');
+            } else {
+                throw new Error(errorMsg);
             }
         }
+    } catch (error) {
+        console.error('Loan approval error:', error);
+        showNotification(`Error: ${error.message}`, 'error');
+        
+        // Re-enable buttons on error
+        if (approveBtn) {
+            approveBtn.disabled = false;
+            approveBtn.classList.remove('approve-processing');
+            approveBtn.textContent = originalApproveText;
+        }
+        if (rejectBtn) rejectBtn.disabled = false;
+        if (row) row.classList.remove('status-updating');
+    }
+}
 
         // Reject loan function
         async function rejectLoan(loanId) {
