@@ -9,55 +9,67 @@
 </head>
 <body class="page-home">
     <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">
-                <!-- REPLACE: Logo image -->
-                <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
-            </a>
-            <div class="nav-menu">
-                <!-- Loans Dropdown -->
-                <div class="dropdown">
-                    <a href="#loans" class="nav-link dropdown-toggle">Loans</a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-column">
-                            <h4>Personal Loans</h4>
-                            <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
-                            <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
-                            <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
-                            <a href="yango-loans.html" class="dropdown-link">Value Loans on Yango</a>
-                            <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
-                            <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
-                        </div>
-                        <div class="dropdown-column">
-                            <h4>Business Loans</h4>
-                            <a href="business-loans.html" class="dropdown-link">Business Loans</a>
-                            <a href="order-finance.html" class="dropdown-link">Order Finance</a>
-                            <a href="invoice-discounting.html" class="dropdown-link">Invoice Discounting</a>
-                            <a href="asset-financing.html" class="dropdown-link">Asset Financing</a>
-                        </div>
-                        <div class="dropdown-column">
-                            <h4>Agri Loans</h4>
-                            <a href="agri-loans.html" class="dropdown-link">Agri Loans</a>
-                        </div>
-                        <div class="dropdown-column">
-                            <h4>Apps</h4>
-                            <a href="android-app.html" class="dropdown-link">Android App</a>
-                            <a href="ios-app.html" class="dropdown-link">iOS App</a>
-                        </div>
-                    </div>
-                </div>
-                <a href="payments.html" class="nav-link">Payments</a>
-                <a href="wallet-dashboard.html" class="nav-link">My Wallet</a>
-                <div id="authArea">
-                   <a href="auth-landing.html" class="nav-link">Sign in / Sign up</a>
-                </div>
-                <a href="about.html" class="nav-link">About</a>
-                <a href="apply.html" class="nav-link">Apply for a Loan</a>
-            </div>
-            
+   <nav class="navbar">
+  <div class="nav-container">
+
+    <!-- LEFT: Logo -->
+    <a href="index.html" class="logo">
+      <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
+    </a>
+
+    <!-- CENTER: Navigation Links -->
+    <div class="nav-menu">
+
+      <!-- Loans Dropdown -->
+      <div class="dropdown">
+        <a href="#loans" class="nav-link dropdown-toggle">Loans</a>
+        <div class="dropdown-menu">
+          <div class="dropdown-column">
+            <h4>Personal Loans</h4>
+            <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
+            <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
+            <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
+            <a href="yango-loans.html" class="dropdown-link">Value Loans on Yango</a>
+            <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
+            <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
+          </div>
+
+          <div class="dropdown-column">
+            <h4>Business Loans</h4>
+            <a href="business-loans.html" class="dropdown-link">Business Loans</a>
+            <a href="order-finance.html" class="dropdown-link">Order Finance</a>
+            <a href="invoice-discounting.html" class="dropdown-link">Invoice Discounting</a>
+            <a href="asset-financing.html" class="dropdown-link">Asset Financing</a>
+          </div>
+
+          <div class="dropdown-column">
+            <h4>Agri Loans</h4>
+            <a href="agri-loans.html" class="dropdown-link">Agri Loans</a>
+          </div>
+
+          <div class="dropdown-column">
+            <h4>Apps</h4>
+            <a href="android-app.html" class="dropdown-link">Android App</a>
+            <a href="ios-app.html" class="dropdown-link">iOS App</a>
+          </div>
         </div>
-    </nav>
+      </div>
+
+      <a href="payments.html" class="nav-link">Payments</a>
+      <a href="wallet-dashboard.html" class="nav-link">My Wallet</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="apply.html" class="nav-link">Apply for a Loan</a>
+
+    </div>
+
+    <!-- RIGHT: Auth / Profile -->
+    <div id="authArea" class="nav-auth">
+      <a href="auth-landing.html" class="nav-link">Sign in / Sign up</a>
+    </div>
+
+  </div>
+</nav>
+
 
     <!-- Hero Section - Money when you need it -->
     <section class="hero" style="background-image: url('images/indexPics.jpg'); background-size: cover; background-position: center; height: px;">
@@ -529,36 +541,6 @@ document.addEventListener('DOMContentLoaded', testBackendConnection);
 <script>
 const API_BASE = "http://localhost:3000/api/v1";
 
-async function redirectAfterLogin() {
-  const token = localStorage.getItem("authToken");
-  if (!token) return; // Not logged in → stay on marketing page
-
-  try {
-    const res = await fetch(`${API_BASE}/me`, {
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    });
-
-    if (!res.ok) return;
-
-    const user = await res.json();
-
-    if (user.is_admin) {
-      window.location.href = "/admin/dashboard.html";
-    } else {
-      window.location.href = "/dashboard.html";
-    }
-  } catch (e) {
-    console.error("Auth check failed", e);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", redirectAfterLogin);
-</script>
-<script>
-const API_BASE = "http://localhost:3000/api/v1";
-
 async function loadUserProfile() {
   const token = localStorage.getItem("authToken");
   if (!token) return;
@@ -574,10 +556,22 @@ async function loadUserProfile() {
 
     const user = await res.json();
 
+    let adminLink = "";
+    if (user.is_admin) {
+      adminLink = `
+        <a href="admin/dashboard.html" class="admin-link">
+          🛠 Admin Dashboard
+        </a>
+      `;
+    }
+
     document.getElementById("authArea").innerHTML = `
-      <div class="user-menu">
-        <span class="nav-link">Hi, ${user.first_name}</span>
+      <div class="user-menu dropdown">
+        <span class="nav-link dropdown-toggle">
+          Hi, ${user.first_name || user.email}
+        </span>
         <div class="dropdown-menu">
+          ${adminLink}
           <a href="wallet-dashboard.html">My Wallet</a>
           <a href="peer-to-peer.html">Peer to Peer</a>
           <a href="#" onclick="logout()">Logout</a>
@@ -591,7 +585,7 @@ async function loadUserProfile() {
 
 function logout() {
   localStorage.removeItem("authToken");
-  window.location.reload();
+  window.location.href = "index.html";
 }
 
 document.addEventListener("DOMContentLoaded", loadUserProfile);
