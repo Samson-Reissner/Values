@@ -12,7 +12,7 @@
 }
 
 .wallet-balance-card {
-    background: linear-gradient(135deg, #3d5975, #52a9e4);
+    background: linear-gradient(135deg, #52a9e4, #3d5975);
     color: var(--white);
     border-radius: var(--radius-xl);
     padding: var(--spacing-xl);
@@ -55,8 +55,8 @@
 .wallet-id {
     font-size: 0.9rem;
     opacity: 0.9;
-    color: rgba(255, 255, 255, 0.8);
-    background: rgba(255, 255, 255, 0.1);
+    color: #3d5975;
+    background: white;
     padding: 0.5rem 1rem;
     border-radius: 50px;
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -92,7 +92,7 @@
     font-size: 1rem;
     opacity: 0.9;
     margin-bottom: var(--spacing-sm);
-    color: rgba(255, 255, 255, 0.9);
+    color: #FFFFFF !important; /* ← Add !important */
     font-weight: var(--font-weight-medium);
 }
 
@@ -100,7 +100,7 @@
     font-size: 3rem;
     font-weight: var(--font-weight-bold);
     line-height: 1;
-    color: var(--white);
+    color: #3d5975; /* ← Changed to soft yellow (same as MWK amounts) */
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     letter-spacing: 0.5px;
 }
@@ -110,10 +110,10 @@
     flex-direction: column;
     gap: var(--spacing-lg);
     padding: var(--spacing-lg);
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(61, 89, 117, 0.2);
     border-radius: var(--radius-lg);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 .detail-item {
@@ -138,8 +138,9 @@
 
 .detail-item strong {
     font-size: 1.1rem;
-    color: var(--white);
+    color: #3d5975; /* Changed: soft yellow that matches your theme */
     font-weight: var(--font-weight-semibold);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Added for better visibility */
 }
 
 .wallet-actions {

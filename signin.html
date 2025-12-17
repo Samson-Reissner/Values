@@ -5,72 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Value Loans</title>
     <link rel="stylesheet" href="../styles/custom.css">
-
-    <style>
-        /* Modal background */
-        body {
-            background: #f4f4f4;
-        }
-
-        .auth-bg {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.45);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            z-index: 999;
-        }
-
-        /* Modal card */
-        .auth-card {
-            background: #fff;
-            width: 100%;
-            max-width: 420px;
-            padding: 35px 30px;
-            border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        /* Form fields */
-        .auth-form .form-group {
-            margin-bottom: 16px;
-        }
-
-        .auth-form input {
-            width: 100%;
-            padding: 14px;
-            border-radius: 10px;
-            border: 1px solid #dcdcdc;
-            font-size: 15px;
-        }
-
-        /* Button */
-        .btn-primary {
-            width: 100%;
-            padding: 14px;
-            border-radius: 100px !important;
-        }
-
-        /* Fade-in effect */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+    <link rel="stylesheet" href="/styles/new.css">
 </head>
 
 <body>
+
+<!-- Home Button -->
+<div class="home-btn-container">
+    <a href="../index.html" class="home-btn">
+        <i class="fas fa-home"></i> Home
+    </a>
+</div>
+
 
 <!-- Modal Background -->
 <div class="auth-bg">
 
     <!-- Modal Login Card -->
     <div class="auth-card">
+            <div class="card-logo">
+                <img src="images/Value-logo.png"Value Loans Logo" class="logo-image">
+            </div>
+
         <h2 class="section-title" style="text-align:center;">Welcome Back</h2>
         <p class="section-subtitle" style="text-align:center;">Login to continue</p>
+
 
         <form class="auth-form">
 
@@ -88,7 +47,7 @@
 
             <div class="auth-links" style="text-align:center; margin-top:20px;">
                 <p>Don't have an account?
-                    <a href="signup.html" class="link-primary">Sign Up</a>
+                    <a href="signup-wizard.html" class="link-primary">Sign Up</a>
                 </p>
             </div>
 

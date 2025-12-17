@@ -7,23 +7,6 @@
     <link rel="stylesheet" href="../styles/custom.css">
     <link rel="stylesheet" href="../styles/wallet-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Additional inline styles if needed */
-        .wallet-nav {
-            background: #fff;
-            border-bottom: 1px solid #e9ecef;
-            padding: 1rem 0;
-        }
-        
-        .wallet-nav .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-    </style>
 </head>
 <body class="wallet-page">
     <!-- Navigation -->
@@ -85,8 +68,9 @@
             
             <div class="balance-display">
                 <div class="available-balance">
-                    <span class="balance-label">Available Balance</span>
-                    <div class="balance-amount">MWK <span id="walletBalance">0.00</span></div>
+                    <span class="balance-label" style="color: #000 !important;">Available Balance</span>
+                    <div class="balance-amount" style="color: #000 !important;"
+                    >MWK <span id="walletBalance">0.00</span></div>
                 </div>
                 
                 <div class="balance-details">
