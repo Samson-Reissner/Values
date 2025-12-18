@@ -207,12 +207,12 @@
                 this.userId = null;
                 this.walletId = null;
             }
-            
-           initialize() {
+          initialize() {
   // Check for token first
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('authToken');
   if (!token) {
-    window.location.href = '/login';
+    console.log('No auth token, redirecting to login');
+    window.location.href = '/login.html';
     return;
   }
   
@@ -224,73 +224,144 @@
             
   async loadWalletData() {
   try {
-    const token = localStorage.getItem('token');
+    const API_BASE = "http://localhost:3000/api/v1";
+    const token = localStorage.getItem('authToken');
+    
     if (!token) {
-      console.error('No token found, redirecting to login');
-      window.location.href = '/login';
+      console.error('No authentication token found');
+      window.location.href = '/login.html';
       return;
     }
 
-    console.log('Loading wallet with token:', token.substring(0, 20) + '...');
+    console.log('Loading wallet data...');
 
-    // Try the wallet endpoint
-    const response = await fetch('/api/v1/wallet', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include' // Add this for session/cookie auth if needed
+    // 1. First get user data from /api/v1/me
+    const meRes = await fetch(`${API_BASE}/me`, {
+      method: "GET",
+      headers: { 
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
     });
 
-    console.log('Wallet response status:', response.status);
+    console.log('Me response status:', meRes.status);
 
-    if (response.status === 401) {
-      // Token expired or invalid
-      localStorage.removeItem('token');
-      window.location.href = '/login';
+    if (meRes.status === 401) {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userData');
+      alert('Session expired. Please log in again.');
+      window.location.href = '/login.html';
       return;
     }
 
-    if (!response.ok) {
-      // Try the nested user wallet endpoint as fallback
-      const userData = await this.getUserData(token);
-      if (userData && userData.id) {
-        const userWalletResponse = await fetch(`/api/v1/users/${userData.id}/wallet`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (userWalletResponse.ok) {
-          const walletData = await userWalletResponse.json();
-          this.processWalletData(walletData);
-          return;
-        }
-      }
-      
-      throw new Error(`Failed to load wallet: ${response.status} ${response.statusText}`);
+    if (!meRes.ok) {
+      throw new Error(`Failed to get user: ${meRes.status}`);
     }
 
-    const data = await response.json();
-    console.log('Wallet data received:', data);
-    this.processWalletData(data);
+    const userData = await meRes.json();
+    console.log('User data:', userData);
+    
+    // Store user data for later use
+    localStorage.setItem('userData', JSON.stringify(userData));
+
+    // 2. Get wallet data - try BOTH endpoints based on your routes
+    let walletRes = null;
+    let walletData = null;
+    
+    // Try direct wallet endpoint first
+    walletRes = await fetch(`${API_BASE}/wallet`, {
+      method: "GET",
+      headers: { 
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
+
+    console.log('Direct wallet endpoint status:', walletRes.status);
+
+    if (!walletRes.ok) {
+      // If direct endpoint fails, try user-specific endpoint
+      console.log('Trying user-specific wallet endpoint...');
+      walletRes = await fetch(`${API_BASE}/users/${userData.id}/wallet`, {
+        method: "GET",
+        headers: { 
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+      
+      console.log('User-specific wallet endpoint status:', walletRes.status);
+    }
+
+    if (!walletRes.ok) {
+      throw new Error(`Failed to load wallet: ${walletRes.status}`);
+    }
+
+    walletData = await walletRes.json();
+    console.log('Wallet data:', walletData);
+    
+    // Process the data
+    this.processWalletData(walletData);
 
   } catch (error) {
     console.error("Wallet load error:", error);
     
     // Show user-friendly error
-    const errorMessage = error.message || 'Unable to load wallet balance';
-    console.warn(errorMessage);
+    this.showErrorNotification(`Error loading wallet: ${error.message}`);
     
-    // Use fallback from localStorage
+    // Use cached data as fallback
     const cachedWallet = JSON.parse(localStorage.getItem('userWallet')) || {};
     if (cachedWallet.balance !== undefined) {
+      console.log('Using cached wallet data');
       this.balance = cachedWallet.balance;
       this.walletId = cachedWallet.walletId || 'VAL-CACHED';
       this.updateDisplay();
+    } else {
+      // If no cached data, use demo mode
+      console.log('Using demo data');
+      this.useDemoData();
     }
   }
+}
+
+// Add this helper method for demo data
+useDemoData() {
+  console.log('Using demo wallet data');
+  
+  this.balance = 12500.75;
+  this.walletId = `VAL-DEMO-${Date.now().toString().slice(-6)}`;
+  
+  // Update UI
+  document.getElementById('walletId').textContent = this.walletId;
+  document.getElementById('walletBalance').textContent = 
+    `MWK ${this.formatCurrency(this.balance)}`;
+  document.getElementById('totalDeposits').textContent = `MWK ${this.formatCurrency(15000)}`;
+  document.getElementById('totalWithdrawals').textContent = `MWK ${this.formatCurrency(2500)}`;
+  document.getElementById('activeLoans').textContent = `MWK ${this.formatCurrency(0)}`;
+  
+  // Save demo data
+  this.saveToStorage();
+  
+  // Show demo indicator
+  this.showDemoIndicator();
+}
+
+// Add demo indicator
+showDemoIndicator() {
+  const indicator = document.createElement('div');
+  indicator.innerHTML = `
+    <div style="background: #ff9800; color: white; padding: 8px 16px; border-radius: 4px; 
+                font-size: 12px; display: flex; align-items: center; gap: 8px;
+                position: fixed; bottom: 20px; left: 20px; z-index: 9999;">
+      <i class="fas fa-info-circle"></i>
+      <span>Demo Mode: Using sample data</span>
+      <button onclick="this.parentElement.remove()" 
+              style="background: none; border: none; color: white; cursor: pointer; margin-left: 8px;">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  `;
+  document.body.appendChild(indicator);
 }
 
 // Helper function to get user data

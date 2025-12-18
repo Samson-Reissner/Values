@@ -15,6 +15,13 @@ async function safeJson(response) {
 
 const $ = (id) => document.getElementById(id);
 
+function getAuthHeaders(isJson = true) {
+    const token = localStorage.getItem("authToken");
+    const headers = {};
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    if (isJson) headers["Content-Type"] = "application/json";
+    return headers;
+}
 
 /* ===========================================================
    STEP CONTROL
@@ -35,7 +42,6 @@ function showStep(n) {
 }
 
 showStep(currentStep);
-
 
 /* ===========================================================
    BUTTON HANDLING
@@ -59,7 +65,6 @@ async function nextPrev(direction) {
     showStep(currentStep);
 }
 
-
 /* ===========================================================
    RUN CORRECT SAVE PER STEP
 =========================================================== */
@@ -74,7 +79,6 @@ async function runStepSave(step) {
     }
 }
 
-
 /* ===========================================================
    STEP 1 — PERSONAL DETAILS
 =========================================================== */
@@ -88,13 +92,12 @@ async function savePersonalDetails() {
         location: $("location").value,
         phone: $("phone").value
     };
-   // const BACKEND_URL = "http://localhost:3000"; // or your backend host/port
 
-const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/start`, {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify(payload)
-});
+    const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/start`, {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify(payload)
+    });
 
     const data = await safeJson(response);
 
@@ -107,17 +110,15 @@ const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/start`, {
     return true;
 }
 
-
 /* ===========================================================
    STEP 2 — GUARANTOR DETAILS
 =========================================================== */
 
 async function saveGuarantorDetails() {
-
-    // if (!loanRequestId) {
-    //     alert("Loan ID missing");
-    //     return false;
-    // }
+    if (!loanRequestId) {
+        alert("Loan ID missing");
+        return false;
+    }
 
     const payload = {
         first_name: $("g_first").value,
@@ -130,7 +131,7 @@ async function saveGuarantorDetails() {
 
     const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/${loanRequestId}/guarantor`, {
         method: "PUT",
-        headers: {"Content-Type": "application/json"},
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload)
     });
 
@@ -144,13 +145,11 @@ async function saveGuarantorDetails() {
     return true;
 }
 
-
 /* ===========================================================
    STEP 3 — LOAN DETAILS
 =========================================================== */
 
 async function saveLoanDetails() {
-
     if (!loanRequestId) {
         alert("Loan ID missing");
         return false;
@@ -165,7 +164,7 @@ async function saveLoanDetails() {
 
     const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/${loanRequestId}/loan_details`, {
         method: "PUT",
-        headers: {"Content-Type": "application/json"},
+        headers: getAuthHeaders(),
         body: JSON.stringify(payload)
     });
 
@@ -179,13 +178,11 @@ async function saveLoanDetails() {
     return true;
 }
 
-
 /* ===========================================================
    STEP 4 — DOCUMENT UPLOAD
 =========================================================== */
 
 async function uploadDocuments() {
-
     if (!loanRequestId) {
         alert("Loan ID missing");
         return false;
@@ -205,6 +202,7 @@ async function uploadDocuments() {
 
     const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/${loanRequestId}/documents`, {
         method: "PUT",
+        headers: getAuthHeaders(false), // multipart/form-data → don't set Content-Type manually
         body: formData
     });
 
@@ -218,15 +216,19 @@ async function uploadDocuments() {
     return true;
 }
 
-
 /* ===========================================================
    STEP 5 — SUBMIT
 =========================================================== */
 
 async function finalizeApplication() {
+    if (!loanRequestId) {
+        alert("Loan ID missing");
+        return false;
+    }
 
     const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/${loanRequestId}/submit`, {
-        method: "POST"
+        method: "POST",
+        headers: getAuthHeaders()
     });
 
     const data = await safeJson(response);
@@ -238,7 +240,6 @@ async function finalizeApplication() {
 
     window.location.href = "success.html";
 }
-
 
 /* ===========================================================
    PROGRESS BAR
