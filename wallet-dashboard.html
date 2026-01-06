@@ -106,18 +106,22 @@
             </div>
             
             <div class="wallet-actions">
-                <button class="btn-wallet-action primary" onclick="addMoney()">
+                <button class="btn-wallet-action primary" id="addMoneyBtn">
                     <i class="fas fa-plus-circle"></i> Add Money
                 </button>
-                <button class="btn-wallet-action" onclick="sendMoney()">
+                <button class="btn-wallet-action" id="sendMoneyBtn">
                     <i class="fas fa-paper-plane"></i> Send Money
                 </button>
-                <button class="btn-wallet-action" onclick="withdrawMoney()">
+                <button class="btn-wallet-action" id="withdrawMoneyBtn">
                     <i class="fas fa-minus-circle"></i> Withdraw
                 </button>
-                <button class="btn-wallet-action" onclick="viewTransactions()">
+                <button class="btn-wallet-action" id="viewTransactionsBtn">
                     <i class="fas fa-history"></i> Transactions
                 </button>
+                <button class="btn-wallet-action" id="payBillsBtn">
+                     <i class="fas fa-file-invoice-dollar"></i> Pay Bills
+                </button>
+
             </div>
         </div>
         
@@ -197,434 +201,92 @@
         </div>
     </div>
 
-    <!-- ALL JAVASCRIPT CODE IN SAME FILE -->
-    <script>
-        // Wallet Management System
-        class ValueWallet {
-            constructor() {
-                this.balance = 0;
-                this.transactions = [];
-                this.userId = null;
-                this.walletId = null;
-            }
-          initialize() {
-  // Check for token first
-  const token = localStorage.getItem('authToken');
-  if (!token) {
-    console.log('No auth token, redirecting to login');
-    window.location.href = '/login.html';
-    return;
-  }
-  
-  this.loadWalletData();
-  this.updateDisplay();
-  this.loadTransactions();
-  this.checkP2PEligibility();
-}
-            
-  async loadWalletData() {
-  try {
-    const API_BASE = "http://localhost:3000/api/v1";
-    const token = localStorage.getItem('authToken');
-    
-    if (!token) {
-      console.error('No authentication token found');
-      window.location.href = '/login.html';
-      return;
-    }
+    <div id="paymentModal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Pay Bills</h3>
 
-    console.log('Loading wallet data...');
+    <label>Payment Type</label>
+    <select id="paymentType">
+      <option value="">Select</option>
+      <option value="utility">Utility Bill</option>
+      <option value="exam">Examination Fee</option>
+      <option value="school">School Fees</option>
+    </select>
 
-    // 1. First get user data from /api/v1/me
-    const meRes = await fetch(`${API_BASE}/me`, {
-      method: "GET",
-      headers: { 
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
-      }
-    });
+    <label>Service Provider</label>
+    <select id="serviceProvider"></select>
 
-    console.log('Me response status:', meRes.status);
+    <label>Reference Number</label>
+    <input type="text" id="paymentReference">
 
-    if (meRes.status === 401) {
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('userData');
-      alert('Session expired. Please log in again.');
-      window.location.href = '/login.html';
-      return;
-    }
+    <label>Amount (MWK)</label>
+    <input type="number" id="paymentAmount">
 
-    if (!meRes.ok) {
-      throw new Error(`Failed to get user: ${meRes.status}`);
-    }
-
-    const userData = await meRes.json();
-    console.log('User data:', userData);
-    
-    // Store user data for later use
-    localStorage.setItem('userData', JSON.stringify(userData));
-
-    // 2. Get wallet data - try BOTH endpoints based on your routes
-    let walletRes = null;
-    let walletData = null;
-    
-    // Try direct wallet endpoint first
-    walletRes = await fetch(`${API_BASE}/wallet`, {
-      method: "GET",
-      headers: { 
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
-      }
-    });
-
-    console.log('Direct wallet endpoint status:', walletRes.status);
-
-    if (!walletRes.ok) {
-      // If direct endpoint fails, try user-specific endpoint
-      console.log('Trying user-specific wallet endpoint...');
-      walletRes = await fetch(`${API_BASE}/users/${userData.id}/wallet`, {
-        method: "GET",
-        headers: { 
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        }
-      });
-      
-      console.log('User-specific wallet endpoint status:', walletRes.status);
-    }
-
-    if (!walletRes.ok) {
-      throw new Error(`Failed to load wallet: ${walletRes.status}`);
-    }
-
-    walletData = await walletRes.json();
-    console.log('Wallet data:', walletData);
-    
-    // Process the data
-    this.processWalletData(walletData);
-
-  } catch (error) {
-    console.error("Wallet load error:", error);
-    
-    // Show user-friendly error
-    this.showErrorNotification(`Error loading wallet: ${error.message}`);
-    
-    // Use cached data as fallback
-    const cachedWallet = JSON.parse(localStorage.getItem('userWallet')) || {};
-    if (cachedWallet.balance !== undefined) {
-      console.log('Using cached wallet data');
-      this.balance = cachedWallet.balance;
-      this.walletId = cachedWallet.walletId || 'VAL-CACHED';
-      this.updateDisplay();
-    } else {
-      // If no cached data, use demo mode
-      console.log('Using demo data');
-      this.useDemoData();
-    }
-  }
-}
-
-// Add this helper method for demo data
-useDemoData() {
-  console.log('Using demo wallet data');
-  
-  this.balance = 12500.75;
-  this.walletId = `VAL-DEMO-${Date.now().toString().slice(-6)}`;
-  
-  // Update UI
-  document.getElementById('walletId').textContent = this.walletId;
-  document.getElementById('walletBalance').textContent = 
-    `MWK ${this.formatCurrency(this.balance)}`;
-  document.getElementById('totalDeposits').textContent = `MWK ${this.formatCurrency(15000)}`;
-  document.getElementById('totalWithdrawals').textContent = `MWK ${this.formatCurrency(2500)}`;
-  document.getElementById('activeLoans').textContent = `MWK ${this.formatCurrency(0)}`;
-  
-  // Save demo data
-  this.saveToStorage();
-  
-  // Show demo indicator
-  this.showDemoIndicator();
-}
-
-// Add demo indicator
-showDemoIndicator() {
-  const indicator = document.createElement('div');
-  indicator.innerHTML = `
-    <div style="background: #ff9800; color: white; padding: 8px 16px; border-radius: 4px; 
-                font-size: 12px; display: flex; align-items: center; gap: 8px;
-                position: fixed; bottom: 20px; left: 20px; z-index: 9999;">
-      <i class="fas fa-info-circle"></i>
-      <span>Demo Mode: Using sample data</span>
-      <button onclick="this.parentElement.remove()" 
-              style="background: none; border: none; color: white; cursor: pointer; margin-left: 8px;">
-        <i class="fas fa-times"></i>
+    <div class="modal-actions">
+      <button id="confirmPaymentBtn" class="btn-wallet-action primary">
+        Pay
+      </button>
+      <button id="cancelPaymentBtn" class="btn-wallet-action">
+        Cancel
       </button>
     </div>
-  `;
-  document.body.appendChild(indicator);
+  </div>
+</div>
+<script src="../js/wallet.js"></script>
+<script src="../js/payments.js"></script>
+<style>
+/* Modal overlay */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* on top of everything else */
 }
 
-// Helper function to get user data
-async getUserData(token) {
-  try {
-    const response = await fetch('/api/v1/me', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-    
-    if (response.ok) {
-      return await response.json();
-    }
-  } catch (error) {
-    console.error('Failed to get user data:', error);
-  }
-  return null;
+/* Hidden state */
+.hidden {
+    display: none !important;
 }
 
-// Process wallet data
-processWalletData(data) {
-  this.balance = data.balance || data.available_balance || 0;
-  this.walletId = data.wallet_id || data.id || `VAL-${Date.now()}`;
-
-  // Update UI
-  document.getElementById('walletId').textContent = this.walletId;
-  document.getElementById('walletBalance').textContent = 
-    this.formatCurrency(this.balance);
-
-  // Update other fields if available
-  const updateField = (elementId, value, defaultValue = 0) => {
-    if (value !== undefined) {
-      document.getElementById(elementId).textContent = 
-        `MWK ${this.formatCurrency(value)}`;
-    } else {
-      document.getElementById(elementId).textContent = 
-        `MWK ${this.formatCurrency(defaultValue)}`;
-    }
-  };
-
-  updateField('totalDeposits', data.total_deposits);
-  updateField('totalWithdrawals', data.total_withdrawals);
-  updateField('activeLoans', data.active_loans);
-
-  // Cache the data
-  this.saveToStorage();
-  
-  console.log('Wallet data processed successfully');
+/* Modal content box */
+.modal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
-            
-            formatCurrency(amount) {
-                return amount.toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                });
-            }
-            
-            addMoney(amount, method = 'mobile_money') {
-                this.balance += amount;
-                
-                const transaction = {
-                    id: 'TX-' + Date.now(),
-                    type: 'deposit',
-                    amount: amount,
-                    method: method,
-                    timestamp: new Date().toISOString(),
-                    status: 'completed'
-                };
-                
-                this.transactions.unshift(transaction);
-                this.updateWallet();
-                this.saveToStorage();
-                
-                return transaction;
-            }
-            
-            sendMoney(amount, recipientWalletId, description = '') {
-                if (this.balance < amount) {
-                    throw new Error('Insufficient funds');
-                }
-                
-                this.balance -= amount;
-                
-                const transaction = {
-                    id: 'TX-' + Date.now(),
-                    type: 'send',
-                    amount: amount,
-                    recipient: recipientWalletId,
-                    description: description,
-                    timestamp: new Date().toISOString(),
-                    status: 'completed'
-                };
-                
-                this.transactions.unshift(transaction);
-                this.updateWallet();
-                this.saveToStorage();
-                
-                return transaction;
-            }
-            
-            withdrawMoney(amount, method = 'bank_transfer') {
-                if (this.balance < amount) {
-                    throw new Error('Insufficient funds');
-                }
-                
-                this.balance -= amount;
-                
-                const transaction = {
-                    id: 'TX-' + Date.now(),
-                    type: 'withdrawal',
-                    amount: amount,
-                    method: method,
-                    timestamp: new Date().toISOString(),
-                    status: 'pending'
-                };
-                
-                this.transactions.unshift(transaction);
-                this.updateWallet();
-                this.saveToStorage();
-                
-                return transaction;
-            }
-            
-            updateDisplay() {
-                document.getElementById('walletBalance').textContent = this.formatCurrency(this.balance);
-                this.displayTransactions();
-            }
-            
-            displayTransactions() {
-                const container = document.getElementById('transactionList');
-                if (!container) return;
-                
-                container.innerHTML = '';
-                
-                this.transactions.slice(0, 5).forEach(transaction => {
-                    const div = document.createElement('div');
-                    div.className = 'transaction-item';
-                    
-                    const isReceived = transaction.type === 'deposit' || transaction.type === 'receive';
-                    const icon = isReceived ? 'fa-arrow-down' : 'fa-paper-plane';
-                    const amountClass = isReceived ? 'received' : 'sent';
-                    const amountSign = isReceived ? '+' : '-';
-                    
-                    div.innerHTML = `
-                        <div class="transaction-icon">
-                            <i class="fas ${icon} ${amountClass}"></i>
-                        </div>
-                        <div class="transaction-details">
-                            <div class="transaction-title">${this.getTransactionTitle(transaction)}</div>
-                            <div class="transaction-date">${this.formatDate(transaction.timestamp)}</div>
-                        </div>
-                        <div class="transaction-amount ${amountClass}">
-                            ${amountSign}MWK ${this.formatCurrency(transaction.amount)}
-                        </div>
-                    `;
-                    
-                    container.appendChild(div);
-                });
-            }
-            
-            getTransactionTitle(transaction) {
-                switch(transaction.type) {
-                    case 'deposit': return `Deposit via ${transaction.method}`;
-                    case 'send': return `Sent to ${transaction.recipient?.substring(0, 8)}...`;
-                    case 'receive': return `Received from ${transaction.sender?.substring(0, 8)}...`;
-                    case 'withdrawal': return `Withdrawal to ${transaction.method}`;
-                    default: return 'Transaction';
-                }
-            }
-            
-            formatDate(dateString) {
-                const date = new Date(dateString);
-                const now = new Date();
-                const diffHours = (now - date) / (1000 * 60 * 60);
-                
-                if (diffHours < 24) {
-                    return 'Today, ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                } else if (diffHours < 48) {
-                    return 'Yesterday, ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                } else {
-                    return date.toLocaleDateString() + ', ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                }
-            }
-            
-            saveToStorage() {
-                const walletData = {
-                    balance: this.balance,
-                    walletId: this.walletId,
-                    transactions: this.transactions
-                };
-                
-                localStorage.setItem('userWallet', JSON.stringify(walletData));
-            }
-            
-            updateWallet() {
-                this.updateDisplay();
-                this.saveToStorage();
-            }
-            
-            loadTransactions() {
-                // Load transaction history
-                this.displayTransactions();
-            }
-            
-            checkP2PEligibility() {
-                const userData = JSON.parse(localStorage.getItem('userData')) || {};
-                const walletData = JSON.parse(localStorage.getItem('userWallet')) || {};
-                
-                const hasWallet = !!walletData.walletId;
-                const hasKYC = userData.kycVerified || false;
-                const hasMinimumBalance = walletData.balance >= 50000;
-                const accountAge = userData.accountAgeDays || 0;
-                
-                const eligibilityWarning = document.getElementById('eligibilityWarning');
-                
-                if (hasWallet && hasKYC && hasMinimumBalance && accountAge > 30) {
-                    if (eligibilityWarning) eligibilityWarning.style.display = 'none';
-                } else {
-                    if (eligibilityWarning) eligibilityWarning.style.display = 'flex';
-                }
-            }
-        }
-        
-        // Initialize wallet when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            const wallet = new ValueWallet();
-            window.valueWallet = wallet;
-            wallet.initialize();
-        });
-        
-        // UI Functions
-        function addMoney() {
-            const amount = prompt('Enter amount to add (MWK):');
-            if (amount && !isNaN(amount) && amount > 0) {
-                const parsedAmount = parseFloat(amount);
-                window.valueWallet.addMoney(parsedAmount);
-                alert(`MWK ${amount} added successfully!`);
-            }
-        }
-        
-        function sendMoney() {
-            const recipient = prompt("Enter recipient's Wallet ID:");
-            const amount = prompt('Enter amount to send (MWK):');
-            
-            if (recipient && amount && !isNaN(amount) && amount > 0) {
-                try {
-                    window.valueWallet.sendMoney(parseFloat(amount), recipient);
-                    alert(`MWK ${amount} sent to ${recipient.substring(0, 8)}...`);
-                } catch (error) {
-                    alert('Error: ' + error.message);
-                }
-            }
-        }
-        
-        function withdrawMoney() {
-            window.location.href = 'withdraw-money.html';
-        }
-        
-        function viewTransactions() {
-            window.location.href = 'transaction-history.html';
-        }
-    </script>
+
+/* Modal buttons */
+.modal-actions {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.modal-actions button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.modal-actions .primary {
+    background: #007bff;
+    color: #fff;
+}
+
+.modal-actions button:hover {
+    opacity: 0.9;
+}
+</style>
 </body>
 </html>
