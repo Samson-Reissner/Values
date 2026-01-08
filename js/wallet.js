@@ -7,8 +7,12 @@ class ValueWallet {
     this.balance = 0;
     this.transactions = [];
     this.walletId = null;
+    this.selectedMethod = null;
   }
 
+  /* -------------------------
+     INIT
+  --------------------------*/
   initialize() {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -29,26 +33,18 @@ class ValueWallet {
       const API_BASE = "http://localhost:3000/api/v1";
       const token = localStorage.getItem("authToken");
 
-      const meRes = await fetch(`${API_BASE}/me`, {
-        headers: { Authorization: `Bearer ${token}` }
+      const walletRes = await fetch(`${API_BASE}/wallet`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
       });
 
-      if (!meRes.ok) throw new Error("Session expired");
-      const user = await meRes.json();
-
-      const walletRes = await fetch(`${API_BASE}/wallet`, {
-  method: "GET",
-  headers: {
-    Authorization: `Bearer ${token}`,
-    "Content-Type": "application/json"
-  }
-});
-
-
       if (!walletRes.ok) throw new Error("Wallet not found");
-      const wallet = await walletRes.json();
 
+      const wallet = await walletRes.json();
       this.processWalletData(wallet);
+
     } catch (e) {
       console.warn("Using demo wallet");
       this.useDemoData();
@@ -71,33 +67,27 @@ class ValueWallet {
   --------------------------*/
   addMoney(amount) {
     this.balance += amount;
-    return this.logTx("deposit", amount);
+    return this.logTx("deposit", amount, {
+      method: this.selectedMethod
+    });
   }
 
   sendMoney(amount, recipient) {
-    if (this.balance < amount) throw new Error("Insufficient funds");
+    if (this.balance < amount) {
+      alert("Insufficient funds");
+      return;
+    }
     this.balance -= amount;
     return this.logTx("send", amount, { recipient });
   }
 
   withdrawMoney(amount) {
-    if (this.balance < amount) throw new Error("Insufficient funds");
+    if (this.balance < amount) {
+      alert("Insufficient funds");
+      return;
+    }
     this.balance -= amount;
     return this.logTx("withdrawal", amount);
-  }
-
-  payBill({ category, provider, reference, amount }) {
-    if (this.balance < amount) {
-      throw new Error("Insufficient wallet balance");
-    }
-
-    this.balance -= amount;
-
-    return this.logTx("bill_payment", amount, {
-      category,
-      provider,
-      reference
-    });
   }
 
   /* -------------------------
@@ -142,6 +132,72 @@ class ValueWallet {
   }
 
   /* -------------------------
+     DEPOSIT FLOW (PRODUCTION UX)
+  --------------------------*/
+  showDepositMethods() {
+    document
+      .getElementById("depositMethodModal")
+      .classList.remove("hidden");
+
+    document.querySelectorAll("[data-method]").forEach(btn => {
+      btn.onclick = () => {
+        this.selectedMethod = btn.dataset.method;
+        document
+          .getElementById("depositMethodModal")
+          .classList.add("hidden");
+        this.showAmountModal();
+      };
+    });
+
+    document.getElementById("closeDepositMethod").onclick = () => {
+      document
+        .getElementById("depositMethodModal")
+        .classList.add("hidden");
+    };
+  }
+
+  showAmountModal() {
+    document.getElementById("depositTitle").textContent =
+      `Deposit via ${this.selectedMethod.toUpperCase()}`;
+
+    document
+      .getElementById("depositAmountModal")
+      .classList.remove("hidden");
+
+    document.getElementById("confirmDepositBtn").onclick = () => {
+      const amount = parseFloat(
+        document.getElementById("depositAmount").value
+      );
+
+      if (!amount || amount <= 0) {
+        alert("Enter a valid amount");
+        return;
+      }
+
+      document
+        .getElementById("depositAmountModal")
+        .classList.add("hidden");
+
+      alert(
+        "A payment prompt has been sent to your phone.\n" +
+        "Please enter your mobile money PIN to confirm."
+      );
+
+      // Simulate telco confirmation (DEMO ONLY)
+      setTimeout(() => {
+        this.addMoney(amount);
+        alert("Deposit successful");
+      }, 3000);
+    };
+
+    document.getElementById("cancelDepositBtn").onclick = () => {
+      document
+        .getElementById("depositAmountModal")
+        .classList.add("hidden");
+    };
+  }
+
+  /* -------------------------
      HELPERS
   --------------------------*/
   format(amount) {
@@ -174,15 +230,7 @@ class ValueWallet {
   bindUIActions() {
     document.getElementById("addMoneyBtn")
       ?.addEventListener("click", () => {
-        const amt = parseFloat(prompt("Amount (MWK)"));
-        if (amt > 0) this.addMoney(amt);
-      });
-
-    document.getElementById("sendMoneyBtn")
-      ?.addEventListener("click", () => {
-        const id = prompt("Recipient Wallet ID");
-        const amt = parseFloat(prompt("Amount"));
-        if (id && amt > 0) this.sendMoney(amt, id);
+        this.showDepositMethods();
       });
 
     document.getElementById("withdrawMoneyBtn")
@@ -198,7 +246,7 @@ class ValueWallet {
 }
 
 /* -------------------------
-   INIT
+   START APP
 --------------------------*/
 document.addEventListener("DOMContentLoaded", () => {
   window.valueWallet = new ValueWallet();
