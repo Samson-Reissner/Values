@@ -1,0 +1,37 @@
+<div id="sendMoneyModal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Send Money</h3>
+
+    <label>Send To</label>
+    <select id="sendType">
+      <option value="">Select</option>
+      <option value="mobile">Mobile Number</option>
+      <option value="wallet">Value Wallet</option>
+    </select>
+
+    <div id="mobileFields" class="hidden">
+      <label>Mobile Network</label>
+      <select id="mobileNetwork">
+        <option value="">Select</option>
+        <option value="airtel">Airtel Money</option>
+        <option value="tnm">TNM Mpamba</option>
+      </select>
+
+      <label>Mobile Number</label>
+      <input type="text" id="mobileNumber" placeholder="09XXXXXXXX">
+    </div>
+
+    <div id="walletFields" class="hidden">
+      <label>Recipient Email</label>
+      <input id="recipientEmail" type="email" placeholder="Recipient email">
+    </div>
+
+    <label>Amount (MWK)</label>
+    <input type="number" id="sendAmount" min="100">
+
+    <div class="modal-actions">
+      <button id="confirmSendBtn" class="btn-wallet-action primary">Send</button>
+      <button id="cancelSendBtn" class="btn-wallet-action">Cancel</button>
+    </div>
+  </div>
+</div>
