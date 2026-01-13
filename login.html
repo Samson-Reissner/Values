@@ -51,8 +51,7 @@
             </a>
         </div>
     </div>
-
-    <script>
+<script>
 const API_BASE = "http://localhost:3000/api/v1";
 
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
@@ -74,21 +73,11 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
       return;
     }
 
+    // Store token ONLY
     localStorage.setItem("authToken", data.token);
 
-    // 🔑 Fetch profile
-    const meRes = await fetch(`${API_BASE}/me`, {
-      headers: { Authorization: `Bearer ${data.token}` }
-    });
-
-    const user = await meRes.json();
-
-    // 🔥 ADMIN → ADMIN DASHBOARD
-    if (user.is_admin) {
-      window.location.href = "/admin/dashboard.html";
-    } else {
-      window.location.href = "index.html";
-    }
+    // Always go to the same page
+    window.location.href = "index.html";
 
   } catch (err) {
     alert("Server error");
