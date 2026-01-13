@@ -65,6 +65,40 @@ class ValueWallet {
   /* -------------------------
      WALLET ACTIONS
   --------------------------*/
+  async payBill({ category, provider_code, reference, amount, allow_loan = false }) {
+  const token = localStorage.getItem("authToken");
+
+  const res = await fetch("http://localhost:3000/api/v1/payments", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      payment: {
+        category,
+        provider_code,
+        reference,
+        amount,
+        allow_loan
+      }
+    })
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.error || "Payment failed");
+  }
+
+  this.balance = data.balance;
+  this.updateUI();
+  this.save();
+
+  return data;
+}
+
+
   addMoney(amount) {
     this.balance += amount;
     return this.logTx("deposit", amount, {
