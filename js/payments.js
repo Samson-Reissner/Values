@@ -1,6 +1,41 @@
 /* payments.js
    Handles bill, exam, and school fee payments
 */
+async function initiatePayment({ category, provider_code, reference, amount }) {
+  const wallet = window.valueWallet;
+
+  if (wallet.balance < amount) {
+    const shortfall = amount - wallet.balance;
+
+    const proceed = confirm(
+      `Insufficient funds.\n` +
+      `You need MWK ${shortfall} more.\n\n` +
+      `Would you like to proceed with a loan?`
+    );
+
+    if (!proceed) {
+      return; // user cancelled
+    }
+
+    // User accepted loan
+    return wallet.payBill({
+      category,
+      provider_code,
+      reference,
+      amount,
+      allow_loan: true
+    });
+  }
+
+  // Sufficient funds → normal payment
+  return wallet.payBill({
+    category,
+    provider_code,
+    reference,
+    amount,
+    allow_loan: false
+  });
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("✅ payments.js loaded");
@@ -12,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const paymentType = document.getElementById("paymentType");
     const providerSelect = document.getElementById("serviceProvider");
 
-    // ✅ GUARD CLAUSE (THIS IS THE FIX)
+    //  GUARD CLAUSE (THIS IS THE FIX)
     if (!modal || !payBtn || !cancelBtn || !confirmBtn || !paymentType || !providerSelect) {
         console.warn("payments.js loaded but required elements not found");
         return;
@@ -56,34 +91,36 @@ document.addEventListener("DOMContentLoaded", () => {
     /* -------------------------
        Confirm payment
     --------------------------*/
-    confirmBtn.addEventListener("click", () => {
-        const payload = {
-            category: paymentType.value,
-            provider: providerSelect.value,
-            reference: document.getElementById("paymentReference").value,
-            amount: parseFloat(document.getElementById("paymentAmount").value)
-        };
+   confirmBtn.addEventListener("click", async () => {
+  const payload = {
+    category: paymentType.value,
+    provider_code: providerSelect.value,
+    reference: document.getElementById("paymentReference").value,
+    amount: parseFloat(document.getElementById("paymentAmount").value)
+  };
 
-        if (!isValid(payload)) {
-            alert("Please fill all payment fields");
-            return;
-        }
+  if (!isValid(payload)) {
+    alert("Please fill all payment fields");
+    return;
+  }
 
-        try {
-            const tx = window.valueWallet?.payBill(payload);
-            alert(`Payment successful\nRef: ${tx?.reference || "N/A"}`);
-            modal.classList.add("hidden");
-            resetForm();
-        } catch (err) {
-            alert(err.message);
-        }
-    });
+  try {
+    const tx = await initiatePayment(payload); // ✅ USE THIS
+    if (!tx) return; // user cancelled loan prompt
+
+    alert(`Payment successful\nRef: ${tx?.reference || "N/A"}`);
+    modal.classList.add("hidden");
+    resetForm();
+  } catch (err) {
+    alert(err.message);
+  }
+});
 
     /* -------------------------
        Helpers
     --------------------------*/
     function isValid(p) {
-        return p.category && p.provider && p.reference && p.amount > 0;
+        return p.category && p.provider_code && p.reference && p.amount > 0;
     }
 
     function resetForm() {
