@@ -542,6 +542,7 @@ document.addEventListener('DOMContentLoaded', testBackendConnection);
 const API_BASE = "http://localhost:3000/api/v1";
 
 async function loadUserProfile() {
+
   const token = localStorage.getItem("authToken");
   if (!token) return;
 
@@ -555,6 +556,7 @@ async function loadUserProfile() {
     if (!res.ok) throw new Error("Not authenticated");
 
     const user = await res.json();
+    console.log("USER FROM API:", user);
 
     let adminLink = "";
     if (user.is_admin) {
@@ -590,6 +592,5 @@ function logout() {
 
 document.addEventListener("DOMContentLoaded", loadUserProfile);
 </script>
-
 </body>
 </html>
