@@ -121,6 +121,28 @@
     padding-bottom: var(--spacing-md);
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
+.detail-item.loan-highlight {
+  background: rgba(255, 193, 7, 0.15); /* soft warning yellow */
+  border: 1px solid rgba(255, 193, 7, 0.4);
+  border-radius: 10px;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.detail-item.loan-highlight span {
+  display: block;
+  font-size: 0.85rem;
+  color: #856404;
+}
+
+.detail-item.loan-highlight strong {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #d39e00;
+}
+
 
 .detail-item:last-child {
     border-bottom: none;
