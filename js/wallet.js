@@ -1,5 +1,6 @@
 /* wallet.js
    Core wallet logic ONLY
+   Auth handled via auth.js
 */
 
 class ValueWallet {
@@ -8,17 +9,18 @@ class ValueWallet {
     this.transactions = [];
     this.walletId = null;
     this.selectedMethod = null;
+
+    // Auth context
+    this.auth = null;
+    this.API_BASE = "http://localhost:3000/api/v1";
   }
 
   /* -------------------------
      INIT
   --------------------------*/
   initialize() {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      window.location.href = "/login.html";
-      return;
-    }
+    // 🔐 Enforce authentication
+    this.auth = Auth.requireAuth("login.html");
 
     this.loadWalletData();
     this.loadTransactions();
@@ -30,23 +32,15 @@ class ValueWallet {
   --------------------------*/
   async loadWalletData() {
     try {
-      const API_BASE = "http://localhost:3000/api/v1";
-      const token = localStorage.getItem("authToken");
+      const res = await Auth.authFetch(`${this.API_BASE}/wallet`);
 
-      const walletRes = await fetch(`${API_BASE}/wallet`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json"
-        }
-      });
+      if (!res.ok) throw new Error("Wallet not found");
 
-      if (!walletRes.ok) throw new Error("Wallet not found");
-
-      const wallet = await walletRes.json();
+      const wallet = await res.json();
       this.processWalletData(wallet);
 
     } catch (e) {
-      console.warn("Using demo wallet");
+      console.warn("Wallet load failed, using demo data", e);
       this.useDemoData();
     }
   }
@@ -66,38 +60,31 @@ class ValueWallet {
      WALLET ACTIONS
   --------------------------*/
   async payBill({ category, provider_code, reference, amount, allow_loan = false }) {
-  const token = localStorage.getItem("authToken");
+    const res = await Auth.authFetch(`${this.API_BASE}/payments`, {
+      method: "POST",
+      body: JSON.stringify({
+        payment: {
+          category,
+          provider_code,
+          reference,
+          amount,
+          allow_loan
+        }
+      })
+    });
 
-  const res = await fetch("http://localhost:3000/api/v1/payments", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    },
-    body: JSON.stringify({
-      payment: {
-        category,
-        provider_code,
-        reference,
-        amount,
-        allow_loan
-      }
-    })
-  });
+    const data = await res.json();
 
-  const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || "Payment failed");
+    }
 
-  if (!res.ok) {
-    throw new Error(data.error || "Payment failed");
+    this.balance = data.balance;
+    this.updateUI();
+    this.save();
+
+    return data;
   }
-
-  this.balance = data.balance;
-  this.updateUI();
-  this.save();
-
-  return data;
-}
-
 
   addMoney(amount) {
     this.balance += amount;
@@ -166,7 +153,7 @@ class ValueWallet {
   }
 
   /* -------------------------
-     DEPOSIT FLOW (PRODUCTION UX)
+     DEPOSIT FLOW
   --------------------------*/
   showDepositMethods() {
     document
@@ -217,7 +204,6 @@ class ValueWallet {
         "Please enter your mobile money PIN to confirm."
       );
 
-      // Simulate telco confirmation (DEMO ONLY)
       setTimeout(() => {
         this.addMoney(amount);
         alert("Deposit successful");
@@ -263,9 +249,7 @@ class ValueWallet {
   --------------------------*/
   bindUIActions() {
     document.getElementById("addMoneyBtn")
-      ?.addEventListener("click", () => {
-        this.showDepositMethods();
-      });
+      ?.addEventListener("click", () => this.showDepositMethods());
 
     document.getElementById("withdrawMoneyBtn")
       ?.addEventListener("click", () => {
