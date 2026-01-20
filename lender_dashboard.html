@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lender Dashboard</title>
+  <link rel="stylesheet" href="../styles/custom.css">
+</head>
+<body>
+
+<h2 style="text-align:center">My Lending Offers</h2>
+<div id="offers" style="max-width:800px;margin:auto">Loading...</div>
+
+<script>
+const token = localStorage.getItem("authToken");
+
+if (!token) window.location.href = "login.html";
+
+fetch("http://localhost:3000/api/v1/p2p_investments", {
+  headers: { Authorization: "Bearer " + token }
+})
+.then(res => {
+  if (res.status === 401) window.location.href = "login.html";
+  return res.json();
+})
+.then(data => {
+  const el = document.getElementById("offers");
+  el.innerHTML = "";
+
+  if (!data.length) {
+    el.innerHTML = "<p>No offers yet.</p>";
+    return;
+  }
+
+  data.forEach(o => {
+    el.innerHTML += `
+      <div class="bid-card">
+        <p><strong>Amount:</strong> MWK ${o.amount}</p>
+        <p><strong>Interest:</strong> ${o.interest_rate}%</p>
+        <p><strong>Tenure:</strong> ${o.tenure_months} months</p>
+        <p><strong>Status:</strong> ${o.workflow_state?.name || "OPEN"}</p>
+      </div>
+    `;
+  });
+});
+</script>
+
+</body>
+</html>
