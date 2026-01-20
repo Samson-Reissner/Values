@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="styles/hero-styles.css">
 </head>
 <body class="page-home">
+    <h1 style="color:red;font-size:40px">UI_MERGE_DEPLOY_TEST</h1>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -52,6 +53,130 @@
                 <a href="auth-landing.html" class="nav-link">Sign in / Sign up</a>
                 <a href="about.html" class="nav-link">About</a>
                 <a href="apply.html" class="nav-link">Apply for a Loan</a>
+                <!-- User Profile Dropdown - Add this to navbar -->
+                <div class="user-profile-dropdown">
+                    <!-- Avatar/Profile Icon -->
+                    <div class="user-avatar dropdown-toggle">
+                        <img src="images/samson.JPG" alt="User Profile" class="avatar-image">
+                        <span class="user-name">Samson Reissner</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    
+                    <!-- Dropdown Menu -->
+                    <div class="dropdown-menu profile-menu">
+                        <!-- User Info Header -->
+                        <div class="profile-header">
+                            <img src="images/samson.JPG" alt="User Profile" class="profile-avatar">
+                            <div class="profile-info">
+                                <h4 class="profile-name">Samson Reissner</h4>
+                                <p class="profile-email">samsonreissner@email.com</p>
+                                <span class="profile-status verified">
+                                    <i class="fas fa-check-circle"></i> Verified Account
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Quick Stats -->
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Wallet Balance</span>
+                                <span class="stat-value">MWK 15,250</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Credit Score</span>
+                                <span class="stat-value">780/900</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Menu Items -->
+                        <div class="menu-section">
+                            <h5 class="section-title">My Account</h5>
+                            <a href="dashboard.html" class="menu-item">
+                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                            </a>
+                            <a href="wallet-dashboard.html" class="menu-item">
+                                <i class="fas fa-wallet"></i> My Wallet
+                            </a>
+                            <a href="edit-profile.html" class="menu-item">
+                                <i class="fas fa-user-edit"></i> Edit Profile
+                            </a>
+                            <a href="settings.html" class="menu-item">
+                                <i class="fas fa-cog"></i> Settings
+                            </a>
+                        </div>
+                        
+                        <!-- Loan Management Section -->
+                        <div class="menu-section">
+                            <h5 class="section-title">Loan Management</h5>
+                            <a href="loan-details.html" class="menu-item">
+                                <i class="fas fa-file-invoice-dollar"></i> Loan Details
+                                <span class="menu-badge active">Active</span>
+                            </a>
+                            <a href="active-loans.html" class="menu-item">
+                                <i class="fas fa-hand-holding-usd"></i> Active Loans
+                                <span class="menu-badge count">2</span>
+                            </a>
+                            <a href="loan-history.html" class="menu-item">
+                                <i class="fas fa-history"></i> Loan History
+                            </a>
+                            <a href="repayment-schedule.html" class="menu-item">
+                                <i class="fas fa-calendar-alt"></i> Repayment Schedule
+                            </a>
+                            <a href="statements.html" class="menu-item">
+                                <i class="fas fa-receipt"></i> Statements & Invoices
+                            </a>
+                        </div>
+                        
+                        <!-- Peer-to-Peer Section -->
+                        <div class="menu-section">
+                            <h5 class="section-title">Peer-to-Peer</h5>
+                            <a href="p2p-loans.html" class="menu-item">
+                                <i class="fas fa-handshake"></i> My P2P Loans
+                            </a>
+                            <a href="p2p-lending.html" class="menu-item">
+                                <i class="fas fa-coins"></i> My Lending Activities
+                            </a>
+                            <a href="p2p-agreements.html" class="menu-item">
+                                <i class="fas fa-file-contract"></i> Loan Agreements
+                            </a>
+                        </div>
+                        
+                        <!-- Financial Overview -->
+                        <div class="menu-section">
+                            <h5 class="section-title">Financial Overview</h5>
+                            <a href="credit-report.html" class="menu-item">
+                                <i class="fas fa-chart-line"></i> Credit Report
+                            </a>
+                            <a href="transactions.html" class="menu-item">
+                                <i class="fas fa-exchange-alt"></i> Transaction History
+                            </a>
+                            <a href="analytics.html" class="menu-item">
+                                <i class="fas fa-chart-pie"></i> Spending Analytics
+                            </a>
+                        </div>
+                        
+                        <!-- Support & Security -->
+                        <div class="menu-section">
+                            <h5 class="section-title">Support & Security</h5>
+                            <a href="help-center.html" class="menu-item">
+                                <i class="fas fa-question-circle"></i> Help Center
+                            </a>
+                            <a href="security.html" class="menu-item">
+                                <i class="fas fa-shield-alt"></i> Security Settings
+                            </a>
+                            <a href="notifications.html" class="menu-item">
+                                <i class="fas fa-bell"></i> Notifications
+                            </a>
+                        </div>
+                        
+                        <!-- Logout Section -->
+                        <div class="menu-section logout-section">
+                            <a href="logout.html" class="menu-item logout">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
             
         </div>
@@ -521,6 +646,23 @@ async function testBackendConnection() {
     console.error("Error:", error);
   }
 }
+/* =============== JAVASCRIPT FOR TOGGLE =============== */
+document.addEventListener('DOMContentLoaded', function() {
+    const profileDropdown = document.querySelector('.user-profile-dropdown');
+    const profileToggle = document.querySelector('.user-avatar');
+    
+    profileToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        profileDropdown.classList.toggle('active');
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!profileDropdown.contains(e.target)) {
+            profileDropdown.classList.remove('active');
+        }
+    });
+});
 
 document.addEventListener('DOMContentLoaded', testBackendConnection);
 </script>
