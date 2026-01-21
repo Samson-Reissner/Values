@@ -61,11 +61,12 @@
       <h3>High Returns</h3>
       <p>Set your own interest rate.</p>
     </div>
-    <div class="card">
-      <i class="fas fa-user-check"></i>
-      <h3>Verified Borrowers</h3>
-      <p>KYC and credit-checked users only.</p>
+    <div class="card" id="verifiedBorrowersCard" style="cursor:pointer;">
+       <i class="fas fa-user-check"></i>
+       <h3>Verified Borrowers</h3>
+       <p>KYC and credit-checked users only.</p>
     </div>
+
     <div class="card">
       <i class="fas fa-lock"></i>
       <h3>Secure Platform</h3>
@@ -86,6 +87,7 @@
 </div>
 
 <script>
+  // Start Lending Button
   document.getElementById("startLendingBtn").addEventListener("click", () => {
     const token = localStorage.getItem("authToken");
 
@@ -93,6 +95,16 @@
       window.location.href = "login.html?redirect=lender_form.html";
     } else {
       window.location.href = "lender_form.html";
+    }
+  });
+
+  // Verified Borrowers Card
+  document.getElementById("verifiedBorrowersCard").addEventListener("click", () => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      window.location.href = "login.html?redirect=credit_enquiry.html";
+    } else {
+      window.location.href = "credit_enquiry.html";
     }
   });
 </script>
