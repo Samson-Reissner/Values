@@ -1,0 +1,52 @@
+/* Signup form adjustments */
+
+.signup-form-wrapper {
+  max-width: 420px;
+}
+
+.signup-form-wrapper .form-group {
+  margin-bottom: 16px;
+}
+
+.signup-form-wrapper label {
+  font-size: 14px;
+  color: #334155;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.signup-form-wrapper input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 15px;
+}
+
+.signup-form-wrapper input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+.full-width {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.auth-footer-text {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #64748b;
+  text-align: center;
+}
+
+.auth-footer-text a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-footer-text a:hover {
+  text-decoration: underline;
+}
