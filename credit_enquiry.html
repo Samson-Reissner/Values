@@ -7,8 +7,7 @@
 
 <link rel="stylesheet" href="../styles/custom.css">
 
-<!-- AUTH GUARD handled in JS -->
-<script src="../scripts/credit_enquiry.js" defer></script>
+<script src="../js/credit_enquiry.js" defer></script>
 
 <style>
 body { background:#f7f7f7; }
@@ -55,8 +54,6 @@ button {
 }
 
 button:hover { background:#005be0; }
-
-.required { color:red; }
 </style>
 </head>
 
@@ -67,43 +64,49 @@ button:hover { background:#005be0; }
   <!-- CARD 1: CONSENT -->
   <div class="card">
     <h3>Consent Details</h3>
+
     <div class="grid">
       <div>
         <label>Date of Consent</label>
         <input type="date" id="consent_date" readonly>
       </div>
+
       <div>
         <label>Enquiry Reason</label>
-        <input type="text" id="enquiry_reason" required>
+        <select id="enquiry_reason" required>
+          <option value="">Select Enquiry Reason *</option>
+          <option value="view_credited_clients">View Credited Clients</option>
+          <option value="credibility_check">Request a Credibility Check</option>
+        </select>
       </div>
     </div>
   </div>
 
-  <!-- CARD 2: ENQUIRY -->
-  <div class="card">
+  <!-- CARD 2: CREDIBILITY CHECK -->
+  <div class="card" id="credibility_section" style="display:none;">
     <h3>Client Enquiry</h3>
 
     <div class="grid">
-      <select id="title" required>
+      <select id="title">
         <option value="">Title *</option>
         <option>Mr</option>
         <option>Mrs</option>
         <option>Miss</option>
       </select>
 
-      <input placeholder="First Name *" id="first_name" required>
+      <input placeholder="First Name *" id="first_name">
       <input placeholder="Middle Name" id="middle_name">
-      <input placeholder="Last Name *" id="last_name" required>
+      <input placeholder="Last Name *" id="last_name">
 
-      <select id="sex" required>
+      <select id="sex">
         <option value="">Sex *</option>
         <option>Male</option>
         <option>Female</option>
       </select>
 
-      <input type="date" id="dob" required>
+      <input type="date" id="dob">
 
-      <select id="marital_status" required>
+      <select id="marital_status">
         <option value="">Marital Status *</option>
         <option>Single</option>
         <option>Married</option>
@@ -112,7 +115,7 @@ button:hover { background:#005be0; }
       <input placeholder="Profession" id="profession">
       <input placeholder="Nationality" id="nationality">
       <input placeholder="Phone" id="phone">
-      <input placeholder="Postal Address *" id="postal_address" required>
+      <input placeholder="Postal Address *" id="postal_address">
       <input placeholder="District" id="district">
     </div>
 
@@ -120,17 +123,31 @@ button:hover { background:#005be0; }
 
     <h4>Identification (one only)</h4>
     <div class="grid">
-      <input placeholder="National ID *" class="id-field" id="nid">
-      <input placeholder="Passport *" class="id-field" id="passport">
-      <input placeholder="Driver's Licence *" class="id-field" id="drivers">
-      <input placeholder="Traffic Registration No *" class="id-field" id="traffic">
-      <input placeholder="MEC Registration *" class="id-field" id="mec">
+      <input placeholder="National ID" class="id-field" id="nid">
+      <input placeholder="Passport" class="id-field" id="passport">
+      <input placeholder="Driver's Licence" class="id-field" id="drivers">
+      <input placeholder="Traffic Registration No" class="id-field" id="traffic">
+      <input placeholder="MEC Registration" class="id-field" id="mec">
     </div>
   </div>
 
-  <button id="submit_enquiry">Submit Enquiry</button>
+  <!-- CARD 3: VIEW CREDITED CLIENTS -->
+  <div class="card" id="credited_clients_section" style="display:none;">
+    <h3>Credited Clients</h3>
+
+    <div class="grid">
+      <input placeholder="Search by National ID" id="search_nid">
+      <input placeholder="Search by Phone Number" id="search_phone">
+      <input placeholder="Search by Client Name" id="search_name">
+    </div>
+
+    <div id="credited_clients_results" style="margin-top:20px;"></div>
+  </div>
+
+  <!-- ACTION BUTTON -->
+  <button id="submit_enquiry">Continue</button>
 
 </div>
- <script src="../js/credit_enquiry.js"></script>
+
 </body>
 </html>
