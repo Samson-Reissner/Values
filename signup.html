@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Value Loans - Sign Up</title>
+
+  <link rel="stylesheet" href="styles/custom.css">
+  <link rel="stylesheet" href="styles/signup.css">
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="auth-landing-page">
+
+  <div class="auth-container">
+
+    <!-- LEFT: Welcome / Branding -->
+    <div class="welcome-section">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
+        </a>
+      </div>
+
+      <p>Create an account to apply for loans, track applications, and access personalized financial services.</p>
+
+      <ul class="features">
+        <li><i class="fas fa-check-circle"></i> Fast & easy registration</li>
+        <li><i class="fas fa-check-circle"></i> Secure account protection</li>
+        <li><i class="fas fa-check-circle"></i> Access loan services online</li>
+        <li><i class="fas fa-check-circle"></i> Trusted financial partner</li>
+      </ul>
+    </div>
+
+    <!-- RIGHT: Sign Up Form -->
+    <div class="auth-options signup-form-wrapper">
+      <h2>Create Your Account</h2>
+      <p>Fill in the details below to get started.</p>
+
+      <form id="signupForm">
+
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" name="firstName" required>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" name="lastName" required>
+        </div>
+        <div class="form-group">
+        <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" placeholder="e.g. 0999123456"
+            required
+          >
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" required>
+        </div>
+
+        <button type="submit" class="auth-btn btn-signup full-width">
+          <i class="fas fa-user-plus btn-icon"></i>
+          Create Account
+        </button>
+      </form>
+
+      <p class="auth-footer-text">
+        Already have an account?
+        <a href="login.html">Login</a>
+      </p>
+    </div>
+
+  </div>
+<script src="js/simple-signup.js"></script>
+</body>
+</html>
