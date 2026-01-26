@@ -57,12 +57,12 @@
     <div class="signup-link">
       <p>
         New to Value Loans?
-        <a href="signup-wizard.html">Create an account</a>
+        <a href="signup.html">Create an account</a>
       </p>
     </div>
 
     <div class="back-to-home">
-      <a href="auth-landing.html">← Back to Home</a>
+      <a href="index.html">← Back to Home</a>
     </div>
   </div>
 
@@ -71,11 +71,6 @@
 
   <script>
     const API_BASE = "http://localhost:3000/api/v1";
-
-    // 🚫 Prevent logged-in users from seeing login page
-    if (Auth.isLoggedIn()) {
-      window.location.href = "index.html";
-    }
 
     document
       .getElementById("loginForm")
