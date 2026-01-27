@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complete KYC - Value</title>
+
+  <link rel="stylesheet" href="styles/custom.css" />
+</head>
+
+<body class="wizard-page">
+<div class="wizard-container">
+
+  <!-- HEADER -->
+  <div class="wizard-header">
+    <button class="back-btn" onclick="window.location.href='dashboard.html'">
+      ← Back
+    </button>
+
+    <div class="header-content">
+      <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image" />
+      <h1>Complete Your Registration</h1>
+      <p>Your basic details are already saved. Please complete KYC.</p>
+    </div>
+
+    <div class="progress-steps">
+      <div class="step active" data-step="1">
+        <div class="step-circle">1</div>
+        <div class="step-label">Identity</div>
+      </div>
+      <div class="step" data-step="2">
+        <div class="step-circle">2</div>
+        <div class="step-label">Occupation</div>
+      </div>
+      <div class="step" data-step="3">
+        <div class="step-circle">3</div>
+        <div class="step-label">Documents</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="wizard-content">
+
+    <!-- STEP 1: IDENTITY (READ-ONLY + MISSING DATA) -->
+    <div class="step-content active" id="step1">
+      <h2 class="step-title">Identity Information</h2>
+
+      <form id="identityForm">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="firstName" disabled />
+          </div>
+
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="lastName" disabled />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="email" disabled />
+          </div>
+
+          <div class="form-group">
+            <label class="required">Date of Birth</label>
+            <input type="date" id="dob" name="dob" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="required">National ID Number</label>
+          <input
+            type="text"
+            id="nationalIdNumber"
+            name="national_id_number"
+            placeholder="MWI-XXXXXXXX"
+            required
+          />
+        </div>
+
+      </form>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-content" id="step2">
+      <h2 class="step-title">Occupation Details</h2>
+
+      <form id="occupationForm">
+
+        <div class="form-group">
+          <label class="required">Occupation</label>
+          <input type="text" name="occupation" required />
+        </div>
+
+        <div class="form-group">
+          <label>Employee Number</label>
+          <input type="text" name="employee_number" />
+        </div>
+
+        <div class="form-group">
+          <label>Business Registration Number</label>
+          <input type="text" name="business_number" />
+        </div>
+
+      </form>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step-content" id="step3">
+      <h2 class="step-title">Documents Upload</h2>
+
+      <form id="documentForm" enctype="multipart/form-data">
+
+        <div class="form-group">
+          <label class="required">National ID</label>
+          <input type="file" name="national_id" required />
+        </div>
+
+        <div class="form-group">
+          <label>Payslip</label>
+          <input type="file" name="payslip" />
+        </div>
+
+        <div class="form-group">
+          <label>Bank Statement</label>
+          <input type="file" name="bank_statement" />
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="wizard-footer">
+    <button class="btn btn-prev hidden" id="prevBtn">Previous</button>
+
+    <div class="footer-actions">
+      <button class="btn btn-next" id="nextBtn">Next</button>
+      <button class="btn btn-submit hidden" id="submitBtn">
+        Submit KYC
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/kyc.js"></script>
+</body>
+</html>
