@@ -125,75 +125,99 @@ function calculateEscrowAmounts() {
 function handleSendMoney() {
   const sendType = document.getElementById("sendType").value;
   const amount = parseFloat(document.getElementById("sendAmount").value);
-
-  if (!sendType || !amount || amount <= 0) {
-    alert("Please select recipient and enter amount");
-    return;
-  }
-
-  if (sendType !== "wallet") {
-    alert("Mobile transfers are not yet implemented");
-    return;
-  }
-
   const recipientEmail = document.getElementById("recipientEmail").value;
   const transferMode = document.getElementById("transferMode").value;
   const purpose = document.getElementById("escrowPurpose")?.value;
   const agreeFee = document.getElementById("agreeFee")?.checked;
 
+  if (sendType !== "wallet") {
+    alert("Only wallet transfers supported");
+    return;
+  }
+
+  if (!amount || amount <= 0) {
+    alert("Enter a valid amount");
+    return;
+  }
+
   if (!recipientEmail) {
-    alert("Please enter recipient email");
+    alert("Enter recipient email");
     return;
   }
 
   if (!transferMode) {
-    alert("Please select transfer type");
+    alert("Select transfer type");
     return;
   }
 
   if (transferMode === "escrow") {
     if (!purpose) {
-      alert("Please enter payment purpose");
+      alert("Enter payment purpose");
       return;
     }
-
     if (!agreeFee) {
-      alert("You must agree to the transfer fee");
+      alert("You must agree to the escrow fee");
       return;
     }
   }
 
-  const payload = {
-    recipient: recipientEmail,
-    amount: amount,
-    transfer_mode: transferMode,
-    purpose: purpose || null
-  };
-
   const token = localStorage.getItem("authToken");
   const API_BASE = "http://localhost:3000/api/v1";
 
-  fetch(`${API_BASE}/wallet/transfer`, {
-    method: "POST",
+  /* ============================
+     DIRECT TRANSFER
+     ============================ */
+  if (transferMode === "direct") {
+    fetch(`${API_BASE}/wallet/transfer`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        recipient: recipientEmail,
+        amount: amount
+      })
+    })
+      .then(res => res.json())
+      .then(handleSuccess)
+      .catch(console.error);
+
+    return;
+  }
+
+  /* ============================
+     ESCROW TRANSFER
+     ============================ */
+  fetch(`${API_BASE}/wallets/lookup?email=${encodeURIComponent(recipientEmail)}`, {
     headers: {
-      "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
-    },
-    body: JSON.stringify(payload)
+    }
   })
     .then(res => res.json())
     .then(data => {
-      if (data.error) {
-        alert("Error: " + data.error);
-      } else {
-        alert(`${data.message}\nNew Balance: MWK ${data.new_balance.toLocaleString()}`);
-        document.getElementById("sendMoneyModal").classList.add("hidden");
-        resetSendMoneyForm();
-        document.getElementById("walletBalance").innerText =
-          data.new_balance.toLocaleString();
-      }
+      if (data.error) throw new Error(data.error);
+
+      return fetch(`${API_BASE}/escrow_transactions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          receiver_wallet_id: data.wallet_id,
+          amount: amount,
+          purpose: purpose
+        })
+      });
     })
-    .catch(err => console.error(err));
+    .then(res => res.json())
+    .then(data => {
+      alert("Payment held in escrow successfully");
+      document.getElementById("sendMoneyModal").classList.add("hidden");
+      resetSendMoneyForm();
+    })
+    .catch(err => alert(err.message));
 }
 
 /**
