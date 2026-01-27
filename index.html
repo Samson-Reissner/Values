@@ -71,6 +71,7 @@
   </div>
 </nav>
 
+ <div id="kycReminder"></div>
 
     <!-- Hero Section - Money when you need it -->
     <section class="hero" style="background-image: url('images/indexPics.jpg'); background-size: cover; background-position: center; height: px;">
@@ -550,47 +551,51 @@ document.addEventListener('DOMContentLoaded', testBackendConnection);
 const API_BASE = "http://localhost:3000/api/v1";
 
 async function loadUserProfile() {
-
   const token = localStorage.getItem("authToken");
   if (!token) return;
 
   try {
     const res = await fetch(`${API_BASE}/me`, {
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     });
 
     if (!res.ok) throw new Error("Not authenticated");
 
     const user = await res.json();
-    console.log("USER FROM API:", user);
 
-    let adminLink = "";
-    if (user.is_admin) {
-      adminLink = `
-        <a href="admin/dashboard.html" class="admin-link">
-          🛠 Admin Dashboard
-        </a>
-      `;
-    }
-
+    // 🔹 NAV USER MENU (you already had this)
     document.getElementById("authArea").innerHTML = `
       <div class="user-menu dropdown">
         <span class="nav-link dropdown-toggle">
           Hi, ${user.first_name || user.email}
         </span>
         <div class="dropdown-menu">
-          ${adminLink}
           <a href="wallet-dashboard.html">My Wallet</a>
           <a href="peer-to-peer.html">Peer to Peer</a>
           <a href="#" onclick="logout()">Logout</a>
         </div>
       </div>
     `;
+
+    // 🔐 KYC CHECK
+    if (user.kyc_status !== "verified") {
+      showKycReminder(user.kyc_percentage);
+    }
+
   } catch (e) {
     console.log("User not logged in");
   }
+}
+
+function showKycReminder(percentage) {
+  document.getElementById("kycReminder").innerHTML = `
+    <div class="kyc-card">
+      <h3>Complete your verification</h3>
+      <p>Your account is <strong>${percentage}% verified</strong>.</p>
+      <p>Finish KYC to access loans, wallet limits, and transfers.</p>
+      <a href="kyc.html" class="btn-primary">Complete KYC</a>
+    </div>
+  `;
 }
 
 function logout() {
