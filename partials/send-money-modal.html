@@ -22,9 +22,32 @@
     </div>
 
     <div id="walletFields" class="hidden">
-      <label>Recipient Email</label>
-      <input id="recipientEmail" type="email" placeholder="Recipient email">
+  <label>Recipient Email</label>
+  <input id="recipientEmail" type="email" placeholder="Recipient email">
+
+  <label>Transfer Type</label>
+  <select id="transferMode">
+    <option value="">Select</option>
+    <option value="direct">Instant Transfer</option>
+    <option value="escrow">Protected Transfer (Recommended)</option>
+  </select>
+
+  <div id="escrowFields" class="hidden">
+    <label>Purpose</label>
+    <input id="escrowPurpose" type="text" placeholder="Purpose of payment">
+
+    <div class="fee-box">
+      <p>Transfer Fee (1%): MWK <span id="feeAmount">0.00</span></p>
+      <p><strong>Recipient Receives:</strong> MWK <span id="netAmount">0.00</span></p>
     </div>
+
+    <label class="checkbox">
+      <input type="checkbox" id="agreeFee">
+      I agree to the 1% protected transfer fee
+    </label>
+  </div>
+</div>
+
 
     <label>Amount (MWK)</label>
     <input type="number" id="sendAmount" min="100">
