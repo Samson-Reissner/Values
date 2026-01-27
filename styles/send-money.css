@@ -1,0 +1,46 @@
+/* Send Money Modal Styles */
+
+.hidden {
+  display: none;
+}
+
+/* Fee breakdown box */
+.fee-box {
+  background-color: #f5f7fb;
+  border: 1px solid #e0e4ec;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.fee-box p {
+  margin: 6px 0;
+}
+
+.fee-box strong {
+  color: #1f2937;
+}
+
+/* Checkbox alignment */
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Inputs spacing */
+#walletFields input,
+#walletFields select {
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+/* Improve modal readability */
+.modal-content label {
+  font-weight: 500;
+  margin-top: 10px;
+  display: block;
+}
