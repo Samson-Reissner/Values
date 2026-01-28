@@ -565,17 +565,24 @@ async function loadUserProfile() {
 
     // 🔹 NAV USER MENU (you already had this)
     document.getElementById("authArea").innerHTML = `
-      <div class="user-menu dropdown">
-        <span class="nav-link dropdown-toggle">
-          Hi, ${user.first_name || user.email}
-        </span>
-        <div class="dropdown-menu">
-          <a href="wallet-dashboard.html">My Wallet</a>
-          <a href="peer-to-peer.html">Peer to Peer</a>
-          <a href="#" onclick="logout()">Logout</a>
-        </div>
-      </div>
-    `;
+  <div class="user-menu dropdown">
+    <span class="nav-link dropdown-toggle">
+      Hi, ${user.first_name || user.email}
+    </span>
+    <div class="dropdown-menu">
+      <a href="wallet-dashboard.html">My Wallet</a>
+      <a href="peer-to-peer.html">Peer to Peer</a>
+
+      ${user.is_admin ? `
+        <a href="admin/dashboard.html" style="font-weight:600;color:#c62828">
+          Admin Dashboard
+        </a>
+      ` : ""}
+
+      <a href="#" onclick="logout()">Logout</a>
+    </div>
+  </div>
+`;
 
     // 🔐 KYC CHECK
     if (user.kyc_status !== "verified") {
