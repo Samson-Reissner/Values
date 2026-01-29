@@ -7,11 +7,616 @@
 
   <link rel="stylesheet" href="../styles/custom.css">
   <link rel="stylesheet" href="../styles/wallet-styles.css">
-  <link rel="stylesheet" href="../styles/wallet-pages.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* ========== TRANSACTION HISTORY PAGE STYLES ========== */
+    .transaction-history-page {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      min-height: 100vh;
+    }
+
+    .wallet-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+
+    /* ========== PAGE HEADER ========== */
+    .page-header {
+      margin-bottom: 30px;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      margin: 0 0 10px 0;
+      font-weight: 800;
+      color: #2c3e50;
+    }
+
+    .page-header p {
+      color: #6c757d;
+      font-size: 1.1rem;
+      margin: 0 0 25px 0;
+      max-width: 600px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn-header {
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-back {
+      background: #3d5975;
+      color: white;
+    }
+
+    .btn-back:hover {
+      background: #2c3e50;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(61, 89, 117, 0.3);
+    }
+
+    .btn-export {
+      background: white;
+      color: #3d5975;
+      border: 2px solid #3d5975;
+    }
+
+    .btn-export:hover {
+      background: #f8f9fa;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(61, 89, 117, 0.15);
+    }
+
+    /* ========== FILTER SECTION ========== */
+    .filter-section {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e9ecef;
+    }
+
+    .search-container {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 14px 20px 14px 48px;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+    }
+
+    .search-box:focus {
+      outline: none;
+      border-color: #3d5975;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(61, 89, 117, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6c757d;
+      font-size: 1rem;
+    }
+
+    /* Filter Tabs */
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .filter-tab {
+      padding: 10px 20px;
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      font-weight: 600;
+      color: #6c757d;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+
+    .filter-tab:hover {
+      background: #e9ecef;
+      color: #3d5975;
+    }
+
+    .filter-tab.active {
+      background: #3d5975;
+      color: white;
+      border-color: #3d5975;
+      box-shadow: 0 4px 12px rgba(61, 89, 117, 0.2);
+    }
+
+    /* Filter Row */
+    .filter-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .filter-group {
+      margin-bottom: 0;
+    }
+
+    .filter-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+      font-size: 0.9rem;
+    }
+
+    .filter-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      background: #f8f9fa;
+      font-size: 0.9rem;
+      color: #2c3e50;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236c757d' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 12px;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: #3d5975;
+      background-color: white;
+      box-shadow: 0 0 0 3px rgba(61, 89, 117, 0.1);
+    }
+
+    /* ========== TRANSACTIONS SECTION ========== */
+    .transactions-container {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e9ecef;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #e9ecef;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 1.4rem;
+      color: #2c3e50;
+      font-weight: 700;
+    }
+
+    .section-header .filter-info {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+
+    /* Transaction List */
+    .transaction-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .transaction-card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      border: 2px solid #e9ecef;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .transaction-card:hover {
+      transform: translateX(3px);
+      border-color: #3d5975;
+      box-shadow: 0 6px 20px rgba(61, 89, 117, 0.08);
+    }
+
+    .transaction-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .transaction-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .transaction-icon.credit {
+      background: rgba(5, 150, 105, 0.1);
+      color: #059669;
+      border: 2px solid rgba(5, 150, 105, 0.2);
+    }
+
+    .transaction-icon.debit {
+      background: rgba(220, 38, 38, 0.1);
+      color: #dc2626;
+      border: 2px solid rgba(220, 38, 38, 0.2);
+    }
+
+    .transaction-details h4 {
+      margin: 0 0 5px 0;
+      font-size: 1rem;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .transaction-details .reference {
+      color: #6c757d;
+      font-size: 0.85rem;
+      margin: 0 0 6px 0;
+    }
+
+    .transaction-details .date {
+      color: #adb5bd;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .transaction-right {
+      text-align: right;
+    }
+
+    .transaction-amount {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0 0 6px 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .transaction-amount.positive {
+      color: #059669;
+    }
+
+    .transaction-amount.negative {
+      color: #dc2626;
+    }
+
+    .transaction-status {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .transaction-status.completed {
+      background: rgba(5, 150, 105, 0.1);
+      color: #059669;
+      border: 1px solid rgba(5, 150, 105, 0.2);
+    }
+
+    .transaction-status.pending {
+      background: rgba(245, 158, 11, 0.1);
+      color: #d97706;
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .transaction-status.failed {
+      background: rgba(220, 38, 38, 0.1);
+      color: #dc2626;
+      border: 1px solid rgba(220, 38, 38, 0.2);
+    }
+
+    .transaction-status.held {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .release-btn {
+      margin-top: 6px;
+      padding: 6px 12px;
+      background: linear-gradient(135deg, #3d5975, #52a9e4);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .release-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(61, 89, 117, 0.3);
+    }
+
+    /* ========== LOADING & EMPTY STATES ========== */
+    .loading-state {
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .loading-state i {
+      font-size: 2.5rem;
+      color: #3d5975;
+      margin-bottom: 15px;
+      opacity: 0.7;
+    }
+
+    .loading-state p {
+      color: #6c757d;
+      font-size: 1rem;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      color: #e9ecef;
+      margin-bottom: 15px;
+    }
+
+    .empty-state h3 {
+      color: #6c757d;
+      margin: 0 0 8px 0;
+      font-size: 1.3rem;
+    }
+
+    .empty-state p {
+      color: #adb5bd;
+      max-width: 400px;
+      margin: 0 auto 20px;
+      font-size: 0.95rem;
+    }
+
+    /* ========== LOAD MORE BUTTON ========== */
+    .load-more-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .btn-load-more {
+      padding: 12px 32px;
+      background: white;
+      color: #3d5975;
+      border: 2px solid #3d5975;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-load-more:hover {
+      background: #3d5975;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(61, 89, 117, 0.2);
+    }
+
+    /* ========== MODAL ========== */
+    .transaction-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      max-width: 500px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+      animation: modalSlide 0.3s ease-out;
+    }
+
+    @keyframes modalSlide {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: #6c757d;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .close-modal:hover {
+      background: #f8f9fa;
+      color: #dc2626;
+    }
+
+    .modal-details h3 {
+      margin: 0 0 20px 0;
+      color: #2c3e50;
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-label {
+      color: #6c757d;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .detail-value {
+      color: #2c3e50;
+      font-weight: 600;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ========== RESPONSIVE DESIGN ========== */
+    @media (max-width: 768px) {
+      .wallet-container {
+        padding: 20px 15px;
+      }
+
+      .page-header h1 {
+        font-size: 2rem;
+      }
+
+      .filter-row {
+        grid-template-columns: 1fr;
+      }
+
+      .transaction-card {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .transaction-right {
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .modal-content {
+        padding: 25px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .filter-tabs {
+        overflow-x: auto;
+        padding-bottom: 8px;
+        flex-wrap: nowrap;
+      }
+
+      .filter-tab {
+        white-space: nowrap;
+        padding: 8px 16px;
+        font-size: 0.85rem;
+      }
+
+      .btn-header {
+        padding: 10px 18px;
+        font-size: 0.9rem;
+      }
+
+      .transaction-details h4 {
+        font-size: 0.95rem;
+      }
+
+      .transaction-amount {
+        font-size: 1.1rem;
+      }
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .transaction-card {
+      animation: fadeIn 0.3s ease-out;
+    }
+  </style>
 </head>
 
-<body class="wallet-page transaction-history-page">
+<body class="transaction-history-page">
 
   <!-- ================= NAVBAR ================= -->
   <nav class="navbar">
@@ -29,158 +634,133 @@
     </div>
   </nav>
 
-  <!-- ================= PAGE ================= -->
+  <!-- ================= PAGE CONTENT ================= -->
   <div class="wallet-container">
 
     <!-- Header -->
-    <div class="section-header" style="margin-bottom: var(--spacing-xl);">
-      <div>
-        <h1>Transaction History</h1>
-        <p>View and manage all your Value Wallet transactions</p>
-      </div>
-
-      <div style="display:flex; gap:1rem;">
-        <a href="wallet-dashboard.html" class="btn-secondary">
-          <i class="fas fa-arrow-left"></i> Back to Wallet
-        </a>
-        <button class="export-btn" onclick="exportTransactions()">
-          <i class="fas fa-download"></i> Export CSV
-        </button>
-      </div>
+    <div class="page-header">
+      <h1>Transaction History</h1>
+      <p>View and manage all your Value Wallet transactions</p>
     </div>
 
-    <!-- ================= FILTERS ================= -->
+    <!-- ================= FILTER SECTION ================= -->
     <div class="filter-section">
-
       <!-- Search -->
-      <div class="search-box">
-        <i class="fas fa-search"></i>
+      <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
         <input
           type="text"
           id="searchTransactions"
-          placeholder="Search by reference or amount"
+          class="search-box"
+          placeholder="Search by reference, amount, or type..."
           onkeyup="filterTransactions()"
         >
       </div>
 
       <!-- Tabs -->
       <div class="filter-tabs">
-        <div class="filter-tab active" onclick="filterByType('all', this)">All Transactions</div>
-        <div class="filter-tab" onclick="filterByType('deposit', this)">Deposits</div>
-        <div class="filter-tab" onclick="filterByType('send', this)">Sent Money</div>
-        <div class="filter-tab" onclick="filterByType('withdrawal', this)">Withdrawals</div>
-        <div class="filter-tab" onclick="filterByType('loan', this)">Loans</div>
-        <div class="filter-tab" onclick="filterByType('interest', this)">Interest</div>
+        <div class="filter-tab active" onclick="filterByType('all', this)">
+          <i class="fas fa-layer-group"></i> All
+        </div>
+        <div class="filter-tab" onclick="filterByType('deposit', this)">
+          <i class="fas fa-arrow-down"></i> Deposits
+        </div>
+        <div class="filter-tab" onclick="filterByType('send', this)">
+          <i class="fas fa-paper-plane"></i> Sent
+        </div>
+        <div class="filter-tab" onclick="filterByType('withdrawal', this)">
+          <i class="fas fa-arrow-up"></i> Withdrawals
+        </div>
+        <div class="filter-tab" onclick="filterByType('loan', this)">
+          <i class="fas fa-hand-holding-usd"></i> Loans
+        </div>
+        <div class="filter-tab" onclick="filterByType('interest', this)">
+          <i class="fas fa-percentage"></i> Interest
+        </div>
       </div>
 
-      <!-- Dropdown filters -->
+      <!-- Filters -->
       <div class="filter-row">
         <div class="filter-group">
           <label>Date Range</label>
-          <select id="dateFilter" onchange="filterByDate()">
+          <select id="dateFilter" class="filter-select" onchange="filterByDate()">
             <option value="all">All Time</option>
             <option value="today">Today</option>
             <option value="week">This Week</option>
             <option value="month">This Month</option>
             <option value="year">This Year</option>
-            <option value="custom">Custom</option>
+            <option value="custom">Custom Range</option>
           </select>
         </div>
 
         <div class="filter-group">
           <label>Status</label>
-          <select id="statusFilter" onchange="filterByStatus()">
-            <option value="all">All</option>
+          <select id="statusFilter" class="filter-select" onchange="filterByStatus()">
+            <option value="all">All Status</option>
             <option value="completed">Completed</option>
             <option value="pending">Pending</option>
             <option value="failed">Failed</option>
+            <option value="held">Held</option>
           </select>
         </div>
 
         <div class="filter-group">
           <label>Sort By</label>
-          <select id="sortFilter" onchange="sortTransactions()">
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-            <option value="amount-high">Amount ↑</option>
-            <option value="amount-low">Amount ↓</option>
+          <select id="sortFilter" class="filter-select" onchange="sortTransactions()">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="amount-high">Amount (High to Low)</option>
+            <option value="amount-low">Amount (Low to High)</option>
           </select>
         </div>
       </div>
-
-      <!-- Custom date -->
-      <div id="customDateRange" style="display:none;">
-        <input type="date" id="startDate">
-        <input type="date" id="endDate">
-      </div>
-
     </div>
 
-    <!-- ================= STATS ================= -->
-    <div class="quick-stats">
-
-      <div class="stat-card">
-        <h4>Total Deposits</h4>
-        <p id="totalDepositsStat">MWK 0</p>
-      </div>
-
-      <div class="stat-card">
-        <h4>Total Withdrawals</h4>
-        <p id="totalWithdrawalsStat">MWK 0</p>
-      </div>
-
-      <div class="stat-card">
-        <h4>Transactions</h4>
-        <p id="transactionsCount">0</p>
-        <small>Showing <span id="showingCount">0</span> of <span id="totalCount">0</span></small>
-      </div>
-
-    </div>
-
-    <!-- ================= LIST ================= -->
-    <div class="transactions-section">
-
+    <!-- ================= TRANSACTIONS LIST ================= -->
+    <div class="transactions-container">
       <div class="section-header">
-        <h3>All Transactions</h3>
-        <span id="currentFilter">Showing all transactions</span>
+        <h2>All Transactions</h2>
+        <span class="filter-info" id="currentFilter">Showing all transactions</span>
       </div>
 
-      <!-- LIST -->
+      <!-- Loading State -->
+      <div id="loadingTransactions" class="loading-state">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Loading your transactions...</p>
+      </div>
+
+      <!-- No Data State -->
+      <div id="noTransactions" class="empty-state" style="display:none;">
+        <i class="fas fa-exchange-alt"></i>
+        <h3>No transactions found</h3>
+        <p>Start using your Value Wallet to see transaction history here</p>
+        <a href="wallet-dashboard.html" class="btn-header btn-back">
+          <i class="fas fa-wallet"></i> Go to Wallet
+        </a>
+      </div>
+
+      <!-- Transactions List -->
       <div class="transaction-list" id="allTransactionsList"></div>
 
-      <!-- LOADING -->
-      <div id="loadingTransactions" style="text-align:center; padding:2rem;">
-        <i class="fas fa-spinner fa-spin"></i>
-        <p>Loading transactions...</p>
-      </div>
-
-      <!-- NO DATA -->
-      <div id="noTransactions" style="display:none; text-align:center;">
-        <h4>No transactions found</h4>
-        <p>Make your first transaction to see history here.</p>
-      </div>
-
-      <!-- LOAD MORE -->
-      <div style="text-align:center;">
+      <!-- Load More -->
+      <div class="load-more-container">
         <button
           id="loadMoreBtn"
-          class="btn-secondary"
+          class="btn-load-more"
           onclick="loadMoreTransactions()"
           style="display:none;"
         >
-          Load More
+          <i class="fas fa-chevron-down"></i> Load More
         </button>
       </div>
-
     </div>
-
   </div>
 
-  <!-- ================= MODAL ================= -->
-  <div class="application-modal" id="transactionDetailModal">
+  <!-- ================= TRANSACTION DETAIL MODAL ================= -->
+  <div class="transaction-modal" id="transactionDetailModal">
     <div class="modal-content">
       <button class="close-modal" onclick="closeDetailModal()">×</button>
-      <div id="transactionDetailContent"></div>
+      <div class="modal-details" id="transactionDetailContent"></div>
     </div>
   </div>
 
