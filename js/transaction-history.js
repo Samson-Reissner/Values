@@ -61,8 +61,8 @@ function renderTransactions() {
   const noData = document.getElementById("noTransactions");
   const loadMoreBtn = document.getElementById("loadMoreBtn");
 
-  toggleLoading(false);
   list.innerHTML = "";
+  toggleLoading(false);
 
   if (filteredTransactions.length === 0) {
     noData.style.display = "block";
@@ -89,7 +89,6 @@ function renderTransactions() {
 function createTransactionCard(tx) {
   const div = document.createElement("div");
   div.className = "transaction-item";
-  div.onclick = () => openDetailModal(tx);
 
   const isCredit = tx.entry_type === "credit";
   const sign = isCredit ? "+" : "-";
@@ -112,10 +111,58 @@ function createTransactionCard(tx) {
         ${sign} MWK ${Number(tx.amount).toLocaleString()}
       </p>
       <span class="status ${tx.status}">${tx.status}</span>
+      ${tx.status === "held" && tx.transaction_type === "escrow" ? `<button class="release-btn" data-ref="${tx.reference}">Release</button>` : ""}
     </div>
   `;
 
+  // Attach release handler if button exists
+  const releaseBtn = div.querySelector(".release-btn");
+  if (releaseBtn) {
+    releaseBtn.addEventListener("click", async e => {
+      e.stopPropagation(); // Prevent opening modal
+      await releaseTransaction(tx.reference);
+    });
+  }
+
+  div.onclick = () => openDetailModal(tx);
+
   return div;
+}
+
+/* =========================
+   ESCROW RELEASE
+========================= */
+async function releaseTransaction(reference) {
+  const { token } = Auth.requireAuth();
+
+  if (!confirm(`Are you sure you want to release transaction ${reference}?`)) return;
+
+  try {
+    toggleLoading(true);
+
+    const response = await fetch(
+      `http://localhost:3000/api/v1/escrow_transactions/${reference}/release`,
+      {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const data = await response.json();
+    alert(data.message || "Transaction released successfully!");
+
+    await loadTransactions();
+  } catch (error) {
+    console.error(error);
+    alert("Failed to release transaction.");
+  } finally {
+    toggleLoading(false);
+  }
 }
 
 /* =========================
@@ -124,13 +171,9 @@ function createTransactionCard(tx) {
 function filterByType(type, el) {
   setActiveTab(el);
 
-  if (type === "all") {
-    filteredTransactions = [...allTransactions];
-  } else {
-    filteredTransactions = allTransactions.filter(
-      tx => tx.transaction_type === type
-    );
-  }
+  filteredTransactions = type === "all"
+    ? [...allTransactions]
+    : allTransactions.filter(tx => tx.transaction_type === type);
 
   resetView(`Filtered by ${type}`);
 }
@@ -138,18 +181,15 @@ function filterByType(type, el) {
 function filterByStatus() {
   const status = document.getElementById("statusFilter").value;
 
-  filteredTransactions =
-    status === "all"
-      ? [...allTransactions]
-      : allTransactions.filter(tx => tx.status === status);
+  filteredTransactions = status === "all"
+    ? [...allTransactions]
+    : allTransactions.filter(tx => tx.status === status);
 
   resetView(`Status: ${status}`);
 }
 
 function filterTransactions() {
-  const query = document
-    .getElementById("searchTransactions")
-    .value.toLowerCase();
+  const query = document.getElementById("searchTransactions").value.toLowerCase();
 
   filteredTransactions = allTransactions.filter(tx =>
     tx.reference?.toLowerCase().includes(query) ||
@@ -209,10 +249,8 @@ function updateStats() {
 
   document.getElementById("totalDepositsStat").textContent =
     `MWK ${deposits.toLocaleString()}`;
-
   document.getElementById("totalWithdrawalsStat").textContent =
     `MWK ${withdrawals.toLocaleString()}`;
-
   document.getElementById("transactionsCount").textContent =
     allTransactions.length;
 }
