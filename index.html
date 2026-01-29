@@ -71,11 +71,12 @@
   </div>
 </nav>
 
- <div id="kycReminder"></div>
+ 
 
     <!-- Hero Section - Money when you need it -->
     <section class="hero" style="background-image: url('images/indexPics.jpg'); background-size: cover; background-position: center; height: px;">
         <div class="hero-container">
+            <div id="kycReminder"></div>
             <div class="hero-content">
                 <h1>Money when you need it</h1>
                 <p class="hero-subtitle">Manage payments, secure loans, and invest smartly</p>
@@ -596,11 +597,12 @@ async function loadUserProfile() {
 
 function showKycReminder(percentage) {
   document.getElementById("kycReminder").innerHTML = `
-    <div class="kyc-card">
-      <h3>Complete your verification</h3>
-      <p>Your account is <strong>${percentage}% verified</strong>.</p>
-      <p>Finish KYC to access loans, wallet limits, and transfers.</p>
-      <a href="kyc.html" class="btn-primary">Complete KYC</a>
+    <div class="kyc-reminder">
+      <span class="kyc-badge">Your account is <strong>${percentage}% verified</span>
+
+      <a href="kyc.html" class="kyc-link">
+        Complete verification 
+      </a>
     </div>
   `;
 }
