@@ -42,7 +42,6 @@ async function loadTransactions() {
 
     filteredTransactions = [...allTransactions];
 
-    updateStats();
     renderTransactions();
 
   } catch (error) {
@@ -76,93 +75,35 @@ function renderTransactions() {
     .slice(0, visibleCount)
     .forEach(tx => list.appendChild(createTransactionCard(tx)));
 
-  document.getElementById("showingCount").textContent =
-    Math.min(visibleCount, filteredTransactions.length);
-
-  document.getElementById("totalCount").textContent =
-    filteredTransactions.length;
-
   loadMoreBtn.style.display =
     visibleCount < filteredTransactions.length ? "inline-block" : "none";
 }
 
 function createTransactionCard(tx) {
   const div = document.createElement("div");
-  div.className = "transaction-item";
+  div.className = "transaction-item"; // Use original class name
 
   const isCredit = tx.entry_type === "credit";
   const sign = isCredit ? "+" : "-";
-  const amountClass = isCredit ? "positive" : "negative";
+  const amountClass = isCredit ? "received" : "sent"; // Use original classes
 
   div.innerHTML = `
-    <div class="transaction-left">
-      <div class="transaction-icon ${tx.entry_type}">
-        <i class="fas fa-exchange-alt"></i>
-      </div>
-      <div>
-        <h4>${tx.transaction_type?.toUpperCase() || "TRANSACTION"}</h4>
-        <p>${tx.reference || "-"}</p>
-        <span class="transaction-date">${formatDate(tx.created_at)}</span>
-      </div>
+    <div class="transaction-icon">
+      <i class="fas fa-exchange-alt"></i>
     </div>
-
-    <div class="transaction-right">
-      <p class="transaction-amount ${amountClass}">
-        ${sign} MWK ${Number(tx.amount).toLocaleString()}
-      </p>
-      <span class="status ${tx.status}">${tx.status}</span>
-      ${tx.status === "held" && tx.transaction_type === "escrow" ? `<button class="release-btn" data-ref="${tx.reference}">Release</button>` : ""}
+    <div class="transaction-details">
+      <div class="transaction-title">${tx.transaction_type?.toUpperCase() || "TRANSACTION"}</div>
+      <div class="transaction-date">${formatDate(tx.created_at)}</div>
+      <div>${tx.reference || "-"}</div>
+    </div>
+    <div class="transaction-amount ${amountClass}">
+      ${sign} MWK ${Number(tx.amount).toLocaleString()}
     </div>
   `;
-
-  // Attach release handler if button exists
-  const releaseBtn = div.querySelector(".release-btn");
-  if (releaseBtn) {
-    releaseBtn.addEventListener("click", async e => {
-      e.stopPropagation(); // Prevent opening modal
-      await releaseTransaction(tx.reference);
-    });
-  }
 
   div.onclick = () => openDetailModal(tx);
 
   return div;
-}
-
-/* =========================
-   ESCROW RELEASE
-========================= */
-async function releaseTransaction(reference) {
-  const { token } = Auth.requireAuth();
-
-  if (!confirm(`Are you sure you want to release transaction ${reference}?`)) return;
-
-  try {
-    toggleLoading(true);
-
-    const response = await fetch(
-      `http://localhost:3000/api/v1/escrow_transactions/${reference}/release`,
-      {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        }
-      }
-    );
-
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-    const data = await response.json();
-    alert(data.message || "Transaction released successfully!");
-
-    await loadTransactions();
-  } catch (error) {
-    console.error(error);
-    alert("Failed to release transaction.");
-  } finally {
-    toggleLoading(false);
-  }
 }
 
 /* =========================
@@ -175,7 +116,8 @@ function filterByType(type, el) {
     ? [...allTransactions]
     : allTransactions.filter(tx => tx.transaction_type === type);
 
-  resetView(`Filtered by ${type}`);
+  visibleCount = 10;
+  renderTransactions();
 }
 
 function filterByStatus() {
@@ -185,7 +127,8 @@ function filterByStatus() {
     ? [...allTransactions]
     : allTransactions.filter(tx => tx.status === status);
 
-  resetView(`Status: ${status}`);
+  visibleCount = 10;
+  renderTransactions();
 }
 
 function filterTransactions() {
@@ -196,7 +139,8 @@ function filterTransactions() {
     String(tx.amount).includes(query)
   );
 
-  resetView("Search results");
+  visibleCount = 10;
+  renderTransactions();
 }
 
 function filterByDate() {
@@ -219,7 +163,8 @@ function filterByDate() {
     return true;
   });
 
-  resetView(`Date: ${value}`);
+  visibleCount = 10;
+  renderTransactions();
 }
 
 function sortTransactions() {
@@ -233,26 +178,6 @@ function sortTransactions() {
   });
 
   renderTransactions();
-}
-
-/* =========================
-   STATS
-========================= */
-function updateStats() {
-  let deposits = 0;
-  let withdrawals = 0;
-
-  allTransactions.forEach(tx => {
-    if (tx.entry_type === "credit") deposits += Number(tx.amount);
-    if (tx.entry_type === "debit") withdrawals += Number(tx.amount);
-  });
-
-  document.getElementById("totalDepositsStat").textContent =
-    `MWK ${deposits.toLocaleString()}`;
-  document.getElementById("totalWithdrawalsStat").textContent =
-    `MWK ${withdrawals.toLocaleString()}`;
-  document.getElementById("transactionsCount").textContent =
-    allTransactions.length;
 }
 
 /* =========================
@@ -282,12 +207,6 @@ function loadMoreTransactions() {
   renderTransactions();
 }
 
-function resetView(label) {
-  visibleCount = 10;
-  document.getElementById("currentFilter").textContent = label;
-  renderTransactions();
-}
-
 function setActiveTab(el) {
   document.querySelectorAll(".filter-tab").forEach(tab =>
     tab.classList.remove("active")
@@ -308,11 +227,4 @@ function formatDate(date) {
     hour: "2-digit",
     minute: "2-digit"
   });
-}
-
-/* =========================
-   EXPORT
-========================= */
-function exportTransactions() {
-  alert("CSV export coming next 👍");
 }
