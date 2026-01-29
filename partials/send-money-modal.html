@@ -1,60 +1,848 @@
 <div id="sendMoneyModal" class="modal hidden">
-  <div class="modal-content">
-    <h3>Send Money</h3>
+  <div class="modal-content send-money-modal">
+    <!-- Modal Header - Matching Wallet Balance Card Design -->
+    <div class="modal-header wallet-gradient-header">
+      <div class="header-content">
+        <div class="header-title">
 
-    <label>Send To</label>
-    <select id="sendType">
-      <option value="">Select</option>
-      <option value="mobile">Mobile Number</option>
-      <option value="wallet">Value Wallet</option>
-    </select>
+          <div>
+            <h3>Send Money</h3>
+          </div>
+        </div>
 
-    <div id="mobileFields" class="hidden">
-      <label>Mobile Network</label>
-      <select id="mobileNetwork">
-        <option value="">Select</option>
-        <option value="airtel">Airtel Money</option>
-        <option value="tnm">TNM Mpamba</option>
-      </select>
-
-      <label>Mobile Number</label>
-      <input type="text" id="mobileNumber" placeholder="09XXXXXXXX">
+      </div>
+      <div class="header-balance">
+        <span class="balance-label">Available Balance</span>
+        <div class="balance-amount">MWK <span id="modalWalletBalance">0.00</span></div>
+      </div>
     </div>
 
-    <div id="walletFields" class="hidden">
-  <label>Recipient Email</label>
-  <input id="recipientEmail" type="email" placeholder="Recipient email">
+    <!-- Main Form with Scrollable Area -->
+    <div class="modal-body">
+      <div class="send-money-form">
+        <!-- Send To Section -->
+        <div class="form-section">
+          <label class="form-label">
+            <i class="fas fa-user-circle"></i>
+            Send To
+          </label>
+          <div class="styled-select">
+            <select id="sendType">
+              <option value="">Select recipient type</option>
+              <option value="mobile">Mobile Number</option>
+              <option value="wallet">Value Wallet</option>
+            </select>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+        </div>
 
-  <label>Transfer Type</label>
-  <select id="transferMode">
-    <option value="">Select</option>
-    <option value="direct">Instant Transfer</option>
-    <option value="escrow">Protected Transfer (Recommended)</option>
-  </select>
+        <!-- Mobile Fields -->
+        <div id="mobileFields" class="hidden">
+          <div class="form-section">
+            <label class="form-label">
+              <i class="fas fa-sim-card"></i>
+              Mobile Details
+            </label>
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="field-label">Network</label>
+                <div class="styled-select">
+                  <select id="mobileNetwork">
+                    <option value="">Select network</option>
+                    <option value="airtel">Airtel Money</option>
+                    <option value="tnm">TNM Mpamba</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="field-label">Phone Number</label>
+                <div class="input-with-icon">
+                  <i class="fas fa-phone"></i>
+                  <input type="text" id="mobileNumber" placeholder="09XXXXXXXX">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-  <div id="escrowFields" class="hidden">
-    <label>Purpose</label>
-    <input id="escrowPurpose" type="text" placeholder="Purpose of payment">
+        <!-- Wallet Fields -->
+        <div id="walletFields" class="hidden">
+          <div class="form-section">
+            <label class="form-label">
+              <i class="fas fa-wallet"></i>
+              Wallet Details
+            </label>
+            
+            <div class="form-group">
+              <label class="field-label">Recipient's Email</label>
+              <div class="input-with-icon">
+                <i class="fas fa-envelope"></i>
+                <input id="recipientEmail" type="email" placeholder="Enter email address">
+              </div>
+            </div>
 
-    <div class="fee-box">
-      <p>Transfer Fee (1%): MWK <span id="feeAmount">0.00</span></p>
-      <p><strong>Recipient Receives:</strong> MWK <span id="netAmount">0.00</span></p>
+            <div class="form-group">
+              <label class="field-label">Transfer Type</label>
+              <div class="styled-select">
+                <select id="transferMode">
+                  <option value="">Select transfer type</option>
+                  <option value="direct">Instant Transfer</option>
+                  <option value="escrow">Protected Transfer (Recommended)</option>
+                </select>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+            </div>
+
+            <!-- Escrow Fields -->
+            <div id="escrowFields" class="hidden">
+              <div class="form-group">
+                <label class="field-label">Payment Purpose</label>
+                <div class="input-with-icon">
+                  <i class="fas fa-clipboard-check"></i>
+                  <input id="escrowPurpose" type="text" placeholder="e.g., Payment for goods, Services, etc.">
+                </div>
+              </div>
+
+              <div class="fee-card">
+                <div class="fee-header">
+                  <i class="fas fa-shield-alt"></i>
+                  <span>Protected Transfer Details</span>
+                </div>
+                <div class="fee-details">
+                  <div class="fee-row">
+                    <span>Transfer Amount:</span>
+                    <span id="displayAmount">MWK 0.00</span>
+                  </div>
+                  <div class="fee-row">
+                    <span>Protection Fee (1%):</span>
+                    <span class="fee-amount" id="feeAmount">MWK 0.00</span>
+                  </div>
+                  <div class="fee-divider"></div>
+                  <div class="fee-row total">
+                    <span>Recipient Receives:</span>
+                    <span class="net-amount" id="netAmount">MWK 0.00</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="checkbox-container">
+                <input type="checkbox" id="agreeFee">
+                <label for="agreeFee" class="checkbox-label">
+                  <i class="fas fa-check-circle"></i>
+                  <span>I agree to the 1% protection fee for secure transfers</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Amount Section -->
+        <div class="form-section amount-section">
+          <label class="form-label">
+            <i class="fas fa-money-bill-wave"></i>
+            Amount (MWK)
+          </label>
+          <div class="amount-input-wrapper">
+            <div class="currency-label">MWK</div>
+            <input type="number" id="sendAmount" min="100" placeholder="0.00">
+          </div>
+          <div class="amount-hint">
+            <i class="fas fa-info-circle"></i>
+            Minimum amount: MWK 100.00
+          </div>
+        </div>
+      </div>
     </div>
 
-    <label class="checkbox">
-      <input type="checkbox" id="agreeFee">
-      I agree to the 1% protected transfer fee
-    </label>
+    <!-- Modal Footer (Fixed at bottom) -->
+    <div class="modal-footer">
+      <div class="modal-actions">
+        <button id="cancelSendBtn" class="btn-wallet-action secondary">
+          Cancel
+        </button>
+        <button id="confirmSendBtn" class="btn-wallet-action primary">
+          <i class="fas fa-paper-plane"></i>
+          Send Money
+        </button>
+      </div>
+
+      <!-- Security Note -->
+      <div class="security-note">
+        <i class="fas fa-lock"></i>
+        <span>Secured with bank-level encryption • Instant delivery</span>
+      </div>
+    </div>
   </div>
 </div>
 
+<style>
+/* Send Money Modal Specific Styles */
+.send-money-modal {
+  max-width: 500px;
+  max-height: 85vh;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
 
-    <label>Amount (MWK)</label>
-    <input type="number" id="sendAmount" min="100">
+/* Modal Header - Wallet Balance Card Design */
+.wallet-gradient-header {
+  background: linear-gradient(135deg, #3d5975, #52a9e4);
+  color: white;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
 
-    <div class="modal-actions">
-      <button id="confirmSendBtn" class="btn-wallet-action primary">Send</button>
-      <button id="cancelSendBtn" class="btn-wallet-action">Cancel</button>
-    </div>
-  </div>
-</div>
+.wallet-gradient-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+  pointer-events: none;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.wallet-icon {
+  background: rgba(255, 255, 255, 0.2);
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.wallet-icon i {
+  font-size: 28px;
+  color: white;
+}
+
+.header-title h3 {
+  margin: 0 0 4px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.header-subtitle {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.9;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.header-info {
+  margin-top: 8px;
+}
+
+.wallet-ref {
+  font-size: 13px;
+  opacity: 0.9;
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wallet-ref i {
+  font-size: 12px;
+}
+
+.header-balance {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.balance-label {
+  display: block;
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.balance-amount {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.5px;
+}
+
+#modalWalletBalance {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Scrollable Modal Body */
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #adb5bd #f8f9fa;
+}
+
+/* Custom Scrollbar for Webkit browsers */
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: #f8f9fa;
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background-color: #adb5bd;
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background-color: #6c757d;
+}
+
+/* Form Sections */
+.send-money-form {
+  padding: 24px;
+}
+
+.form-section {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: #495057;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.form-label i {
+  color: #3d5975;
+  font-size: 16px;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #6c757d;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Styled Select */
+.styled-select {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.styled-select select {
+  width: 100%;
+  padding: 12px 16px;
+  padding-right: 48px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  background: white;
+  font-size: 15px;
+  color: #495057;
+  appearance: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #f8f9fa;
+}
+
+.styled-select select:focus {
+  outline: none;
+  border-color: #3d5975;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(61, 89, 117, 0.1);
+}
+
+.styled-select i {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+  pointer-events: none;
+}
+
+/* Form Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Input with Icon */
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #adb5bd;
+  font-size: 16px;
+}
+
+.input-with-icon input {
+  width: 100%;
+  padding: 12px 16px 12px 42px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  background-color: #f8f9fa;
+}
+
+.input-with-icon input:focus {
+  outline: none;
+  border-color: #3d5975;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(61, 89, 117, 0.1);
+}
+
+.input-with-icon input::placeholder {
+  color: #adb5bd;
+}
+
+/* Amount Section */
+.amount-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #e9ecef;
+  margin-bottom: 16px;
+}
+
+.amount-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 56px;
+  margin-bottom: 12px;
+}
+
+.currency-label {
+  padding: 0 18px;
+  background: #f8f9fa;
+  color: #495057;
+  font-weight: 600;
+  border-right: 1px solid #dee2e6;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.amount-input-wrapper input {
+  flex: 1;
+  border: none;
+  padding: 0 16px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #2c3e50;
+  text-align: right;
+  background: transparent;
+  height: 100%;
+}
+
+.amount-input-wrapper input:focus {
+  outline: none;
+}
+
+.amount-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6c757d;
+  font-size: 13px;
+}
+
+.amount-hint i {
+  color: #3d5975;
+  font-size: 14px;
+}
+
+/* Quick Amount Buttons */
+.quick-amounts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.quick-amount-btn {
+  padding: 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  background: white;
+  color: #495057;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quick-amount-btn:hover {
+  border-color: #3d5975;
+  background: #f8f9fa;
+  color: #3d5975;
+}
+
+.quick-amount-btn:active {
+  transform: scale(0.98);
+}
+
+/* Fee Card */
+.fee-card {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.fee-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.fee-header i {
+  color: #28a745;
+  font-size: 18px;
+}
+
+.fee-details {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.fee-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  color: #495057;
+  font-size: 14px;
+}
+
+.fee-row.total {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 16px;
+  margin-top: 4px;
+}
+
+.fee-amount {
+  color: #dc3545;
+  font-weight: 500;
+}
+
+.net-amount {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.fee-divider {
+  height: 1px;
+  background: #e9ecef;
+  margin: 8px 0;
+}
+
+/* Checkbox */
+.checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  margin: 20px 0;
+}
+
+.checkbox-container input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  color: #495057;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.checkbox-label i {
+  color: #dee2e6;
+  font-size: 18px;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.checkbox-container input:checked + .checkbox-label i {
+  color: #28a745;
+}
+
+/* Modal Footer (Fixed) */
+.modal-footer {
+  flex-shrink: 0;
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 16px;
+  padding: 20px 24px;
+}
+
+.modal-actions button {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: none;
+}
+
+.modal-actions .primary {
+  background: var(--white);
+  color: #3d5975;
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  border: none;
+}
+
+.modal-actions .primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+.modal-actions .secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color:#2c3e50;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.modal-actions .secondary:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Security Note */
+.security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 24px;
+  background: white;
+  border-top: 1px solid #e9ecef;
+  color: #6c757d;
+  font-size: 13px;
+}
+
+.security-note i {
+  color: #28a745;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .send-money-modal {
+    max-height: 90vh;
+    margin: 10px;
+    max-width: 95%;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+    padding: 16px;
+  }
+  
+  .wallet-gradient-header {
+    padding: 20px;
+  }
+  
+  .send-money-form {
+    padding: 20px;
+  }
+  
+  .quick-amounts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .header-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .wallet-icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .header-content {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .wallet-ref {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+}
+
+/* Animation for modal */
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.send-money-modal {
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+/* Focus styles for accessibility */
+button:focus,
+select:focus,
+input:focus {
+  outline: 2px solid #3d5975;
+  outline-offset: 2px;
+}
+
+/* Disabled state */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+</style>
+
+<script>
+// Quick amount buttons functionality
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    // Quick amount buttons
+    const quickAmountBtns = document.querySelectorAll('.quick-amount-btn');
+    quickAmountBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const amount = this.getAttribute('data-amount');
+        const amountInput = document.getElementById('sendAmount');
+        if (amountInput) {
+          amountInput.value = amount;
+          amountInput.dispatchEvent(new Event('input'));
+        }
+      });
+    });
+    
+    // Update displayed amount
+    const amountInput = document.getElementById('sendAmount');
+    const displayAmount = document.getElementById('displayAmount');
+    
+    if (amountInput && displayAmount) {
+      amountInput.addEventListener('input', function() {
+        const value = parseFloat(this.value || 0);
+        displayAmount.textContent = 'MWK ' + value.toFixed(2);
+      });
+    }
+    
+    // Update modal wallet balance from main wallet balance
+    function updateModalBalance() {
+      const mainBalance = document.getElementById('walletBalance')?.textContent;
+      const modalBalance = document.getElementById('modalWalletBalance');
+      if (mainBalance && modalBalance) {
+        modalBalance.textContent = mainBalance;
+      }
+    }
+    
+    // Auto-focus on amount input when modal opens
+    const sendMoneyBtn = document.getElementById('sendMoneyBtn');
+    if (sendMoneyBtn) {
+      sendMoneyBtn.addEventListener('click', function() {
+        setTimeout(() => {
+          updateModalBalance();
+          const amountInput = document.getElementById('sendAmount');
+          if (amountInput) {
+            amountInput.focus();
+          }
+        }, 300);
+      });
+    }
+  }, 100);
+});
+</script>
