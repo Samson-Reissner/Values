@@ -31,6 +31,74 @@ function loadSendMoneyModal() {
 }
 
 /**
+ * Fetch real balance from API
+ */
+async function fetchRealBalanceFromAPI() {
+  try {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      console.warn("No auth token found");
+      return 0;
+    }
+
+    const API_BASE = "http://localhost:3000/api/v1";
+    const response = await fetch(`${API_BASE}/wallet`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.balance || 0;
+    
+  } catch (error) {
+    console.error("Failed to fetch balance from API:", error);
+    return 0;
+  }
+}
+
+/**
+ * Format balance with commas and 2 decimal places
+ */
+function formatBalance(amount) {
+  return amount.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+/**
+ * Update modal balance with real balance from API
+ */
+async function updateModalBalance() {
+  const modalBalanceElement = document.getElementById('modalWalletBalance');
+  if (!modalBalanceElement) {
+    console.warn("Modal balance element not found");
+    return 0;
+  }
+
+  // Show loading state
+  const originalText = modalBalanceElement.textContent;
+  modalBalanceElement.textContent = "...";
+  
+  try {
+    const realBalance = await fetchRealBalanceFromAPI();
+    const formattedBalance = formatBalance(realBalance);
+    modalBalanceElement.textContent = formattedBalance;
+    return realBalance;
+    
+  } catch (error) {
+    console.error("Failed to update modal balance:", error);
+    modalBalanceElement.textContent = originalText;
+    return 0;
+  }
+}
+
+/**
  * Initialize modal events
  */
 function initSendMoneyEvents() {
@@ -52,9 +120,20 @@ function initSendMoneyEvents() {
     return;
   }
 
-  /* Open modal */
-  sendMoneyBtn.addEventListener("click", () => {
+  /* Open modal - Fetch fresh balance from API */
+  sendMoneyBtn.addEventListener("click", async () => {
+    // Fetch and update real balance before showing modal
+    await updateModalBalance();
+    
+    // Show modal
     modal.classList.remove("hidden");
+    
+    // Focus on amount input
+    setTimeout(() => {
+      if (amountInput) {
+        amountInput.focus();
+      }
+    }, 100);
   });
 
   /* Close modal */
@@ -91,8 +170,10 @@ function initSendMoneyEvents() {
     amountInput.addEventListener("input", calculateEscrowAmounts);
   }
 
-  /* Submit */
-  confirmBtn.addEventListener("click", handleSendMoney);
+  /* Submit - Validate against real balance */
+  confirmBtn.addEventListener("click", async function() {
+    await handleSendMoney();
+  });
 }
 
 /**
@@ -120,23 +201,34 @@ function calculateEscrowAmounts() {
 }
 
 /**
- * Handle send money submit
+ * Handle send money submit with real balance validation
  */
-function handleSendMoney() {
+async function handleSendMoney() {
   const sendType = document.getElementById("sendType").value;
-  const amount = parseFloat(document.getElementById("sendAmount").value);
+  const amountInput = document.getElementById("sendAmount");
+  const amount = parseFloat(amountInput.value);
   const recipientEmail = document.getElementById("recipientEmail").value;
   const transferMode = document.getElementById("transferMode").value;
   const purpose = document.getElementById("escrowPurpose")?.value;
   const agreeFee = document.getElementById("agreeFee")?.checked;
 
+  // Validation
   if (sendType !== "wallet") {
     alert("Only wallet transfers supported");
     return;
   }
 
-  if (!amount || amount <= 0) {
-    alert("Enter a valid amount");
+  if (!amount || amount < 100) {
+    alert("Please enter a valid amount (minimum MWK 100)");
+    return;
+  }
+
+  // Fetch FRESH balance from API for validation
+  const currentBalance = await fetchRealBalanceFromAPI();
+  
+  // Check against real API balance
+  if (amount > currentBalance) {
+    alert(`Insufficient balance. You have MWK ${formatBalance(currentBalance)}. Please add money first.`);
     return;
   }
 
@@ -164,60 +256,98 @@ function handleSendMoney() {
   const token = localStorage.getItem("authToken");
   const API_BASE = "http://localhost:3000/api/v1";
 
-  /* ============================
-     DIRECT TRANSFER
-     ============================ */
-  if (transferMode === "direct") {
-    fetch(`${API_BASE}/wallet/transfer`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        recipient: recipientEmail,
-        amount: amount
-      })
-    })
-      .then(res => res.json())
-      .then(handleSuccess)
-      .catch(console.error);
+  // Show processing state
+  const confirmBtn = document.getElementById("confirmSendBtn");
+  const originalText = confirmBtn.innerHTML;
+  confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+  confirmBtn.disabled = true;
 
-    return;
-  }
-
-  /* ============================
-     ESCROW TRANSFER
-     ============================ */
-  fetch(`${API_BASE}/wallets/lookup?email=${encodeURIComponent(recipientEmail)}`, {
-    headers: {
-      "Authorization": `Bearer ${token}`
-    }
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.error) throw new Error(data.error);
-
-      return fetch(`${API_BASE}/escrow_transactions`, {
+  try {
+    let response;
+    let result;
+    
+    /* ============================
+       DIRECT TRANSFER
+       ============================ */
+    if (transferMode === "direct") {
+      response = await fetch(`${API_BASE}/wallet/transfer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
-          receiver_wallet_id: data.wallet_id,
+          recipient: recipientEmail,
+          amount: amount
+        })
+      });
+      
+      result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || "Transfer failed");
+      }
+      
+      // Success - update modal balance
+      await updateModalBalance();
+      
+      alert(`Success! MWK ${formatBalance(amount)} sent to ${recipientEmail}`);
+      document.getElementById("sendMoneyModal").classList.add("hidden");
+      resetSendMoneyForm();
+      
+    } 
+    /* ============================
+       ESCROW TRANSFER
+       ============================ */
+    else {
+      // First lookup recipient wallet
+      const lookupResponse = await fetch(`${API_BASE}/wallets/lookup?email=${encodeURIComponent(recipientEmail)}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      
+      const lookupData = await lookupResponse.json();
+      if (lookupData.error) {
+        throw new Error(lookupData.error);
+      }
+
+      // Create escrow transaction
+      response = await fetch(`${API_BASE}/escrow_transactions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          receiver_wallet_id: lookupData.wallet_id,
           amount: amount,
           purpose: purpose
         })
       });
-    })
-    .then(res => res.json())
-    .then(data => {
+      
+      result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.error || "Escrow transfer failed");
+      }
+      
+      // Success - update modal balance
+      await updateModalBalance();
+      
       alert("Payment held in escrow successfully");
       document.getElementById("sendMoneyModal").classList.add("hidden");
       resetSendMoneyForm();
-    })
-    .catch(err => alert(err.message));
+    }
+    
+  } catch (error) {
+    console.error("Send money error:", error);
+    alert(`Error: ${error.message}`);
+  } finally {
+    // Reset button state
+    confirmBtn.innerHTML = originalText;
+    confirmBtn.disabled = false;
+  }
 }
 
 /**
@@ -241,4 +371,13 @@ function resetSendMoneyForm() {
   document.getElementById("mobileFields").classList.add("hidden");
   document.getElementById("walletFields").classList.add("hidden");
   document.getElementById("escrowFields").classList.add("hidden");
+  
+  // Reset displayed amounts
+  const feeEl = document.getElementById("feeAmount");
+  const netEl = document.getElementById("netAmount");
+  const displayAmount = document.getElementById("displayAmount");
+  
+  if (feeEl) feeEl.innerText = "0.00";
+  if (netEl) netEl.innerText = "0.00";
+  if (displayAmount) displayAmount.textContent = "MWK 0.00";
 }
