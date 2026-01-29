@@ -202,38 +202,6 @@
             </div>
         </div>
     </div>
-
-    <div id="paymentModal" class="modal hidden">
-  <div class="modal-content">
-    <h3>Pay Bills</h3>
-
-    <label>Payment Type</label>
-    <select id="paymentType">
-      <option value="">Select</option>
-      <option value="utility">Utility Bill</option>
-      <option value="exam">Examination Fee</option>
-      <option value="school">School Fees</option>
-    </select>
-
-    <label>Service Provider</label>
-    <select id="serviceProvider"></select>
-
-    <label>Reference Number</label>
-    <input type="text" id="paymentReference">
-
-    <label>Amount (MWK)</label>
-    <input type="number" id="paymentAmount">
-
-    <div class="modal-actions">
-      <button id="confirmPaymentBtn" class="btn-wallet-action primary">
-        Pay
-      </button>
-      <button id="cancelPaymentBtn" class="btn-wallet-action">
-        Cancel
-      </button>
-    </div>
-  </div>
-</div>
 <div id="depositMethodModal" class="modal hidden">
   <div class="modal-content">
     <h3>Select Deposit Method</h3>
@@ -270,12 +238,21 @@
   </div>
 </div>
 <div id="sendMoneyModalContainer"></div>
+<div id="modalContainer"></div>
 
 <script src="../js/auth.js"></script>
 <script src="../js/wallet.js"></script>
 <script src="../js/payments.js"></script>
 <script src="../js/send-money.js"></script>
 <script src="../js/loans.js"></script>
+<script>
+fetch('../partials/pay-bills-modal.html')
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById("modalContainer").innerHTML += html;
+    initPayBillsModal(); // ✅ REQUIRED
+  });
+</script>
 
 <style>
 /* Modal overlay */
