@@ -89,3 +89,26 @@
     transform: translateY(-1px);
     box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
 }
+/* === KYC notification positioning inside hero === */
+/* Raise KYC notification without affecting hero text */
+#kycReminder {
+  position: relative;
+  top: -60px;          /* moves it UP */
+  margin-bottom: 1.5rem;
+  max-width: 1100px;
+}
+.kyc-reminder {
+  margin-left: 0;
+}
+.kyc-link {
+  color: #f5c26b; /* soft gold */
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 1rem;
+  transition: all 0.25s ease;
+}
+
+.kyc-link:hover {
+  color: #ffd98a;
+  text-decoration: underline;
+}
