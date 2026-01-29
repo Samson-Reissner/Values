@@ -1,0 +1,43 @@
+<div id="paymentModal" class="modal hidden">
+  <div class="modal-content pay-bills-modal">
+    <div class="modal-header">
+      <h3><i class="fas fa-file-invoice-dollar"></i> Pay Bills</h3>
+      <button class="modal-close" id="cancelPaymentBtn">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Payment Type</label>
+        <select id="paymentType">
+          <option value="">Select payment type</option>
+          <option value="utility">Utility Bill</option>
+          <option value="exam">Examination Fee</option>
+          <option value="school">School Fees</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Service Provider</label>
+        <select id="serviceProvider">
+          <option value="">Select provider</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Reference Number</label>
+        <input type="text" id="paymentReference" placeholder="e.g. Meter / Student ID">
+      </div>
+
+      <div class="form-group">
+        <label>Amount (MWK)</label>
+        <input type="number" id="paymentAmount" min="100">
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button id="confirmPaymentBtn" class="btn-primary">
+        <i class="fas fa-lock"></i> Pay Securely
+      </button>
+    </div>
+  </div>
+</div>
