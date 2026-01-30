@@ -1,0 +1,108 @@
+<!-- Deposit Method Modal -->
+<div id="depositMethodModal" class="modal deposit-modal hidden">
+  <div class="modal-backdrop" id="closeDepositMethodBackdrop"></div>
+  <div class="modal-container">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <i class="fas fa-wallet modal-title-icon"></i>
+          Select Deposit Method
+        </h3>
+        <button class="modal-close-btn" id="closeDepositMethod" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="payment-options">
+        <button class="payment-option" data-method="mpamba">
+          <!-- <div class="payment-option-icon">
+            <img src="tnm-mpamba-limited-292692.jpg" alt="TNM Mpamba" class="payment-logo">
+          </div> -->
+          <div class="payment-option-content">
+            <h4 class="payment-name">TNM Mpamba</h4>
+            <p class="payment-description">Instant deposit • No fees</p>
+          </div>
+          <div class="payment-option-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </button>
+
+        <button class="payment-option" data-method="airtel">
+          <!-- <div class="payment-option-icon">
+            <img src="Airtel-Money-Logo-Vector-PNG.png" alt="Airtel Money" class="payment-logo">
+          </div> -->
+          <div class="payment-option-content">
+            <h4 class="payment-name">Airtel Money</h4>
+            <p class="payment-description">Secure • Available 24/7</p>
+          </div>
+          <div class="payment-option-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </button>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancelDepositMethodBtn">
+          <i class="fas fa-times"></i>
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Deposit Amount Modal -->
+<div id="depositAmountModal" class="modal deposit-modal hidden">
+  <div class="modal-backdrop" id="closeDepositAmountBackdrop"></div>
+  <div class="modal-container">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="depositTitle">
+          <i class="fas fa-money-bill-wave modal-title-icon"></i>
+          Deposit Amount
+        </h3>
+        <button class="modal-close-btn" id="closeDepositAmount" aria-label="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label for="depositAmount" class="form-label">
+          <i class="fas fa-coins"></i>
+          Enter Amount (MWK)
+        </label>
+        <div class="amount-input-wrapper">
+          <input 
+            type="number" 
+            id="depositAmount" 
+            class="form-input amount-input" 
+            min="100" 
+            step="100" 
+            placeholder="0.00"
+            aria-label="Deposit amount in Malawian Kwacha"
+          >
+          
+        </div>
+        <div class="form-hint">
+          <i class="fas fa-info-circle"></i>
+          Minimum deposit: MWK 100
+        </div>
+      </div>
+
+      <div class="selected-method-display" id="selectedMethodDisplay">
+        <!-- Will be populated by JavaScript -->
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancelDepositBtn">
+          <i class="fas fa-arrow-left"></i>
+          Back
+        </button>
+        <button class="btn btn-primary" id="confirmDepositBtn">
+          <i class="fas fa-lock"></i>
+          Proceed to Payment
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
