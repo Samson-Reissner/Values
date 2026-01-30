@@ -151,72 +151,6 @@ class ValueWallet {
       list.appendChild(div);
     });
   }
-
-  /* -------------------------
-     DEPOSIT FLOW
-  --------------------------*/
-  showDepositMethods() {
-    document
-      .getElementById("depositMethodModal")
-      .classList.remove("hidden");
-
-    document.querySelectorAll("[data-method]").forEach(btn => {
-      btn.onclick = () => {
-        this.selectedMethod = btn.dataset.method;
-        document
-          .getElementById("depositMethodModal")
-          .classList.add("hidden");
-        this.showAmountModal();
-      };
-    });
-
-    document.getElementById("closeDepositMethod").onclick = () => {
-      document
-        .getElementById("depositMethodModal")
-        .classList.add("hidden");
-    };
-  }
-
-  showAmountModal() {
-    document.getElementById("depositTitle").textContent =
-      `Deposit via ${this.selectedMethod.toUpperCase()}`;
-
-    document
-      .getElementById("depositAmountModal")
-      .classList.remove("hidden");
-
-    document.getElementById("confirmDepositBtn").onclick = () => {
-      const amount = parseFloat(
-        document.getElementById("depositAmount").value
-      );
-
-      if (!amount || amount <= 0) {
-        alert("Enter a valid amount");
-        return;
-      }
-
-      document
-        .getElementById("depositAmountModal")
-        .classList.add("hidden");
-
-      alert(
-        "A payment prompt has been sent to your phone.\n" +
-        "Please enter your mobile money PIN to confirm."
-      );
-
-      setTimeout(() => {
-        this.addMoney(amount);
-        alert("Deposit successful");
-      }, 3000);
-    };
-
-    document.getElementById("cancelDepositBtn").onclick = () => {
-      document
-        .getElementById("depositAmountModal")
-        .classList.add("hidden");
-    };
-  }
-
   /* -------------------------
      HELPERS
   --------------------------*/
@@ -248,9 +182,6 @@ class ValueWallet {
      UI BINDINGS
   --------------------------*/
   bindUIActions() {
-    document.getElementById("addMoneyBtn")
-      ?.addEventListener("click", () => this.showDepositMethods());
-
     document.getElementById("withdrawMoneyBtn")
       ?.addEventListener("click", () => {
         window.location.href = "withdraw-money.html";
