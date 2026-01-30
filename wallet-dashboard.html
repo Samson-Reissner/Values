@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="../styles/custom.css">
     <link rel="stylesheet" href="../styles/wallet-styles.css">
     <link rel="stylesheet" href="../styles/send-money.css">
+    <link rel="stylesheet" href="../styles/deposit-modal.css">
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -202,57 +204,26 @@
             </div>
         </div>
     </div>
-<div id="depositMethodModal" class="modal hidden">
-  <div class="modal-content">
-    <h3>Select Deposit Method</h3>
-
-    <button class="btn-wallet-action primary" data-method="mpamba">
-      <i class="fas fa-mobile-alt"></i> TNM Mpamba
-    </button>
-
-    <button class="btn-wallet-action primary" data-method="airtel">
-      <i class="fas fa-sim-card"></i> Airtel Money
-    </button>
-
-    <div class="modal-actions">
-      <button id="closeDepositMethod" class="btn-wallet-action">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<div id="depositAmountModal" class="modal hidden">
-  <div class="modal-content">
-    <h3 id="depositTitle"></h3>
-
-    <label>Amount (MWK)</label>
-    <input type="number" id="depositAmount" min="100">
-
-    <div class="modal-actions">
-      <button id="confirmDepositBtn" class="btn-wallet-action primary">
-        Proceed
-      </button>
-      <button class="btn-wallet-action" id="cancelDepositBtn">
-        Cancel
-      </button>
-    </div>
-  </div>
-</div>
 <div id="sendMoneyModalContainer"></div>
 <div id="modalContainer"></div>
-
 <script src="../js/auth.js"></script>
 <script src="../js/wallet.js"></script>
 <script src="../js/payments.js"></script>
 <script src="../js/send-money.js"></script>
 <script src="../js/loans.js"></script>
+<script src="../js/deposit-money.js"></script>
+
 <script>
-fetch('../partials/pay-bills-modal.html')
+fetch('../partials/deposit-money-modal.html')
   .then(res => res.text())
   .then(html => {
     document.getElementById("modalContainer").innerHTML += html;
-    initPayBillsModal(); // ✅ REQUIRED
+
+    // ✅ NOW class exists AND modal exists
+    window.depositManager = new DepositManager();
   });
 </script>
+
 
 <style>
 /* Modal overlay */
