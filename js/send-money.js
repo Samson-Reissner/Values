@@ -183,22 +183,26 @@ function calculateEscrowAmounts() {
   const amountField = document.getElementById("sendAmount");
   const feeEl = document.getElementById("feeAmount");
   const netEl = document.getElementById("netAmount");
+  const totalEl = document.getElementById("totalAmount");
 
-  if (!amountField || !feeEl || !netEl) return;
+  if (!amountField || !feeEl || !netEl || !totalEl) return;
 
   const amount = parseFloat(amountField.value || 0);
   if (amount <= 0) {
-    feeEl.innerText = "0.00";
-    netEl.innerText = "0.00";
+    feeEl.innerText = "MWK 0.00";
+    netEl.innerText = "MWK 0.00";
+    totalEl.innerText = "MWK 0.00";
     return;
   }
 
   const fee = amount * 0.01;
-  const net = amount - fee;
+  const total = amount + fee;
 
-  feeEl.innerText = fee.toFixed(2);
-  netEl.innerText = net.toFixed(2);
+  feeEl.innerText = `MWK ${fee.toFixed(2)}`;
+  netEl.innerText = `MWK ${amount.toFixed(2)}`;   // recipient gets full amount
+  totalEl.innerText = `MWK ${total.toFixed(2)}`; // sender pays this
 }
+
 
 /**
  * Handle send money submit with real balance validation
