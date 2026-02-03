@@ -95,6 +95,13 @@
         }
     </style>
 </head>
+<script src="js/auth.js"></script>
+<script>
+  // Protect this page: only logged-in users allowed
+  document.addEventListener("DOMContentLoaded", () => {
+    Auth.requireAuth("login.html");
+  });
+</script>
 
 
 <body>
