@@ -205,74 +205,84 @@ class DepositManager {
         
         this.processDeposit();
     }
+   async initiateDeposit() {
+    const token = localStorage.getItem('authToken');
+
+    const response = await fetch('/api/v1/deposits', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token && { 'Authorization': `Bearer ${token}` })
+        },
+        body: JSON.stringify({
+            amount: this.selectedAmount,
+            method: this.selectedMethod
+        })
+    });
+
+    let data = null;
+
+    try {
+        data = await response.json();
+    } catch (e) {
+        throw new Error(
+            `Server error (${response.status}). Invalid JSON response.`
+        );
+    }
+
+    if (!response.ok) {
+        throw new Error(data?.error || `Request failed (${response.status})`);
+    }
+
+    if (!data.success) {
+        throw new Error(data.error || 'Deposit initiation failed');
+    }
+
+    return data;
+}
 
     async processDeposit() {
-        try {
-            // Show processing state
-            this.showNotification('Processing your deposit request...', 'info');
-            
-            // Close amount modal
-            this.closeAmountModal();
-            
-            // Simulate API call delay
-            await this.delay(1000);
-            
-            // Show success message
-            this.showNotification(
-                `A payment prompt has been sent to your phone.<br>Please enter your mobile money PIN.`,
-                'success'
-            );
-            
-            // Simulate payment processing
-            await this.delay(2000);
-            
-            // Process with wallet system
-            if (window.valueWallet) {
-                window.valueWallet.selectedMethod = this.selectedMethod;
-                const result = window.valueWallet.addMoney(this.selectedAmount);
-                
-                if (result) {
-                    this.showNotification(
-                        `Successfully deposited MWK ${this.selectedAmount.toLocaleString()} via ${this.selectedMethod.toUpperCase()}`,
-                        'success'
-                    );
-                    
-                    // Dispatch custom event for other components to listen to
-                    this.dispatchDepositEvent('deposit:success', {
-                        amount: this.selectedAmount,
-                        method: this.selectedMethod,
-                        timestamp: new Date().toISOString()
-                    });
-                } else {
-                    throw new Error('Deposit failed in wallet system');
-                }
-            } else {
-                // Fallback if wallet system not available
-                console.log(`Deposit simulated: MWK ${this.selectedAmount} via ${this.selectedMethod}`);
-                this.showNotification(
-                    `Successfully deposited MWK ${this.selectedAmount.toLocaleString()} via ${this.selectedMethod.toUpperCase()}`,
-                    'success'
-                );
-            }
-            
-        } catch (error) {
-            console.error('Deposit error:', error);
-            this.showNotification(
-                'Deposit failed. Please try again or contact support.',
-                'error'
-            );
-            
-            // Dispatch error event
-            this.dispatchDepositEvent('deposit:error', {
-                error: error.message,
-                amount: this.selectedAmount,
-                method: this.selectedMethod
-            });
-            
-        } finally {
-            this.resetProcessingState();
-        }
+    try {
+        this.showNotification('Sending payment request to your phone...', 'info');
+
+        // Close amount modal
+        this.closeAmountModal();
+
+        // 🔥 REAL API CALL
+        const result = await this.initiateDeposit();
+
+        this.showNotification(
+            `Payment request sent successfully.<br>
+             Please approve the MWK ${this.selectedAmount.toLocaleString()} payment on your phone.`,
+            'success'
+        );
+
+        // Dispatch event for dashboards / listeners
+        this.dispatchDepositEvent('deposit:initiated', {
+            reference: result.reference,
+            amount: this.selectedAmount,
+            method: this.selectedMethod
+        });
+
+    } catch (error) {
+        console.error('Deposit error:', error);
+
+        this.showNotification(
+            error.message || 'Deposit failed. Please try again.',
+            'error'
+        );
+
+        this.dispatchDepositEvent('deposit:error', {
+            error: error.message,
+            amount: this.selectedAmount,
+            method: this.selectedMethod
+        });
+
+    } finally {
+        this.resetProcessingState();
     }
+}
+
 
     resetProcessingState() {
         this.isProcessing = false;
