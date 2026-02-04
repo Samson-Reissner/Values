@@ -1,538 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Peer-to-Peer Lending | Trusted Borrower Network</title>
-
-  <link rel="stylesheet" href="../styles/custom.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --primary: #4361ee;
-      --primary-light: #eef2ff;
-      --secondary: #7209b7;
-      --accent: #f72585;
-      --light: #f8f9fa;
-      --dark: #2b2d42;
-      --success: #06d6a0;
-      --warning: #ffd166;
-      --radius: 16px;
-      --shadow: 0 10px 30px rgba(67, 97, 238, 0.15);
-      --shadow-hover: 0 15px 40px rgba(67, 97, 238, 0.25);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      color: var(--dark);
-    }
-
-    .container {
-      max-width: 800px;
-      width: 100%;
-      background: white;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      position: relative;
-    }
-
-    .content {
-      padding: 60px 50px 50px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 40px;
-    }
-
-    .page-header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .page-header h1 {
-      font-family: 'Poppins', sans-serif;
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 15px;
-      position: relative;
-      display: inline-block;
-    }
-
-    .page-header h1::after {
-      content: "";
-      position: absolute;
-      bottom: -8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 4px;
-      background: var(--accent);
-      border-radius: 2px;
-    }
-
-    .page-header p {
-      font-size: 1.2rem;
-      color: #666;
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-
-    .intro {
-      text-align: center;
-      max-width: 700px;
-    }
-
-    .intro h2 {
-      font-size: 1.8rem;
-      color: var(--primary);
-      margin-bottom: 20px;
-      font-weight: 600;
-    }
-
-    .intro p {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      color: #555;
-      margin-bottom: 15px;
-    }
-
-    .highlight-box {
-      background: var(--primary-light);
-      border-radius: var(--radius);
-      padding: 25px;
-      margin: 20px 0 30px;
-      border-left: 5px solid var(--primary);
-    }
-
-    .highlight-box p {
-      font-size: 1.1rem;
-      color: var(--dark);
-      margin: 0;
-    }
-
-    .main-card-container {
-      width: 100%;
-      max-width: 500px;
-      margin: 10px 0;
-    }
-
-    .main-card {
-      background: linear-gradient(145deg, #ffffff, #f5f7ff);
-      border-radius: var(--radius);
-      padding: 40px;
-      box-shadow: var(--shadow);
-      border: 2px solid rgba(67, 97, 238, 0.1);
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .main-card:hover {
-      transform: translateY(-10px);
-      box-shadow: var(--shadow-hover);
-      border-color: var(--primary);
-    }
-
-    .main-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 6px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-    }
-
-    .card-icon {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 25px;
-      box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
-    }
-
-    .card-icon i {
-      font-size: 36px;
-      color: white;
-    }
-
-    .card-title {
-      font-size: 1.8rem;
-      color: var(--primary);
-      text-align: center;
-      margin-bottom: 15px;
-      font-weight: 700;
-    }
-
-    .card-description {
-      text-align: center;
-      font-size: 1.1rem;
-      color: #666;
-      line-height: 1.6;
-      margin-bottom: 25px;
-    }
-
-    .card-features {
-      background: var(--primary-light);
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 25px;
-    }
-
-    .card-features h4 {
-      color: var(--primary);
-      margin-bottom: 15px;
-      font-size: 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .card-features ul {
-      list-style: none;
-      padding-left: 0;
-    }
-
-    .card-features li {
-      padding: 8px 0;
-      padding-left: 30px;
-      position: relative;
-      color: #555;
-    }
-
-    .card-features li::before {
-      content: "✓";
-      position: absolute;
-      left: 0;
-      color: var(--success);
-      font-weight: bold;
-      font-size: 1.1rem;
-    }
-
-    .card-cta {
-      text-align: center;
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px dashed #ddd;
-    }
-
-    .card-cta p {
-      color: #777;
-      margin-bottom: 15px;
-      font-size: 1rem;
-    }
-
-    .click-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--primary);
-      color: white;
-      padding: 12px 25px;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 1.1rem;
-      transition: all 0.3s;
-    }
-
-    .click-indicator:hover {
-      background: var(--secondary);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(114, 9, 183, 0.3);
-    }
-
-    .click-indicator i {
-      transition: transform 0.3s;
-    }
-
-    .main-card:hover .click-indicator i {
-      transform: translateX(5px);
-    }
-
-    .lending-cta {
-      margin-top: 40px;
-      text-align: center;
-      width: 100%;
-    }
-
-    .start-lending-btn {
-      background: linear-gradient(135deg, var(--accent), #ff3d8b);
-      color: white;
-      border: none;
-      padding: 18px 45px;
-      font-size: 1.3rem;
-      font-weight: 700;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.3s;
-      box-shadow: 0 10px 25px rgba(247, 37, 133, 0.3);
-      display: inline-flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .start-lending-btn:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 35px rgba(247, 37, 133, 0.4);
-      background: linear-gradient(135deg, #ff3d8b, #ff1a6d);
-    }
-
-    .start-lending-btn:active {
-      transform: translateY(-2px);
-    }
-
-    .security-note {
-      text-align: center;
-      margin-top: 40px;
-      padding-top: 25px;
-      border-top: 1px solid #eee;
-      color: #777;
-      font-size: 0.95rem;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .security-note i {
-      color: var(--success);
-      margin-right: 8px;
-    }
-
-    .stats {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      margin-top: 30px;
-      flex-wrap: wrap;
-    }
-
-    .stat-item {
-      text-align: center;
-    }
-
-    .stat-value {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: var(--primary);
-      display: block;
-    }
-
-    .stat-label {
-      font-size: 0.9rem;
-      color: #777;
-      margin-top: 5px;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        margin: 10px;
-      }
-      
-      .content {
-        padding: 40px 20px 30px;
-      }
-      
-      .page-header h1 {
-        font-size: 2rem;
-      }
-      
-      .page-header p {
-        font-size: 1.1rem;
-        padding: 0 10px;
-      }
-      
-      .main-card {
-        padding: 30px 20px;
-      }
-      
-      .card-icon {
-        width: 70px;
-        height: 70px;
-      }
-      
-      .card-icon i {
-        font-size: 30px;
-      }
-      
-      .stats {
-        gap: 30px;
-      }
-      
-      .stat-value {
-        font-size: 1.8rem;
-      }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .fade-in {
-      animation: fadeIn 0.8s ease-out forwards;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peer-to-Peer Lending | Value Financial Services</title>
+    <link rel="stylesheet" href="../styles/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/p2p.css">
 </head>
-
-<body>
-  <div class="container fade-in">
-    <div class="content">
-      <div class="page-header">
-        <h1>Peer-to-Peer Lending</h1>
-        <p>Connect directly with verified borrowers. Earn competitive returns while helping others achieve their financial goals.</p>
-      </div>
-
-      <div class="intro">
-        <h2>Lend with Confidence</h2>
-        <p>Our platform connects you directly with carefully screened borrowers. You set the terms, choose the investment amount, and watch your money grow.</p>
-        
-        <div class="highlight-box">
-          <p><i class="fas fa-star" style="color: var(--warning); margin-right: 10px;"></i> <strong>Why choose us?</strong> Every borrower undergoes rigorous verification, including KYC, credit checks, and financial history review.</p>
-        </div>
-        
-        <div class="stats">
-          <div class="stat-item">
-            <span class="stat-value">99.7%</span>
-            <span class="stat-label">Verified Borrowers</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-value">8-15%</span>
-            <span class="stat-label">Avg. Returns</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-value">24h</span>
-            <span class="stat-label">Quick Funding</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="main-card-container">
-        <div class="main-card" id="verifiedBorrowersCard">
-          <div class="card-icon">
-            <i class="fas fa-user-shield"></i>
-          </div>
-          
-          <h3 class="card-title">Verified Borrowers Network</h3>
-          <p class="card-description">Access our exclusive network of pre-screened, creditworthy borrowers. Each member undergoes comprehensive verification for your security.</p>
-          
-          <div class="card-features">
-            <h4><i class="fas fa-check-circle"></i> What we verify:</h4>
-            <ul>
-              <li>Identity & KYC compliance</li>
-              <li>Credit score and history</li>
-              <li>Income and employment verification</li>
-              <li>Financial behavior analysis</li>
-              <li>Loan purpose validation</li>
-            </ul>
-          </div>
-          
-          <div class="card-cta">
-            <p>Click to explore available borrowers</p>
-            <div class="click-indicator">
-              View Verified Borrowers <i class="fas fa-arrow-right"></i>
+<body class="page-p2p">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
+            </a>
+            <div class="nav-menu">
+                <!-- Loans Dropdown -->
+                <div class="dropdown">
+                    <a href="#loans" class="nav-link dropdown-toggle">Loans</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-column">
+                            <h4>Personal Loans</h4>
+                            <a href="civil-servant-loan.html" class="dropdown-link">Civil Servant Loan</a>
+                            <a href="defence-forces-loan.html" class="dropdown-link">Malawi Defence Forces Loan</a>
+                            <a href="collateral-loans.html" class="dropdown-link">Collateral Backed Loan</a>
+                            <a href="yango-loans.html" class="dropdown-link">Value Loans on Yango</a>
+                            <a href="scheme-loan.html" class="dropdown-link">Scheme Loan</a>
+                            <a href="instant-loan.html" class="dropdown-link">Instant Loan</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Business Loans</h4>
+                            <a href="business-loans.html" class="dropdown-link">Business Loans</a>
+                            <a href="order-finance.html" class="dropdown-link">Order Finance</a>
+                            <a href="invoice-discounting.html" class="dropdown-link">Invoice Discounting</a>
+                            <a href="asset-financing.html" class="dropdown-link">Asset Financing</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Agri Loans</h4>
+                            <a href="agri-loans.html" class="dropdown-link">Agri Loans</a>
+                        </div>
+                        <div class="dropdown-column">
+                            <h4>Apps</h4>
+                            <a href="android-app.html" class="dropdown-link">Android App</a>
+                            <a href="ios-app.html" class="dropdown-link">iOS App</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="payments.html" class="nav-link">Payments</a>
+                <a href="peer2peer.html" class="nav-link active">Peer-to-Peer</a>
+                <a href="wallet-dashboard.html" class="nav-link">My Wallet</a>
+                <a href="auth-landing.html" class="nav-link">Sign in / Sign up</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="apply.html" class="nav-link">Apply for a Loan</a>
             </div>
-          </div>
         </div>
-      </div>
+    </nav>
 
-      <div class="lending-cta">
-        <button class="start-lending-btn" id="startLendingBtn">
-          <i class="fas fa-hand-holding-usd"></i> Start Lending Now
-        </button>
-      </div>
-      
-      <div class="security-note">
-        <p><i class="fas fa-shield-alt"></i> Your security is our priority. All transactions are protected with bank-level encryption and fraud monitoring.</p>
-      </div>
+    <section class="p2p-hero" style="background-image: url('images/payments4.png'); background-size: cover; background-position: center; height: px;">
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1>Peer-to-Peer Lending</h1>
+
+            <p>
+                Connect directly with verified borrowers. Earn competitive returns
+                while helping others achieve their financial goals.
+            </p>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-value">99.7%</span>
+                    <span class="stat-label">Verified Borrowers</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">8–15%</span>
+                    <span class="stat-label">Avg. Annual Returns</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">24h</span>
+                    <span class="stat-label">Quick Funding</span>
+                </div>
+            </div>
+
+            <div class="hero-actions">
+                <a href="#" class="btn-primary btn-large" id="startLendingBtn">
+                    <i class="fas fa-hand-holding-usd"></i> Start Lending Now
+                </a>
+                <a href="dashboard.html" class="btn-secondary">Borrow From Peer</a>
+            </div>
+        </div>
     </div>
-  </div>
+</section>
 
-  <script>
-    // Main card click handler
-    document.getElementById("verifiedBorrowersCard").addEventListener("click", function() {
-      // Add click animation
-      this.style.transform = "scale(0.98)";
-      this.style.boxShadow = "0 5px 15px rgba(67, 97, 238, 0.2)";
-      
-      setTimeout(() => {
-        this.style.transform = "";
-        this.style.boxShadow = "";
+    <!-- Benefits Section -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Why Choose Peer-to-Peer Lending?</h2>
+            <p class="section-subtitle">Higher returns, lower risk, and complete transparency</p>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Higher Returns</h3>
+                    <p>Earn 8-15% annual returns, significantly higher than traditional savings accounts.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Verified Borrowers</h3>
+                    <p>Every borrower undergoes rigorous KYC, credit checks, and financial verification.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <h3>Flexible Amounts</h3>
+                    <p>Start lending from as little as MWK 10,000 up to MWK 10,000,000.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Complete Transparency</h3>
+                    <p>See exactly where your money goes and track returns in real-time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section steps-section" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">Start earning returns in just 4 simple steps</p>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Sign Up & Verify</h3>
+                    <p>Create your account and complete our verification process for security.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Browse Loans</h3>
+                    <p>Review verified borrower profiles and their loan requests.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Invest & Diversify</h3>
+                    <p>Choose loans to fund based on risk level and return expectations.</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Earn Returns</h3>
+                    <p>Receive monthly repayments with interest directly to your wallet.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Lending Card -->
+    <section class="section lending-section">
+        <div class="container">
+            <div class="lending-card-container">
+                <div class="lending-card" id="verifiedBorrowersCard">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h2>Verified Borrowers Network</h2>
+                        <p class="card-subtitle">Access our exclusive network of pre-screened, creditworthy borrowers</p>
+                    </div>
+                    
+                    <div class="card-features">
+                        <h3><i class="fas fa-check-circle"></i> Comprehensive Verification Process:</h3>
+                        <ul>
+                            <li><i class="fas fa-id-card"></i> Identity & KYC compliance</li>
+                            <li><i class="fas fa-credit-card"></i> Credit score and history</li>
+                            <li><i class="fas fa-briefcase"></i> Income and employment verification</li>
+                            <li><i class="fas fa-chart-bar"></i> Financial behavior analysis</li>
+                            <li><i class="fas fa-bullseye"></i> Loan purpose validation</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card-cta">
+                        <p>Ready to explore investment opportunities?</p>
+                        <a href="#" class="btn-primary btn-block">
+                            View Verified Borrowers <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Start Your Lending Journey?</h2>
+                <p>Join thousands of lenders earning competitive returns on our secure platform.</p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn-primary btn-large" id="startLendingBtn">
+                        <i class="fas fa-hand-holding-usd"></i> Start Lending Now
+                    </a>
+                    <a href="#" class="btn-secondary btn-large">
+                        <i class="fas fa-book"></i> Read Our Guide
+                    </a>
+                </div>
+                <p class="cta-note">
+                    <i class="fas fa-info-circle"></i> Returns are not guaranteed. Your capital is at risk.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <img src="images/Value-logo.png" alt="Value Financial Services" class="footer-logo">
+                <h3>Value</h3>
+                <p>"We are building the next generation of financial services for AFRICA."</p>
+                <p>Value is an award-winning, venture-backed fintech startup that provides financial services.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>PRODUCTS</h3>
+                <a href="#loans">Loans</a>
+                <a href="payments.html">Payments</a>
+                <a href="peer2peer.html">Peer-to-Peer</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>RESOURCES</h3>
+                <a href="#blog">Blog</a>
+                <a href="#careers">Careers</a>
+                <a href="#requirements">Loan Requirements</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>GET INVOLVED</h3>
+                <a href="#agent">Become an Agent</a>
+                <h4>CONTACT</h4>
+                <p>Area 36, M1 Road, Opposite LUANAR City Campus, Lilongwe, Malawi</p>
+                <p>support@valueloans.org</p>
+                <p>+265 996 113 594</p>
+                <p>+265 897 325 815</p>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+            </div>
+        </div>
         
-        // Check authentication and redirect
-        const token = localStorage.getItem("authToken");
-        if (!token) {
-          window.location.href = "login.html?redirect=credit_enquiry.html";
-        } else {
-          window.location.href = "credit_enquiry.html";
-        }
-      }, 200);
-    });
+        <div class="footer-bottom">
+            <div class="footer-links">
+                <a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Use</a>
+            </div>
+            <p>&copy; 2024 Value Loans Financial Services Limited. All rights reserved.</p>
+        </div>
+    </footer>
 
-    // Start lending button handler
-    document.getElementById("startLendingBtn").addEventListener("click", function() {
-      // Add click animation
-      this.style.transform = "scale(0.95)";
-      
-      setTimeout(() => {
-        this.style.transform = "";
-        
-        // Check authentication and redirect
-        const token = localStorage.getItem("authToken");
-        if (!token) {
-          window.location.href = "login.html?redirect=lender_form.html";
-        } else {
-          window.location.href = "lender_form.html";
-        }
-      }, 200);
-    });
-
-    // Add hover effect for better UX
-    document.getElementById("verifiedBorrowersCard").addEventListener("mouseenter", function() {
-      const indicator = this.querySelector('.click-indicator i');
-      indicator.style.transform = "translateX(5px)";
-    });
-    
-    document.getElementById("verifiedBorrowersCard").addEventListener("mouseleave", function() {
-      const indicator = this.querySelector('.click-indicator i');
-      indicator.style.transform = "translateX(0)";
-    });
-
-    // Add subtle entrance animation to elements
-    document.addEventListener("DOMContentLoaded", function() {
-      const elements = document.querySelectorAll('.page-header, .intro, .main-card-container, .lending-cta');
-      elements.forEach((el, index) => {
-        el.style.opacity = "0";
-        el.style.transform = "translateY(20px)";
-        
-        setTimeout(() => {
-          el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
-          el.style.opacity = "1";
-          el.style.transform = "translateY(0)";
-        }, 300 + (index * 200));
-      });
-    });
-  </script>
+    <script src="js/p2p.js"></script>
 </body>
 </html>
