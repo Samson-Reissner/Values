@@ -1,14 +1,21 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lend Money</title>
+  <title>Create Lending Offer | Peer-to-Peer Lending</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <link rel="stylesheet" href="../styles/custom.css">
 
-  <!-- AUTH GUARD (BLOCK UNAUTHENTICATED USERS) -->
+  <!-- AUTH GUARD -->
   <script>
     (function () {
       const token = localStorage.getItem("authToken") || localStorage.getItem("token");
@@ -19,114 +26,508 @@
   </script>
 
   <style>
-    body { background: #f7f7f7; }
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #364fd9;
+      --primary-light: #eef2ff;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      --radius: 12px;
+      --radius-lg: 16px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f4f6fb 0%, #f0f4ff 100%);
+      font-family: 'Inter', sans-serif;
+      color: var(--gray-900);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 40px);
+    }
 
     .form-container {
-      max-width: 450px;
-      margin: 50px auto;
-      background: #fff;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 520px;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--gray-200);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .header-icon {
+      background: var(--primary-light);
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      color: var(--primary);
+      font-size: 24px;
+    }
+
+    .header h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--gray-600);
+      font-size: 15px;
+      line-height: 1.5;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: var(--gray-700);
+    }
+
+    .input-wrapper {
+      position: relative;
     }
 
     input {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-300);
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s ease;
+      background-color: white;
+    }
+
+    input:hover {
+      border-color: var(--gray-400);
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+    }
+
+    .currency-symbol {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-600);
+      font-weight: 500;
+    }
+
+    .currency-input {
+      padding-left: 40px;
+    }
+
+    .input-hint {
+      font-size: 12px;
+      color: var(--gray-600);
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .input-hint i {
+      font-size: 10px;
+    }
+
+    .fee-box {
+      background: var(--primary-light);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin: 28px 0;
+      border: 1px solid rgba(67, 97, 238, 0.2);
+    }
+
+    .fee-box h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .fee-box h3 i {
+      color: var(--primary);
+    }
+
+    .fee-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(67, 97, 238, 0.1);
+      font-size: 14px;
+    }
+
+    .fee-row:last-of-type {
+      border-bottom: none;
+    }
+
+    .fee-row.total {
+      font-weight: 700;
+      color: var(--gray-900);
+      font-size: 16px;
+      padding-top: 14px;
+      margin-top: 4px;
+      border-top: 2px solid rgba(67, 97, 238, 0.2);
+    }
+
+    .note {
+      font-size: 13px;
+      color: var(--gray-600);
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.7);
       border-radius: 8px;
-      border: 1px solid #ccc;
+      border-left: 3px solid var(--warning);
+      line-height: 1.5;
+    }
+
+    .note i {
+      color: var(--warning);
+      margin-right: 6px;
     }
 
     button {
       width: 100%;
-      padding: 14px;
-      background: #1e73ff;
-      color: #fff;
+      padding: 16px;
+      background: var(--primary);
+      color: white;
       border: none;
-      border-radius: 50px;
+      border-radius: var(--radius);
       cursor: pointer;
-      margin-top: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 8px;
     }
 
-    button:hover { background: #005be0; }
+    button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button i {
+      font-size: 14px;
+    }
+
+    #msg {
+      text-align: center;
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 500;
+      display: none;
+    }
+
+    .success-msg {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      display: block !important;
+    }
+
+    .error-msg {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      display: block !important;
+    }
+
+    .info-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px;
+      background: var(--gray-50);
+      border-radius: var(--radius);
+      margin-top: 24px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .info-box i {
+      color: var(--primary);
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .info-box p {
+      font-size: 13px;
+      color: var(--gray-700);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 16px;
+      }
+      
+      .form-container {
+        padding: 28px 24px;
+      }
+      
+      .header h2 {
+        font-size: 24px;
+      }
+      
+      .header-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 22px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .form-container {
+        padding: 24px 20px;
+      }
+      
+      .header h2 {
+        font-size: 22px;
+      }
+      
+      .subtitle {
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 
 <body>
+  <div class="container">
+    <div class="form-container">
+      <div class="header">
+        <div class="header-icon">
+          <i class="fas fa-hand-holding-usd"></i>
+        </div>
+        <h2>Create Lending Offer</h2>
+        <p class="subtitle">Provide funding to borrowers and earn competitive interest securely</p>
+      </div>
 
-<div class="form-container">
-  <h2>Lend Money</h2>
+      <form id="lendForm">
+        <div class="form-group">
+          <label for="amount">Loan Amount (MWK)</label>
+          <div class="input-wrapper">
+            <input type="number" id="amount" class="currency-input" placeholder="e.g. 100,000" min="100" step="1000" required>
+          </div>
+          <div class="input-hint">
+            <i class="fas fa-info-circle"></i>
+            Minimum amount: MWK 100
+          </div>
+        </div>
 
-  <form id="lendForm">
-    <label>Amount (MWK)</label>
-    <input type="number" id="amount" required>
+        <div class="form-group">
+          <label for="tenure">Loan Tenure (Months)</label>
+          <input type="number" id="tenure" placeholder="e.g. 6 months" min="1" max="36" required>
+          <div class="input-hint">
+            <i class="fas fa-info-circle"></i>
+            Choose between 1 to 36 months
+          </div>
+        </div>
 
-    <label>Tenure (Months)</label>
-    <input type="number" id="tenure" required>
+        <div class="form-group">
+          <label for="interest">Annual Interest Rate (%)</label>
+          <input type="number" id="interest" placeholder="e.g. 12%" min="1" max="30" step="0.5" required>
+          <div class="input-hint">
+            <i class="fas fa-info-circle"></i>
+            Competitive rates range from 5% to 25%
+          </div>
+        </div>
 
-    <label>Interest Rate (%)</label>
-    <input type="number" id="interest" required>
+        <!-- Fee Breakdown -->
+        <div class="fee-box">
+          <h3><i class="fas fa-receipt"></i> Fee Breakdown</h3>
+          
+          <div class="fee-row">
+            <span>Principal Amount</span>
+            <span id="principalAmount">MWK 0</span>
+          </div>
+          
+          <div class="fee-row">
+            <span>Service Fee (3%)</span>
+            <span id="fee">MWK 0</span>
+          </div>
+          
+          <div class="fee-row total">
+            <span>Total Wallet Deduction</span>
+            <span id="total">MWK 0</span>
+          </div>
+        </div>
 
-    <button type="submit">Submit Offer</button>
-  </form>
+        <div class="note">
+          <i class="fas fa-exclamation-circle"></i>
+          The service fee is charged only when your offer is successfully matched with a borrower.
+        </div>
 
-  <p id="msg" style="margin-top:15px;color:green;"></p>
-</div>
+        <button type="submit" id="submitBtn">
+          <i class="fas fa-paper-plane"></i>
+          Submit Lending Offer
+        </button>
+      </form>
 
-<script>
-  const BACKEND_URL = "http://localhost:3000";
-  const $ = (id) => document.getElementById(id);
+      <p id="msg"></p>
+    </div>
+  </div>
 
-  async function safeJson(response) {
-    const text = await response.text();
-    try {
-      return text ? JSON.parse(text) : {};
-    } catch {
-      return {};
+  <script>
+    const BACKEND_URL = "http://localhost:3000";
+    const $ = (id) => document.getElementById(id);
+    const SERVICE_FEE_RATE = 0.03;
+
+    // Format currency
+    function formatCurrency(amount) {
+      return `MWK ${parseFloat(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     }
-  }
 
-  document.getElementById("lendForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
+    // Calculate and update fees
+    function updateFeeCalculation() {
+      const amount = parseFloat($("amount").value) || 0;
+      const fee = amount * SERVICE_FEE_RATE;
+      const total = amount + fee;
 
-    const payload = {
-      p2p_investment: {
-        amount: $("amount").value,
-        tenure_months: $("tenure").value,
-        interest_rate: $("interest").value
-      }
-    };
-
-    try {
-      const response = await fetch(`${BACKEND_URL}/api/v1/p2p_investments`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + localStorage.getItem("authToken")
-        },
-        body: JSON.stringify(payload)
-      });
-
-      const data = await safeJson(response);
-
-      if (!response.ok) {
-        alert(
-          data.error ||
-          (data.errors ? data.errors.join(", ") : "Failed to submit offer")
-        );
-        return;
-      }
-
-      $("msg").innerText = "Offer submitted successfully!";
-      setTimeout(() => window.location.href = "lender_dashboard.html", 1500);
-
-    } catch (err) {
-      console.error(err);
-      alert("Error submitting offer");
+      $("principalAmount").innerText = formatCurrency(amount);
+      $("fee").innerText = formatCurrency(fee);
+      $("total").innerText = formatCurrency(total);
     }
-  });
-</script>
 
+    // Live fee calculation
+    $("amount").addEventListener("input", updateFeeCalculation);
+    $("tenure").addEventListener("input", updateFeeCalculation);
+    $("interest").addEventListener("input", updateFeeCalculation);
+
+    // Initialize with zero values
+    updateFeeCalculation();
+
+    // Safe JSON parser
+    async function safeJson(response) {
+      const text = await response.text();
+      try {
+        return text ? JSON.parse(text) : {};
+      } catch {
+        return {};
+      }
+    }
+
+    // Form submission
+    $("lendForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = $("submitBtn");
+      const originalBtnText = submitBtn.innerHTML;
+      
+      // Show loading state
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+      submitBtn.disabled = true;
+      
+      const payload = {
+        p2p_investment: {
+          amount: $("amount").value,
+          tenure_months: $("tenure").value,
+          interest_rate: $("interest").value
+        }
+      };
+
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/v1/p2p_investments`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + (localStorage.getItem("authToken") || localStorage.getItem("token"))
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await safeJson(response);
+        const msgElement = $("msg");
+
+        if (!response.ok) {
+          msgElement.className = "error-msg";
+          msgElement.innerText = data.error || 
+            (data.errors ? data.errors.join(", ") : "Failed to submit offer. Please check your inputs and try again.");
+          
+          // Scroll to error message
+          msgElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          
+          submitBtn.innerHTML = originalBtnText;
+          submitBtn.disabled = false;
+          return;
+        }
+
+        // Success
+        msgElement.className = "success-msg";
+        msgElement.innerText = "✓ Lending offer submitted successfully! Redirecting...";
+        
+        // Redirect after delay
+        setTimeout(() => {
+          window.location.href = "lender_dashboard.html";
+        }, 2000);
+
+      } catch (err) {
+        console.error(err);
+        
+        $("msg").className = "error-msg";
+        $("msg").innerText = "Network error. Please check your connection and try again.";
+        
+        submitBtn.innerHTML = originalBtnText;
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
 </body>
 </html>
