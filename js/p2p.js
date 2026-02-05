@@ -23,6 +23,44 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Function to trigger when a borrower shows interest
+function simulateBorrowerInterest(borrowerName, loanAmount, interestRate, bidId) {
+    // Get current user (lender)
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    
+    if (!user.id) return;
+    
+    // Create interest object
+    const interest = {
+        id: Date.now().toString(),
+        lenderId: user.id,
+        borrowerName: borrowerName,
+        loanAmount: parseFloat(loanAmount),
+        interestRate: parseFloat(interestRate),
+        bidId: bidId,
+        purpose: "Business Expansion",
+        creditScore: Math.floor(Math.random() * 300) + 500, // Random score 500-800
+        timestamp: new Date().toISOString(),
+        reviewed: false,
+        status: 'pending'
+    };
+    
+    // Save to localStorage
+    const interests = JSON.parse(localStorage.getItem('borrowerInterests')) || [];
+    interests.push(interest);
+    localStorage.setItem('borrowerInterests', JSON.stringify(interests));
+    
+    // Create URL for dashboard with notification
+    const dashboardUrl = `lender-dashboard.html?tab=borrower-interest&notification=new_interest&borrower=${encodeURIComponent(borrowerName)}&amount=${loanAmount}&interest=${interestRate}&bid=${bidId}`;
+    
+    // If lender dashboard is open in another tab, refresh it
+    if (window.opener) {
+        window.opener.location.href = dashboardUrl;
+        window.opener.focus();
+    }
+    
+    // Return the URL for redirect
+    return
     // Start lending button handler
     const startLendingBtn = document.getElementById('startLendingBtn');
     if (startLendingBtn) {
