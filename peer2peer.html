@@ -57,7 +57,6 @@
             </div>
         </div>
     </nav>
-
     <section class="p2p-hero" style="background-image: url('images/payments4.png'); background-size: cover; background-position: center; height: px;">
     <div class="hero-container">
         <div class="hero-content">
@@ -88,6 +87,62 @@
                     <i class="fas fa-hand-holding-usd"></i> Start Lending Now
                 </a>
                 <a href="dashboard.html" class="btn-secondary">Borrow From Peer</a>
+            </div>
+        </div>
+    </div>
+</section>
+    
+<section class="lender-notifications">
+    <div class="container">
+        <div class="notification-card">
+            <div class="notification-header">
+                <h2><i class="fas fa-bell"></i> Lending Activity</h2>
+                <button class="mark-all-read" id="markAllReadBtn">Mark all as read</button>
+            </div>
+            
+            <div class="notifications-list" id="notificationsList">
+                <!-- Notifications will be dynamically loaded here -->
+                <div class="notification-item unread" data-bid-id="12345">
+                    <div class="notification-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="notification-content">
+                        <p>
+                            <strong>John Mwale</strong> is interested in your loan offer of 
+                            <strong>MWK 500,000</strong> at <strong>12% interest</strong>.
+                        </p>
+                        <span class="notification-time">2 hours ago</span>
+                    </div>
+                    <div class="notification-action">
+                        <a href="lender_dashboard.html?tab=active-bids&bid=12345" class="btn-view-request">
+                            Review Request <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="notification-item read" data-bid-id="12346">
+                    <div class="notification-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="notification-content">
+                        <p>
+                            <strong>Sarah Banda</strong> has accepted your bid for 
+                            <strong>MWK 250,000</strong> business loan.
+                        </p>
+                        <span class="notification-time">1 day ago</span>
+                    </div>
+                    <div class="notification-action">
+                        <a href="lender_dashboard.html?tab=funded-loans&loan=12346" class="btn-view-request">
+                            View Details <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="no-notifications" id="noNotifications" style="display: none;">
+                <i class="fas fa-inbox"></i>
+                <p>No new notifications</p>
+                <p class="subtext">When borrowers show interest in your loans, you'll see them here.</p>
             </div>
         </div>
     </div>
