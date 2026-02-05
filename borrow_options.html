@@ -9,116 +9,428 @@
     <style>
         body {
             background: #f7f7f7;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
         }
-        .box {
-            max-width: 450px;
-            margin: 40px auto;
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #666;
+        }
+        .investment-card {
             background: #fff;
             padding: 25px;
             border-radius: 14px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            border: 1px solid #eee;
         }
-        .box h2 {
-            text-align: center;
+        .investment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
         }
-        .details p {
-            font-size: 15px;
-            margin: 6px 0;
+        .investment-header h3 {
+            margin: 0;
+            color: #333;
+            font-size: 20px;
+        }
+        .investment-id {
+            background: #e7f3ff;
+            color: #1e73ff;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        @media (max-width: 600px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .detail-item {
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+        .detail-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .detail-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        .currency {
+            color: #28a745;
+        }
+        .contact-info {
+            background: #fff8e1;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+            margin-bottom: 25px;
+        }
+        .contact-label {
+            font-size: 14px;
+            color: #856404;
+            margin-bottom: 5px;
+        }
+        .contact-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        .borrow-options {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .borrow-options h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
         }
         input {
-            width: 100%;
-            padding: 12px;
-            margin-top: 12px;
+            flex: 1;
+            padding: 14px;
             border: 1px solid #ddd;
             border-radius: 8px;
+            font-size: 15px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #1e73ff;
+            box-shadow: 0 0 0 2px rgba(30, 115, 255, 0.1);
+        }
+        .btn-group {
+            display: flex;
+            gap: 15px;
         }
         button {
-            width: 100%;
-            padding: 14px;
-            margin-top: 15px;
-            background: #1e73ff;
+            flex: 1;
+            padding: 15px;
             border: none;
             color: white;
             font-size: 15px;
+            font-weight: 600;
             border-radius: 10px;
             cursor: pointer;
+            transition: all 0.3s;
         }
-        button:hover {
+        .btn-full {
+            background: #1e73ff;
+        }
+        .btn-full:hover {
             background: #005be0;
+            transform: translateY(-2px);
+        }
+        .btn-custom {
+            background: #28a745;
+        }
+        .btn-custom:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+        .btn-back {
+            background: #6c757d;
+            margin-top: 20px;
+        }
+        .btn-back:hover {
+            background: #5a6268;
+        }
+        .loading, .error, .no-data {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            font-size: 16px;
+        }
+        .error {
+            color: #dc3545;
+        }
+        .success {
+            color: #28a745;
+            text-align: center;
+            padding: 20px;
+        }
+        .info-note {
+            background: #e7f3ff;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #1e73ff;
+            border-left: 4px solid #1e73ff;
+        }
+        .investments-list {
+            display: grid;
+            gap: 20px;
+        }
+        .search-filter {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .search-filter input, .search-filter select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            flex: 1;
+            min-width: 200px;
         }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <h2>Borrow Options</h2>
-
-    <div class="details" id="investment-details">
-        Loading...
+<div class="container">
+    <div class="header">
+        <h1>Available Investment Offers</h1>
+        <p>Browse and select from available peer-to-peer lending offers</p>
     </div>
 
-    <button onclick="borrowFullAmount()">Borrow Full Amount</button>
+    <div id="investments-container" class="loading">
+        Loading available investments...
+    </div>
 
-    <input type="number" id="customAmount" placeholder="Enter custom amount">
-    <button onclick="borrowPartial()">Borrow Custom Amount</button>
+    <button onclick="window.location.href='dashboard.html'" class="btn-back">
+        ← Back to Dashboard
+    </button>
 </div>
 
 <script>
-const token = localStorage.getItem("token");
+const token = localStorage.getItem("token") || localStorage.getItem("authToken");
 
-// Read ID from URL
-const params = new URLSearchParams(window.location.search);
-const investmentId = params.get("investment_id");
-
-// Fetch Investment Details
-fetch(`http://localhost:3000/api/v1/p2p_investments/${investmentId}`, {
-    headers: { "Authorization": "Bearer " + token }
-})
-.then(res => res.json())
-.then(inv => {
-    document.getElementById("investment-details").innerHTML = `
-        <p><strong>Lender:</strong> ${inv.lender_name}</p>
-        <p><strong>Amount Available:</strong> MWK ${inv.amount}</p>
-        <p><strong>Interest Rate:</strong> ${inv.interest_rate}% per month</p>
-        <p><strong>Tenure:</strong> ${inv.tenure_months} months</p>
-        <p><strong>Contact:</strong> ${inv.masked_contact}</p>
-    `;
-});
-
-// Borrow full amount
-function borrowFullAmount() {
-    sendBorrowRequest({ amount: "full" });
+if (!token) {
+    window.location.href = "login.html?redirect=" + encodeURIComponent(window.location.href);
 }
 
-// Borrow custom amount
-function borrowPartial() {
-    const amount = document.getElementById("customAmount").value;
+// Fetch all available investments for borrowers
+async function fetchAvailableInvestments() {
+    try {
+        const response = await fetch(`http://localhost:3000/api/v1/borrower/dashboard`, {
+            headers: { 
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const investments = await response.json();
+        
+        // Log the response to see the structure
+        console.log("Investments API Response:", investments);
+        
+        if (!investments || investments.length === 0) {
+            document.getElementById("investments-container").innerHTML = 
+                '<div class="no-data">No investment offers available at the moment.</div>';
+            return;
+        }
+        
+        displayInvestments(investments);
+        
+    } catch (error) {
+        console.error("Error fetching investments:", error);
+        document.getElementById("investments-container").innerHTML = 
+            `<div class="error">Error loading investments: ${error.message}</div>`;
+    }
+}
 
+function displayInvestments(investments) {
+    const container = document.getElementById("investments-container");
+    container.innerHTML = '';
+    container.className = 'investments-list';
+    
+    investments.forEach(investment => {
+        const formattedAmount = new Intl.NumberFormat('en-MW', {
+            style: 'currency',
+            currency: 'MWK'
+        }).format(investment.amount);
+        
+        const card = document.createElement('div');
+        card.className = 'investment-card';
+        card.innerHTML = `
+            <div class="investment-header">
+                <h3>Investment Offer #${investment.id}</h3>
+                <span class="investment-id">ID: ${investment.id}</span>
+            </div>
+            
+            <div class="details-grid">
+                <div class="detail-item">
+                    <div class="detail-label">Lender</div>
+                    <div class="detail-value">${investment.lender_name}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Available Amount</div>
+                    <div class="detail-value currency">${formattedAmount}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Interest Rate</div>
+                    <div class="detail-value">${investment.interest_rate}% per annum</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Tenure</div>
+                    <div class="detail-value">${investment.tenure_months} months</div>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-label">Lender Contact</div>
+                <div class="contact-value">${investment.masked_contact}</div>
+            </div>
+            
+            <div class="borrow-options">
+                <h4>Borrow from this offer</h4>
+                <div class="input-group">
+                    <input type="number" 
+                           id="custom-amount-${investment.id}" 
+                           placeholder="Enter amount (MWK)" 
+                           min="1000" 
+                           max="${investment.amount}"
+                           step="1000"
+                           value="${investment.amount}">
+                </div>
+                <div class="btn-group">
+                    <button class="btn-full" onclick="borrowFullAmount(${investment.id}, ${investment.amount})">
+                        Borrow Full Amount
+                    </button>
+                    <button class="btn-custom" onclick="borrowCustomAmount(${investment.id})">
+                        Borrow Custom Amount
+                    </button>
+                </div>
+            </div>
+            
+            <div class="info-note">
+                <i>Note: The lender will review your request before funds are released.</i>
+            </div>
+        `;
+        
+        container.appendChild(card);
+    });
+}
+
+// Borrow full amount for a specific investment
+function borrowFullAmount(investmentId, amount) {
+    if (confirm(`Are you sure you want to borrow the full amount of MWK ${amount.toLocaleString()}?`)) {
+        sendBorrowRequest(investmentId, "full");
+    }
+}
+
+// Borrow custom amount for a specific investment
+function borrowCustomAmount(investmentId) {
+    const input = document.getElementById(`custom-amount-${investmentId}`);
+    const amount = parseFloat(input.value);
+    
     if (!amount || amount <= 0) {
-        alert("Enter a valid amount.");
+        alert("Please enter a valid amount.");
+        input.focus();
         return;
     }
-
-    sendBorrowRequest({ amount });
+    
+    // Note: You might want to get the max amount from data attributes
+    const maxAmount = parseFloat(input.max);
+    if (amount > maxAmount) {
+        alert(`Amount cannot exceed available MWK ${maxAmount.toLocaleString()}`);
+        return;
+    }
+    
+    if (amount < 1000) {
+        alert("Minimum borrow amount is MWK 1,000");
+        return;
+    }
+    
+    if (confirm(`Are you sure you want to borrow MWK ${amount.toLocaleString()}?`)) {
+        sendBorrowRequest(investmentId, amount);
+    }
 }
 
-function sendBorrowRequest(payload) {
-    fetch(`http://localhost:3000/api/v1/p2p_investments/${investmentId}/borrow`, {
-        method: "POST",
-        headers: {
-            "Authorization": "Bearer " + token,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(res => res.json())
-    .then(response => {
-        alert("Borrow request submitted!");
+async function sendBorrowRequest(investmentId, amountParam) {
+    try {
+        // Prepare payload based on controller expectations
+        let payload;
+        
+        if (amountParam === "full") {
+            // Send "full" as string for full amount
+            payload = { amount: "full" };
+        } else {
+            // Send numeric amount
+            payload = { amount: amountParam };
+        }
+        
+        console.log("Sending payload:", payload);
+        
+        // Send request WITHOUT nesting it under p2p_borrow_request
+        const response = await fetch(`http://localhost:3000/api/v1/p2p_investments/${investmentId}/borrow`, {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)  // Direct payload, not nested
+        });
+        
+        const data = await response.json();
+        console.log("Response:", data);
+        
+        if (!response.ok) {
+            throw new Error(data.error || data.message || "Borrow request failed");
+        }
+        
+        alert("Borrow request submitted successfully!");
         window.location.href = "dashboard.html";
-    })
-    .catch(err => console.error(err));
+        
+    } catch (error) {
+        console.error("Borrow request error:", error);
+        alert(`Error: ${error.message}\n\nPlease check if the lender is still available and try again.`);
+    }
 }
+
+// Load investments on page load
+fetchAvailableInvestments();
+
+// Allow pressing Enter in custom amount fields
+document.addEventListener('keypress', function(event) {
+    if (event.target.type === 'number' && event.key === 'Enter') {
+        const investmentId = event.target.id.split('-')[2];
+        if (investmentId) {
+            borrowCustomAmount(investmentId);
+        }
+    }
+});
 </script>
 
 </body>
