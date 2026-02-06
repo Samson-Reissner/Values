@@ -163,6 +163,8 @@
         .btn-back {
             background: #6c757d;
             margin-top: 20px;
+            width: 100%;
+            padding: 12px;
         }
         .btn-back:hover {
             background: #5a6268;
@@ -172,6 +174,9 @@
             padding: 40px 20px;
             color: #666;
             font-size: 16px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         .error {
             color: #dc3545;
@@ -190,25 +195,52 @@
             color: #1e73ff;
             border-left: 4px solid #1e73ff;
         }
-        .investments-list {
-            display: grid;
-            gap: 20px;
+        .multiple-investments {
+            margin-top: 30px;
         }
-        .search-filter {
-            background: white;
+        .other-investments {
+            background: #fff;
             padding: 20px;
             border-radius: 10px;
-            margin-bottom: 20px;
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
+            margin-top: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        .search-filter input, .search-filter select {
-            padding: 10px;
-            border: 1px solid #ddd;
+        .other-investments h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .other-investment-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .other-investment-details h4 {
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+        .other-investment-details p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+        .view-other-btn {
+            background: #6c757d;
+            padding: 8px 15px;
             border-radius: 6px;
-            flex: 1;
-            min-width: 200px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .view-other-btn:hover {
+            background: #5a6268;
         }
     </style>
 </head>
@@ -216,12 +248,19 @@
 
 <div class="container">
     <div class="header">
-        <h1>Available Investment Offers</h1>
-        <p>Browse and select from available peer-to-peer lending offers</p>
+        <h1>Borrow from Investment</h1>
+        <p>Review and borrow from the selected lender</p>
     </div>
 
-    <div id="investments-container" class="loading">
-        Loading available investments...
+    <!-- Main investment details will be loaded here -->
+    <div id="investment-details" class="loading">
+        Loading investment details...
+    </div>
+
+    <!-- Other available investments section -->
+    <div id="other-investments" class="other-investments" style="display: none;">
+        <h3>Other Available Investments</h3>
+        <div id="other-investments-list"></div>
     </div>
 
     <button onclick="window.location.href='dashboard.html'" class="btn-back">
@@ -233,12 +272,55 @@
 const token = localStorage.getItem("token") || localStorage.getItem("authToken");
 
 if (!token) {
-    window.location.href = "login.html?redirect=" + encodeURIComponent(window.location.href);
+    window.location.href = "login.html";
 }
 
-// Fetch all available investments for borrowers
-async function fetchAvailableInvestments() {
+// Extract investment ID from URL
+function getInvestmentIdFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const investmentId = urlParams.get('investment_id') || urlParams.get('id');
+    console.log("Extracted investment ID from URL:", investmentId);
+    return investmentId;
+}
+
+// Fetch specific investment based on URL parameter
+async function fetchSpecificInvestment(investmentId) {
     try {
+        console.log("Fetching specific investment with ID:", investmentId);
+        
+        // Try to fetch the specific investment
+        const response = await fetch(`http://localhost:3000/api/v1/p2p_investments/${investmentId}`, {
+            headers: { 
+                "Authorization": "Bearer " + token,
+                "Content-Type": "application/json"
+            }
+        });
+        
+        console.log("Specific investment response status:", response.status);
+        
+        if (response.status === 404 || response.status === 400) {
+            console.log("Specific investment not found, will fetch all");
+            return null;
+        }
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const investment = await response.json();
+        console.log("Specific investment data:", investment);
+        return investment;
+        
+    } catch (error) {
+        console.error("Error fetching specific investment:", error);
+        return null;
+    }
+}
+
+// Fetch all investments
+async function fetchAllInvestments() {
+    try {
+        console.log("Fetching all investments...");
         const response = await fetch(`http://localhost:3000/api/v1/borrower/dashboard`, {
             headers: { 
                 "Authorization": "Bearer " + token,
@@ -246,44 +328,98 @@ async function fetchAvailableInvestments() {
             }
         });
         
+        console.log("All investments response status:", response.status);
+        
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const investments = await response.json();
+        console.log("All investments data:", investments);
+        return investments;
         
-        // Log the response to see the structure
-        console.log("Investments API Response:", investments);
+    } catch (error) {
+        console.error("Error fetching all investments:", error);
+        return [];
+    }
+}
+
+// Load investment data
+async function loadInvestment() {
+    const container = document.getElementById("investment-details");
+    const otherInvestmentsContainer = document.getElementById("other-investments");
+    const otherInvestmentsList = document.getElementById("other-investments-list");
+    
+    const investmentId = getInvestmentIdFromURL();
+    
+    try {
+        let mainInvestment = null;
+        let allInvestments = [];
         
-        if (!investments || investments.length === 0) {
-            document.getElementById("investments-container").innerHTML = 
+        // If we have an investment ID, try to fetch it specifically
+        if (investmentId) {
+            mainInvestment = await fetchSpecificInvestment(investmentId);
+        }
+        
+        // Always fetch all investments to show other options
+        allInvestments = await fetchAllInvestments();
+        
+        if (!allInvestments || allInvestments.length === 0) {
+            container.innerHTML = 
                 '<div class="no-data">No investment offers available at the moment.</div>';
             return;
         }
         
-        displayInvestments(investments);
+        // If we didn't get a specific investment but have all investments, use the first one
+        if (!mainInvestment && allInvestments.length > 0) {
+            if (investmentId) {
+                // Try to find the investment by ID in the list
+                mainInvestment = allInvestments.find(inv => inv.id == investmentId);
+            }
+            
+            // If still not found, use the first one
+            if (!mainInvestment) {
+                mainInvestment = allInvestments[0];
+            }
+        }
+        
+        // Display the main investment
+        if (mainInvestment) {
+            displayInvestment(mainInvestment);
+        } else {
+            container.innerHTML = 
+                '<div class="no-data">Investment not found. Please select another.</div>';
+        }
+        
+        // Display other investments (excluding the main one)
+        if (allInvestments.length > 1) {
+            const otherInvestments = allInvestments.filter(inv => 
+                mainInvestment ? inv.id != mainInvestment.id : true
+            );
+            
+            if (otherInvestments.length > 0) {
+                displayOtherInvestments(otherInvestments);
+                otherInvestmentsContainer.style.display = 'block';
+            }
+        }
         
     } catch (error) {
-        console.error("Error fetching investments:", error);
-        document.getElementById("investments-container").innerHTML = 
-            `<div class="error">Error loading investments: ${error.message}</div>`;
+        console.error("Error loading investment:", error);
+        container.innerHTML = 
+            `<div class="error">Error loading investment details: ${error.message}</div>`;
     }
 }
 
-function displayInvestments(investments) {
-    const container = document.getElementById("investments-container");
-    container.innerHTML = '';
-    container.className = 'investments-list';
+function displayInvestment(investment) {
+    const container = document.getElementById("investment-details");
     
-    investments.forEach(investment => {
-        const formattedAmount = new Intl.NumberFormat('en-MW', {
-            style: 'currency',
-            currency: 'MWK'
-        }).format(investment.amount);
-        
-        const card = document.createElement('div');
-        card.className = 'investment-card';
-        card.innerHTML = `
+    const formattedAmount = new Intl.NumberFormat('en-MW', {
+        style: 'currency',
+        currency: 'MWK'
+    }).format(investment.amount);
+    
+    container.innerHTML = `
+        <div class="investment-card">
             <div class="investment-header">
                 <h3>Investment Offer #${investment.id}</h3>
                 <span class="investment-id">ID: ${investment.id}</span>
@@ -292,7 +428,7 @@ function displayInvestments(investments) {
             <div class="details-grid">
                 <div class="detail-item">
                     <div class="detail-label">Lender</div>
-                    <div class="detail-value">${investment.lender_name}</div>
+                    <div class="detail-value">${investment.lender_name || 'Not specified'}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Available Amount</div>
@@ -300,26 +436,36 @@ function displayInvestments(investments) {
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Interest Rate</div>
-                    <div class="detail-value">${investment.interest_rate}% per annum</div>
+                    <div class="detail-value">${investment.interest_rate}% ${investment.interest_period || 'per annum'}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Tenure</div>
                     <div class="detail-value">${investment.tenure_months} months</div>
                 </div>
+                <div class="detail-item">
+                    <div class="detail-label">Status</div>
+                    <div class="detail-value">${investment.status || 'Available'}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Minimum Amount</div>
+                    <div class="detail-value">MWK ${investment.min_amount || '1000'}</div>
+                </div>
             </div>
             
+            ${investment.masked_contact ? `
             <div class="contact-info">
                 <div class="contact-label">Lender Contact</div>
                 <div class="contact-value">${investment.masked_contact}</div>
             </div>
+            ` : ''}
             
             <div class="borrow-options">
                 <h4>Borrow from this offer</h4>
                 <div class="input-group">
                     <input type="number" 
-                           id="custom-amount-${investment.id}" 
+                           id="custom-amount" 
                            placeholder="Enter amount (MWK)" 
-                           min="1000" 
+                           min="${investment.min_amount || 1000}" 
                            max="${investment.amount}"
                            step="1000"
                            value="${investment.amount}">
@@ -337,70 +483,58 @@ function displayInvestments(investments) {
             <div class="info-note">
                 <i>Note: The lender will review your request before funds are released.</i>
             </div>
+        </div>
+    `;
+    
+    container.className = '';
+}
+
+function displayOtherInvestments(investments) {
+    const container = document.getElementById("other-investments-list");
+    container.innerHTML = '';
+    
+    investments.forEach(investment => {
+        const formattedAmount = new Intl.NumberFormat('en-MW', {
+            style: 'currency',
+            currency: 'MWK'
+        }).format(investment.amount);
+        
+        const item = document.createElement('div');
+        item.className = 'other-investment-item';
+        item.innerHTML = `
+            <div class="other-investment-details">
+                <h4>Investment #${investment.id} - ${investment.lender_name || 'Anonymous Lender'}</h4>
+                <p>Amount: ${formattedAmount} | Interest: ${investment.interest_rate}% | Tenure: ${investment.tenure_months} months</p>
+            </div>
+            <a href="borrow_options.html?investment_id=${investment.id}" class="view-other-btn">
+                View & Borrow
+            </a>
         `;
         
-        container.appendChild(card);
+        container.appendChild(item);
     });
 }
 
-// Borrow full amount for a specific investment
-function borrowFullAmount(investmentId, amount) {
-    if (confirm(`Are you sure you want to borrow the full amount of MWK ${amount.toLocaleString()}?`)) {
-        sendBorrowRequest(investmentId, "full");
-    }
-}
-
-// Borrow custom amount for a specific investment
-function borrowCustomAmount(investmentId) {
-    const input = document.getElementById(`custom-amount-${investmentId}`);
-    const amount = parseFloat(input.value);
-    
-    if (!amount || amount <= 0) {
-        alert("Please enter a valid amount.");
-        input.focus();
-        return;
-    }
-    
-    // Note: You might want to get the max amount from data attributes
-    const maxAmount = parseFloat(input.max);
-    if (amount > maxAmount) {
-        alert(`Amount cannot exceed available MWK ${maxAmount.toLocaleString()}`);
-        return;
-    }
-    
-    if (amount < 1000) {
-        alert("Minimum borrow amount is MWK 1,000");
-        return;
-    }
-    
-    if (confirm(`Are you sure you want to borrow MWK ${amount.toLocaleString()}?`)) {
-        sendBorrowRequest(investmentId, amount);
-    }
-}
-
+// Borrow functions
 async function sendBorrowRequest(investmentId, amountParam) {
     try {
-        // Prepare payload based on controller expectations
         let payload;
         
         if (amountParam === "full") {
-            // Send "full" as string for full amount
             payload = { amount: "full" };
         } else {
-            // Send numeric amount
             payload = { amount: amountParam };
         }
         
-        console.log("Sending payload:", payload);
+        console.log("Sending borrow request for investment", investmentId, "with payload:", payload);
         
-        // Send request WITHOUT nesting it under p2p_borrow_request
         const response = await fetch(`http://localhost:3000/api/v1/p2p_investments/${investmentId}/borrow`, {
             method: "POST",
             headers: {
                 "Authorization": "Bearer " + token,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(payload)  // Direct payload, not nested
+            body: JSON.stringify(payload)
         });
         
         const data = await response.json();
@@ -419,13 +553,48 @@ async function sendBorrowRequest(investmentId, amountParam) {
     }
 }
 
-// Load investments on page load
-fetchAvailableInvestments();
+function borrowFullAmount(investmentId, amount) {
+    if (confirm(`Are you sure you want to borrow the full amount of MWK ${amount.toLocaleString()}?`)) {
+        sendBorrowRequest(investmentId, "full");
+    }
+}
 
-// Allow pressing Enter in custom amount fields
+function borrowCustomAmount(investmentId) {
+    const input = document.getElementById('custom-amount');
+    const amount = parseFloat(input.value);
+    
+    if (!amount || amount <= 0) {
+        alert("Please enter a valid amount.");
+        input.focus();
+        return;
+    }
+    
+    const maxAmount = parseFloat(input.max);
+    if (amount > maxAmount) {
+        alert(`Amount cannot exceed available MWK ${maxAmount.toLocaleString()}`);
+        return;
+    }
+    
+    const minAmount = parseFloat(input.min) || 1000;
+    if (amount < minAmount) {
+        alert(`Minimum borrow amount is MWK ${minAmount.toLocaleString()}`);
+        return;
+    }
+    
+    if (confirm(`Are you sure you want to borrow MWK ${amount.toLocaleString()}?`)) {
+        sendBorrowRequest(investmentId, amount);
+    }
+}
+
+// Load investment on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadInvestment();
+});
+
+// Allow pressing Enter in custom amount field
 document.addEventListener('keypress', function(event) {
-    if (event.target.type === 'number' && event.key === 'Enter') {
-        const investmentId = event.target.id.split('-')[2];
+    if (event.target.id === 'custom-amount' && event.key === 'Enter') {
+        const investmentId = getInvestmentIdFromURL();
         if (investmentId) {
             borrowCustomAmount(investmentId);
         }
