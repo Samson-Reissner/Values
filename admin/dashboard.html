@@ -323,22 +323,7 @@
         .fund-loan-btn:hover {
             background-color: #138496;
         }
-        
-        .logout-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 8px 16px;
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .logout-btn:hover {
-            background-color: #c82333;
-        }
+    
         
         .refresh-btn {
             padding: 5px 15px;
@@ -406,7 +391,6 @@
     </style>
 </head>
 <body>
-    <button class="logout-btn" onclick="logout()">Logout</button>
     
     <div class="header-container">
         <h1>Admin Dashboard</h1>
@@ -1031,12 +1015,6 @@ async function approveLoan(loanId) {
                 }
                 if (row) row.classList.remove('status-updating');
             }
-        }
-
-        // Logout functionality
-        function logout() {
-            localStorage.removeItem("authToken");
-            window.location.href = '/login';
         }
 
         // Initialize dashboard
