@@ -96,7 +96,7 @@ function updateStats(investments) {
     if (!investments || !Array.isArray(investments)) return;
 
     const totalOffers = investments.length;
-    const activeOffers = investments.filter(o => o.status === 'open' || o.status === 'requested').length;
+    const activeOffers = investments.filter(o => o.status === 'open' || o.status === 'under_review').length;
     
     const totalInvested = investments
         .filter(o => o.status === 'funded' || o.status === 'accepted')
@@ -200,12 +200,7 @@ function createOfferCard(offer) {
                     <strong>Borrower</strong>
                     <span>${offer.borrower_name || 'No borrower yet'}</span>
                 </div>
-                ${offer.action_required ? `
-                <div class="bid-detail">
-                    <strong>Action Required</strong>
-                    <span style="color: #ff9e00; font-weight: bold;">${offer.action_required}</span>
-                </div>
-                ` : ''}
+                
             </div>
             <div class="bid-actions">
                 <button class="btn-action btn-view" onclick="viewOfferDetails('${offerId}')">
