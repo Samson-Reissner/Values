@@ -197,6 +197,16 @@ fetch('../partials/deposit-money-modal.html')
     // ✅ NOW class exists AND modal exists
     window.depositManager = new DepositManager();
   });
+  fetch('../partials/pay-bills-modal.html')
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById("modalContainer").innerHTML += html;
+    // Initialize the modal after it's loaded
+    initPayBillsModal();
+  })
+  .catch(err => {
+    console.error("Failed to load pay bills modal:", err);
+  });
 </script>
 
 
