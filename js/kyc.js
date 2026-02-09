@@ -227,7 +227,7 @@ function submitKYC() {
       }
 
       alert("KYC submitted successfully.");
-      window.location.href = "dashboard.html";
+      window.location.href = "index.html";
     })
     .catch(() => {
       alert("KYC submission failed. Please try again.");
