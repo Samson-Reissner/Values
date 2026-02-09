@@ -22,13 +22,31 @@ function getAuthHeaders(isJson = true) {
     if (isJson) headers["Content-Type"] = "application/json";
     return headers;
 }
+ async function preloadProfile() {
+  const response = await fetch(`${BACKEND_URL}/api/v1/me`, {
+    headers: getAuthHeaders()
+  });
 
+  const user = await safeJson(response);
+
+  if (!response.ok) {
+    alert("Failed to load profile");
+    return;
+  }
+
+  $("firstName").value  = user.first_name || "";
+  $("lastName").value   = user.last_name || "";
+  $("occupation").value = user.occupation || "";
+  $("location").value   = user.district || "";
+  $("phone").value      = user.phone || "";
+}
+document.addEventListener("DOMContentLoaded", preloadProfile);
 /* ===========================================================
    STEP CONTROL
 =========================================================== */
 
 let currentStep = 1;
-const totalSteps = 5;
+const totalSteps = 4;
 let loanRequestId = null;
 
 function showStep(n) {
@@ -74,7 +92,6 @@ async function runStepSave(step) {
         case 1: return await savePersonalDetails();
         case 2: return await saveGuarantorDetails();
         case 3: return await saveLoanDetails();
-        case 4: return await uploadDocuments();
         default: return true;
     }
 }
@@ -84,31 +101,32 @@ async function runStepSave(step) {
 =========================================================== */
 
 async function savePersonalDetails() {
+  // Collect personal details from the form
+  const payload = {
+    first_name: $("firstName").value,
+    last_name: $("lastName").value,
+    occupation: $("occupation").value,
+    location: $("location").value,
+    phone: $("phone").value
+  };
 
-    const payload = {
-        first_name: $("firstName").value,
-        last_name: $("lastName").value,
-        occupation: $("occupation").value,
-        location: $("location").value,
-        phone: $("phone").value
-    };
+  const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/start`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(payload)  // Add this!
+  });
 
-    const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/start`, {
-        method: "POST",
-        headers: getAuthHeaders(),
-        body: JSON.stringify(payload)
-    });
+  const data = await safeJson(response);
 
-    const data = await safeJson(response);
+  if (!response.ok) {
+    alert(data.error || "Failed to start loan application");
+    return false;
+  }
 
-    if (!response.ok) {
-        alert(data.error || "Failed to save personal information");
-        return false;
-    }
-
-    loanRequestId = data.id;
-    return true;
+  loanRequestId = data.id;
+  return true;
 }
+
 
 /* ===========================================================
    STEP 2 — GUARANTOR DETAILS
@@ -179,45 +197,7 @@ async function saveLoanDetails() {
 }
 
 /* ===========================================================
-   STEP 4 — DOCUMENT UPLOAD
-=========================================================== */
-
-async function uploadDocuments() {
-    if (!loanRequestId) {
-        alert("Loan ID missing");
-        return false;
-    }
-
-    const formData = new FormData();
-
-    if ($("payslip").files.length > 0) {
-        formData.append("payslip", $("payslip").files[0]);
-    }
-
-    if ($("bankStatement").files.length > 0) {
-        formData.append("bank_statement", $("bankStatement").files[0]);
-    }
-
-    if ([...formData].length === 0) return true;
-
-    const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/${loanRequestId}/documents`, {
-        method: "PUT",
-        headers: getAuthHeaders(false), // multipart/form-data → don't set Content-Type manually
-        body: formData
-    });
-
-    const data = await safeJson(response);
-
-    if (!response.ok) {
-        alert(data.error || "Failed to upload documents");
-        return false;
-    }
-
-    return true;
-}
-
-/* ===========================================================
-   STEP 5 — SUBMIT
+   STEP 4 — SUBMIT
 =========================================================== */
 
 async function finalizeApplication() {
