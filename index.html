@@ -585,7 +585,7 @@ async function loadUserProfile() {
   </div>
 `;
 
-    // 🔐 KYC CHECK
+    //  KYC CHECK
     if (user.kyc_status !== "verified") {
       showKycReminder(user.kyc_percentage);
     }
