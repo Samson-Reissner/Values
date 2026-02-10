@@ -21,15 +21,18 @@ let currentFilter = 'pending';
 let currentSort = 'newest';
 
 // Helper function to safely format numbers
+const currencyFormatter = new Intl.NumberFormat('en-MW', {
+    style: 'currency',
+    currency: 'MWK',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+});
+
 function formatCurrency(amount) {
-    if (amount === undefined || amount === null) {
-        return '$0.00';
-    }
-    return `$${parseFloat(amount).toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    })}`;
+    const value = Number(amount || 0);
+    return currencyFormatter.format(value);
 }
+
 
 // Helper function to safely get number
 function safeNumber(value) {
@@ -495,6 +498,7 @@ function viewPayments(loanId) {
 
 // Approve loan function
 async function approveLoan(loanId) {
+    loanId = Number(loanId);
     const token = localStorage.getItem("authToken");
     if (!token) {
         showNotification('Please login first', 'error');
@@ -593,6 +597,7 @@ async function approveLoan(loanId) {
 
 // Reject loan function
 async function rejectLoan(loanId) {
+    loanId = Number(loanId);
     const token = localStorage.getItem("authToken");
     if (!token) {
         showNotification('Please login first', 'error');
