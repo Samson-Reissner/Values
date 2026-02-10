@@ -1,141 +1,455 @@
-
-<div class="progress-bar">
-    <div id="progressFill"></div>
-</div>
-<style>
-.progress-bar {
-    width: 100%;
-    height: 8px;
-    background: #eee;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    overflow: hidden;
-}
-
-#progressFill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #007bff, #28a745);
-    transition: width 0.5s ease-in-out;
-}
-</style>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apply for Loan</title>
-    <link rel="stylesheet" href="styles.css">
-
+    <title>Apply for Loan - Value</title>
+    <link rel="stylesheet" href="styles/custom.css">
+    
     <style>
-        /* --- FORM WIZARD STYLE --- */
-        .form-container {
-            max-width: 600px;
-            margin: 40px auto;
-            background: #fff;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        /* Full page background */
+        body.wizard-page {
+            background: #1B2A48 url('images/background-image.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
+        /* Overlay for better contrast */
+        body.wizard-page::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(30, 114, 158, 0.7);
+            z-index: 1;
+        }
+
+        /* Modal container */
+        .wizard-container {
+            max-width: 800px;
+            width: 90%;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+            margin: 20px;
+        }
+
+        /* Header with your color */
+        .wizard-header {
+            background: #1E729E;
+            padding: 25px 30px 15px;
+            color: white;
+            position: relative;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: background 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .header-content {
+            text-align: center;
+            margin: 10px 0 25px;
+        }
+
+        .logo-image {
+            height: 50px;
+            margin-bottom: 15px;
+            filter: brightness(0) invert(1);
+        }
+
+        .header-content h1 {
+            font-size: 28px;
+            color: white;
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+
+        .header-content p {
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+            font-size: 16px;
+        }
+
+        /* Progress steps */
+        .progress-steps {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 15px;
+            padding: 0 20px;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            max-width: 120px;
+        }
+
+        .step-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step.active .step-circle {
+            background: white;
+            color: #1E729E;
+        }
+
+        .step-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .step.active .step-label {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Step connector lines */
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 18px;
+            left: 50%;
+            right: -50%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            z-index: 1;
+        }
+
+        /* Content area */
+        .wizard-content {
+            padding: 40px;
+            min-height: 400px;
+            background: #fff;
+        }
+
+        /* Your existing form-step classes */
         .form-step {
             display: none;
+            animation: fadeIn 0.3s ease;
         }
 
         .form-step.active {
             display: block;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         .step-title {
-            font-size: 22px;
-            margin-bottom: 15px;
-            font-weight: bold;
+            font-size: 24px;
+            color: #2d3748;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+            font-weight: 600;
+        }
+
+        /* Form styling */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .progress-steps {
+                gap: 20px;
+            }
+            .step:not(:last-child)::after {
+                display: none;
+            }
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
-        label {
+        .form-group label {
             display: block;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-size: 14px;
         }
 
-        input, select {
+        .form-group label.required::after {
+            content: " *";
+            color: #e53e3e;
+        }
+
+        .form-group input,
+        .form-group select {
             width: 100%;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #1E729E;
+            box-shadow: 0 0 0 3px rgba(30, 114, 158, 0.1);
+        }
+
+        .form-group input:disabled {
+            background-color: #f7fafc;
+            color: #718096;
+            cursor: not-allowed;
+        }
+
+        /* Footer - matching your JavaScript IDs */
+        .form-navigation {
+            padding: 25px 40px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .btn-nav {
-            padding: 10px 18px;
-            border-radius: 6px;
-            background: #007bff;
-            color: #fff;
+            padding: 12px 28px;
+            border-radius: 8px;
             border: none;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav.btn-prev {
+            background: #fff;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-nav.btn-prev:hover:not(:disabled) {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        .btn-nav.btn-next, .btn-nav.btn-submit {
+            background: #1E729E;
+            color: white;
+            box-shadow: 0 4px 15px rgba(30, 114, 158, 0.3);
+        }
+
+        .btn-nav.btn-next:hover:not(:disabled),
+        .btn-nav.btn-submit:hover:not(:disabled) {
+            background: #155d84;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 114, 158, 0.4);
         }
 
         .btn-nav:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
         }
 
-        .btn-submit {
-            background: #28a745;
+        /* Loan-specific styling */
+        .interest-summary {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid #e2e8f0;
         }
 
-        .form-navigation {
+        .summary-row {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .summary-label {
+            color: #718096;
+        }
+
+        .summary-value {
+            color: #2d3748;
+            font-weight: 500;
+        }
+
+        /* Info boxes */
+        .info-box {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #0c4a6e;
+        }
+
+        .info-box p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* Review sections */
+        .review-section {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .review-section h3 {
+            color: #1E729E;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        /* Progress bar styling */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        #progressFill {
+            height: 100%;
+            width: 25%;
+            background: white;
+            border-radius: 6px;
+            transition: width 0.5s ease-in-out;
         }
     </style>
 </head>
-<script src="js/auth.js"></script>
-<script>
-  // Protect this page: only logged-in users allowed
-  document.addEventListener("DOMContentLoaded", () => {
-    Auth.requireAuth("login.html");
-  });
-</script>
 
+<body class="wizard-page">
 
-<body>
+<div class="wizard-container">
 
-    <!-- YOUR NAVBAR HERE -->
-    <header>
-        <!-- replace this with your actual navbar -->
-    </header>
+    <!-- HEADER -->
+    <div class="wizard-header">
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            Back to Dashboard
+        </button>
 
-    <div class="form-container">
-        <h2 style="text-align:center; margin-bottom:10px;">Loan Application</h2>
+        <div class="header-content">
+            <h1>Apply for a Loan</h1>
+            <p>Complete your loan application in 4 simple steps</p>
+        </div>
 
-        <!-- STEP 1 - PERSONAL DETAILS -->
+        <!-- Progress bar from your JavaScript -->
+        <div class="progress-bar">
+            <div id="progressFill"></div>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="progress-steps">
+            <div class="step" id="step-indicator-1">
+                <div class="step-circle">1</div>
+                <div class="step-label">Personal Details</div>
+            </div>
+            <div class="step" id="step-indicator-2">
+                <div class="step-circle">2</div>
+                <div class="step-label">Guarantor</div>
+            </div>
+            <div class="step" id="step-indicator-3">
+                <div class="step-circle">3</div>
+                <div class="step-label">Loan Details</div>
+            </div>
+            <div class="step" id="step-indicator-4">
+                <div class="step-circle">4</div>
+                <div class="step-label">Submit</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT - Using your original structure -->
+    <div class="wizard-content">
+        <!-- STEP 1: PERSONAL DETAILS -->
         <div class="form-step active" id="step-1">
-            <div class="step-title">1. Personal Details</div>
-
-            <div class="form-group">
-                <label>First Name</label>
-                <input type="text" id="firstName" disabled>
+            <h2 class="step-title">Personal Details</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" id="firstName" disabled>
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" id="lastName" disabled>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Last Name</label>
-                <input type="text" id="lastName" disabled>
-            </div>
-
-            <div class="form-group">
-                <label>Occupation</label>
-                <input type="text" id="occupation" disabled>
-            </div>
-
-            <div class="form-group">
-                <label>Current Location</label>
-                <input type="text" id="location">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Occupation</label>
+                    <input type="text" id="occupation" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="required">Current Location</label>
+                    <input type="text" id="location" placeholder="Enter your current location">
+                </div>
             </div>
 
             <div class="form-group">
@@ -144,174 +458,284 @@
             </div>
         </div>
 
-        <!-- STEP 2 - GUARANTOR -->
+        <!-- STEP 2: GUARANTOR -->
         <div class="form-step" id="step-2">
-            <div class="step-title">2. Guarantor Details</div>
-
-            <div class="form-group">
-                <label>Guarantor First Name</label>
-                <input type="text" id="g_first">
+            <h2 class="step-title">Guarantor Details</h2>
+            
+            <div class="info-box">
+                <p>Please provide details of someone who can guarantee your loan. They will be contacted for verification.</p>
             </div>
 
-            <div class="form-group">
-                <label>Guarantor Last Name</label>
-                <input type="text" id="g_last">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="required">First Name</label>
+                    <input type="text" id="g_first" placeholder="Guarantor's first name">
+                </div>
+                <div class="form-group">
+                    <label class="required">Last Name</label>
+                    <input type="text" id="g_last" placeholder="Guarantor's last name">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Guarantor Phone</label>
-                <input type="text" id="g_phone">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="required">Phone Number</label>
+                    <input type="text" id="g_phone" placeholder="Guarantor's phone number">
+                </div>
+                <div class="form-group">
+                    <label class="required">Email Address</label>
+                    <input type="email" id="g_email" placeholder="Guarantor's email address">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Guarantor Email</label>
-                <input type="email" id="g_email">
-            </div>
-
-            <div class="form-group">
-                <label>Guarantor Occupation</label>
-                <input type="text" id="g_occupation">
-            </div>
-
-            <div class="form-group">
-                <label>Guarantor Location</label>
-                <input type="text" id="g_location">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="required">Occupation</label>
+                    <input type="text" id="g_occupation" placeholder="Guarantor's occupation">
+                </div>
+                <div class="form-group">
+                    <label class="required">Location</label>
+                    <input type="text" id="g_location" placeholder="Guarantor's location">
+                </div>
             </div>
         </div>
 
-       <!-- STEP 3 - LOAN DETAILS -->
-<div class="form-step" id="step-3">
-    <div class="step-title">3. Loan Details</div>
+        <!-- STEP 3: LOAN DETAILS -->
+        <div class="form-step" id="step-3">
+            <h2 class="step-title">Loan Details</h2>
 
-    <div class="form-group">
-        <label>Loan Type</label>
-        <select id="loanType">
-            <option value="civil_servant">Civil Servant Loan</option>
-            <option value="group_business">Group Business Loan</option>
-            <option value="graduate_ayiphule">Graduate Ayiphule Loan</option>
-            <option value="payday">Payday Loan</option>
-        </select>
+            <div class="form-group">
+                <label class="required">Loan Type</label>
+                <select id="loanType">
+                    <option value="">Select loan type</option>
+                    <option value="civil_servant">Civil Servant Loan</option>
+                    <option value="group_business">Group Business Loan</option>
+                    <option value="graduate_ayiphule">Graduate Ayiphule Loan</option>
+                    <option value="payday">Payday Loan</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="required">Desired Amount (MWK)</label>
+                    <input type="number" id="amount" placeholder="Enter loan amount" min="1">
+                </div>
+                <div class="form-group">
+                    <label class="required">Tenure (Months)</label>
+                    <input type="number" id="tenure" placeholder="Loan term in months" min="1" max="36">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Purpose</label>
+                <input type="text" id="purpose" placeholder="What will you use the loan for?">
+            </div>
+
+            <div class="interest-summary">
+                <h3>Loan Summary</h3>
+                <div class="summary-row">
+                    <span class="summary-label">Interest Rate:</span>
+                    <span class="summary-value" id="interestRate">--</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Total Repayable:</span>
+                    <span class="summary-value" id="totalRepayable">--</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4: REVIEW & SUBMIT -->
+        <div class="form-step" id="step-4">
+            <h2 class="step-title">Review & Submit</h2>
+            
+            <div class="info-box">
+                <p>Please review your application details below before submitting.</p>
+            </div>
+
+            <div class="review-section">
+                <h3>Personal Details</h3>
+                <div class="summary-row">
+                    <span class="summary-label">Name:</span>
+                    <span class="summary-value" id="reviewName">--</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Location:</span>
+                    <span class="summary-value" id="reviewLocation">--</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Phone:</span>
+                    <span class="summary-value" id="reviewPhone">--</span>
+                </div>
+            </div>
+
+            <div class="review-section">
+                <h3>Loan Details</h3>
+                <div class="summary-row">
+                    <span class="summary-label">Loan Type:</span>
+                    <span class="summary-value" id="reviewLoanType">--</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Amount:</span>
+                    <span class="summary-value" id="reviewAmount">--</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Term:</span>
+                    <span class="summary-value" id="reviewTenure">--</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Total Repayable:</span>
+                    <span class="summary-value" id="reviewTotalRepayable">--</span>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p>By submitting, you agree to our terms and conditions. Your application will be reviewed within 24-48 hours.</p>
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Desired Amount (MWK)</label>
-        <input type="number" id="amount">
-    </div>
-
-    <div class="form-group">
-        <label>Tenure (Months)</label>
-        <input type="number" id="tenure">
-    </div>
-
-    
-
-    <div class="form-group">
-        <label>Purpose</label>
-        <input type="text" id="purpose">
-    </div>
-    <div class="form-group">
-        <label>Interest Rate (%)</label>
-        <input type="text" id="interestRate" readonly>
-    </div>
-
-    <div class="form-group">
-      <label>Total Repayable (MWK)</label>
-      <input type="text" id="totalRepayable" readonly>
+    <!-- FOOTER - Using your original navigation structure -->
+    <div class="form-navigation">
+        <button id="prevBtn" class="btn-nav btn-prev" onclick="nextPrev(-1)">Back</button>
+        <button id="nextBtn" class="btn-nav btn-next" onclick="nextPrev(1)">Next</button>
     </div>
 
 </div>
 
-        <!-- STEP 4 SUBMIT -->
-        <div class="form-step" id="step-4">
-            <div class="step-title">Review & Submit</div>
-            <p>Click submit to finish application.</p>
-        </div>
-
-
-        <!-- NAVIGATION BUTTONS -->
-        <div class="form-navigation">
-            <button id="prevBtn" class="btn-nav" onclick="nextPrev(-1)">Back</button>
-            <button id="nextBtn" class="btn-nav" onclick="nextPrev(1)">Next</button>
-        </div>
-
-    </div>
-
-
-    <!-- YOUR FOOTER HERE -->
-    <footer>
-        <!-- replace with your footer -->
-    </footer>
-
+<!-- Your existing scripts -->
+<script src="js/auth.js"></script>
 <script src="js/loan_application.js"></script>
 <script src="js/app.js"></script>
+
 <script>
-const BACKEND_URL = "http://localhost:3000";
+    // Protect this page: only logged-in users allowed
+    document.addEventListener("DOMContentLoaded", () => {
+        if (typeof Auth !== 'undefined' && Auth.requireAuth) {
+            Auth.requireAuth("login.html");
+        }
+    });
 
-async function testBackendConnection() {
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/test`);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
-    console.log("%cBackend Connected ✔", "color: green; font-weight: bold;");
-    console.log("Response:", data);
-  } catch (error) {
-    console.log("%cBackend NOT Connected ✖", "color: red; font-weight: bold;");
-    console.error("Error:", error);
-  }
-}
+    // Override your showStep function to update UI indicators
+    const originalShowStep = window.showStep;
+    window.showStep = function(n) {
+        // Call the original function
+        if (typeof originalShowStep === 'function') {
+            originalShowStep(n);
+        }
+        
+        // Update step indicators
+        updateStepIndicators(n);
+        
+        // Update review summary
+        updateReviewSummary();
+    };
 
-document.addEventListener('DOMContentLoaded', testBackendConnection);
+    // Function to update step indicators
+    function updateStepIndicators(step) {
+        // Remove active class from all steps
+        document.querySelectorAll('.step').forEach(el => {
+            el.classList.remove('active');
+        });
+        
+        // Add active class to current step and all previous steps
+        for (let i = 1; i <= step; i++) {
+            const stepIndicator = document.getElementById(`step-indicator-${i}`);
+            if (stepIndicator) {
+                stepIndicator.classList.add('active');
+            }
+        }
+    }
+
+    // Function to update review summary
+    function updateReviewSummary() {
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const location = document.getElementById('location').value;
+        const phone = document.getElementById('phone').value;
+        const loanTypeSelect = document.getElementById('loanType');
+        const amount = document.getElementById('amount').value;
+        const tenure = document.getElementById('tenure').value;
+        const totalRepayable = document.getElementById('totalRepayable').value;
+        
+        if (document.getElementById('reviewName')) {
+            document.getElementById('reviewName').textContent = `${firstName} ${lastName}` || '--';
+            document.getElementById('reviewLocation').textContent = location || '--';
+            document.getElementById('reviewPhone').textContent = phone || '--';
+            document.getElementById('reviewLoanType').textContent = 
+                loanTypeSelect.options[loanTypeSelect.selectedIndex]?.text || '--';
+            document.getElementById('reviewAmount').textContent = 
+                amount ? `MWK ${parseFloat(amount).toLocaleString()}` : '--';
+            document.getElementById('reviewTenure').textContent = 
+                tenure ? `${tenure} months` : '--';
+            document.getElementById('reviewTotalRepayable').textContent = 
+                totalRepayable ? `MWK ${parseFloat(totalRepayable).toLocaleString()}` : '--';
+        }
+    }
+
+    // Update review when loan details change
+    document.addEventListener('DOMContentLoaded', () => {
+        // Initial setup
+        updateStepIndicators(1);
+        updateReviewSummary();
+        
+        // Add event listeners for real-time updates
+        ['amount', 'tenure', 'loanType', 'location'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('input', updateReviewSummary);
+                el.addEventListener('change', updateReviewSummary);
+            }
+        });
+        
+        // Add interest rate calculation
+        const loanTypeEl = document.getElementById("loanType");
+        const amountEl = document.getElementById("amount");
+        const tenureEl = document.getElementById("tenure");
+        const interestRateEl = document.getElementById("interestRate");
+        const totalRepayableEl = document.getElementById("totalRepayable");
+
+        async function updateInterestAndRepayable() {
+            const tenure = tenureEl.value;
+            const amount = parseFloat(amountEl.value);
+            const loanType = loanTypeEl.value;
+
+            if (!tenure || !amount || !loanType) {
+                interestRateEl.textContent = "--";
+                totalRepayableEl.textContent = "--";
+                return;
+            }
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/v1/loan_interest_configs?term_months=${tenure}`);
+                const data = await response.json();
+
+                if (data && data.interest_rate) {
+                    const rate = parseFloat(data.interest_rate);
+                    interestRateEl.textContent = rate + "%";
+                    const total = amount * (1 + rate / 100);
+                    totalRepayableEl.textContent = total.toFixed(2);
+                    
+                    // Update review summary
+                    updateReviewSummary();
+                } else {
+                    interestRateEl.textContent = "Not Configured";
+                    totalRepayableEl.textContent = "--";
+                }
+            } catch (err) {
+                console.error(err);
+                interestRateEl.textContent = "Error";
+                totalRepayableEl.textContent = "--";
+            }
+        }
+
+        // Add event listeners for interest calculation
+        if (amountEl && tenureEl && loanTypeEl) {
+            amountEl.addEventListener("input", updateInterestAndRepayable);
+            tenureEl.addEventListener("input", updateInterestAndRepayable);
+            loanTypeEl.addEventListener("change", updateInterestAndRepayable);
+        }
+    });
 </script>
 
 </body>
 </html>
-<script>
-const loanTypeEl = document.getElementById("loanType");
-const amountEl = document.getElementById("amount");
-const tenureEl = document.getElementById("tenure");
-const interestRateEl = document.getElementById("interestRate");
-const totalRepayableEl = document.getElementById("totalRepayable");
-
-async function updateInterestAndRepayable() {
-    const tenure = tenureEl.value;
-    const amount = parseFloat(amountEl.value);
-    const loanType = loanTypeEl.value;
-
-    if (!tenure || !amount || !loanType) {
-        interestRateEl.value = "";
-        totalRepayableEl.value = "";
-        return;
-    }
-
-    try {
-        // Backend should accept loan_type & tenure
-        const response = await fetch(`${BACKEND_URL}/api/v1/loan_interest_configs?term_months=${tenure}`);
-;
-        const data = await response.json();
-
-        if (data && data.interest_rate) {
-            const rate = parseFloat(data.interest_rate);
-
-            // Show interest rate
-            interestRateEl.value = rate + "%";
-
-            // Calculate total repayable
-            const total = amount * (1 + rate / 100);
-            totalRepayableEl.value = total.toFixed(2);
-        } else {
-            interestRateEl.value = "Not Configured";
-            totalRepayableEl.value = "";
-        }
-    } catch (err) {
-        console.error(err);
-        interestRateEl.value = "Error";
-        totalRepayableEl.value = "";
-    }
-}
-
-// Trigger calculation whenever amount, tenure, or loan type changes
-amountEl.addEventListener("input", updateInterestAndRepayable);
-tenureEl.addEventListener("input", updateInterestAndRepayable);
-loanTypeEl.addEventListener("change", updateInterestAndRepayable);
-</script>
-
