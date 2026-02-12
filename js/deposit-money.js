@@ -557,6 +557,9 @@ class DepositManager {
 
     /* ========== PUBLIC METHODS ========== */
     
+   showDepositModal() {
+        this.openMethodModal();
+   }
     // Optional: Public method to trigger deposit from other components
     triggerDeposit(method, amount) {
         this.selectedMethod = method;
