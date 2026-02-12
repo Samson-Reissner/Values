@@ -180,6 +180,7 @@
     </div>
 <div id="sendMoneyModalContainer"></div>
 <div id="modalContainer"></div>
+<div id="addCash"></div>
 <script src="../js/auth.js"></script>
 <script src="js/navbar-auth.js"></script>
 <script src="../js/wallet.js"></script>
@@ -192,7 +193,7 @@
 fetch('../partials/deposit-money-modal.html')
   .then(res => res.text())
   .then(html => {
-    document.getElementById("modalContainer").innerHTML += html;
+    document.getElementById("addCash").innerHTML += html;
 
     // ✅ NOW class exists AND modal exists
     window.depositManager = new DepositManager();
