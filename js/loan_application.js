@@ -1,7 +1,7 @@
 /* ===========================================================
    SAFE HELPERS
 =========================================================== */
-const BACKEND_URL = "http://localhost:3000";
+import { API_BASE, authHeaders } from './config.js';
 
 async function safeJson(response) {
     const text = await response.text();
@@ -22,8 +22,9 @@ function getAuthHeaders(isJson = true) {
     if (isJson) headers["Content-Type"] = "application/json";
     return headers;
 }
- async function preloadProfile() {
-  const response = await fetch(`${BACKEND_URL}/api/v1/me`, {
+
+async function preloadProfile() {
+  const response = await fetch(`${API_BASE}/me`, {
     headers: getAuthHeaders()
   });
 
@@ -41,6 +42,7 @@ function getAuthHeaders(isJson = true) {
   $("phone").value      = user.phone || "";
 }
 document.addEventListener("DOMContentLoaded", preloadProfile);
+
 /* ===========================================================
    STEP CONTROL
 =========================================================== */
@@ -110,10 +112,10 @@ async function savePersonalDetails() {
     phone: $("phone").value
   };
 
-  const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/start`, {
+  const response = await fetch(`${API_BASE}/loan_requests/start`, {
     method: "POST",
     headers: getAuthHeaders(),
-    body: JSON.stringify(payload)  // Add this!
+    body: JSON.stringify(payload)
   });
 
   const data = await safeJson(response);
@@ -126,7 +128,6 @@ async function savePersonalDetails() {
   loanRequestId = data.id;
   return true;
 }
-
 
 /* ===========================================================
    STEP 2 — GUARANTOR DETAILS
@@ -147,7 +148,7 @@ async function saveGuarantorDetails() {
         location: $("g_location").value
     };
 
-    const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/${loanRequestId}/guarantor`, {
+    const response = await fetch(`${API_BASE}/loan_requests/${loanRequestId}/guarantor`, {
         method: "PUT",
         headers: getAuthHeaders(),
         body: JSON.stringify(payload)
@@ -180,7 +181,7 @@ async function saveLoanDetails() {
         purpose: $("purpose").value
     };
 
-    const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/${loanRequestId}/loan_details`, {
+    const response = await fetch(`${API_BASE}/loan_requests/${loanRequestId}/loan_details`, {
         method: "PUT",
         headers: getAuthHeaders(),
         body: JSON.stringify(payload)
@@ -206,7 +207,7 @@ async function finalizeApplication() {
         return false;
     }
 
-    const response = await fetch(`${BACKEND_URL}/api/v1/loan_requests/${loanRequestId}/submit`, {
+    const response = await fetch(`${API_BASE}/loan_requests/${loanRequestId}/submit`, {
         method: "POST",
         headers: getAuthHeaders()
     });
@@ -228,3 +229,5 @@ async function finalizeApplication() {
 function updateProgressBar(step) {
     $("progressFill").style.width = (step / totalSteps) * 100 + "%";
 }
+window.nextPrev = nextPrev;
+window.showStep = showStep;

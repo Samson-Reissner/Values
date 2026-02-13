@@ -1,4 +1,5 @@
 // js/kyc.js
+import { API_BASE, authHeaders } from '../js/config.js';
 
 let currentStep = 1;
 const totalSteps = 3;
@@ -55,7 +56,7 @@ prefillUserDetails();
 // PREFILL USER DATA
 // ==========================
 function prefillUserDetails() {
-  fetch("http://localhost:3000/api/v1/me", {
+  fetch(`${API_BASE}/me`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -212,7 +213,7 @@ function submitKYC() {
     );
   }
 
-  fetch("http://localhost:3000/api/v1/kyc", {
+  fetch(`${API_BASE}/kyc`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${token}`

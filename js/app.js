@@ -1,8 +1,11 @@
-const BACKEND_URL = "http://localhost:3000";
+// app.js
+import { API_BASE } from './js/config.js';
 
 async function testBackendConnection() {
   try {
-    const response = await fetch(`${BACKEND_URL}/api/test`);
+    // Extract base URL from API_BASE (remove /api/v1)
+    const baseUrl = API_BASE.replace('/api/v1', '');
+    const response = await fetch(`${baseUrl}/api/test`);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     console.log("%cBackend Connected ✔", "color: green; font-weight: bold;");

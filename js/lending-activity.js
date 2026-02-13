@@ -1,12 +1,11 @@
 // js/lending-activity.js
 // Enhanced Lending Activity Notifications for Peer-to-Peer Lending Dashboard
 
+import { API_BASE, authHeaders } from '../js/config.js';
+
 (function() {
     'use strict';
 
-    // API Base URL - same as lender-dashboard.js
-    const API_BASE_URL = 'http://localhost:3000/api/v1';
-    
     // Store original functions
     const originalRenderBorrowerInterests = window.renderBorrowerInterests;
     
@@ -48,7 +47,7 @@
             // Show loading state
             showLoading();
             
-            fetch(`${API_BASE_URL}/lenders_dashboard`, {
+            fetch(`${API_BASE}/lenders_dashboard`, {
                 headers: { 
                     'Authorization': 'Bearer ' + token,
                     'Content-Type': 'application/json'

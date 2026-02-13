@@ -3,6 +3,8 @@
    Auth handled via auth.js
 */
 
+import { API_BASE, authHeaders } from './js/config.js';
+
 class ValueWallet {
   constructor() {
     this.balance = 0;
@@ -15,7 +17,6 @@ class ValueWallet {
     this.canTransfer = false;
     // Auth context
     this.auth = null;
-    this.API_BASE = "http://localhost:3000/api/v1";
   }
   
   /* -------------------------
@@ -35,7 +36,7 @@ class ValueWallet {
   --------------------------*/
   async loadWalletData() {
     try {
-      const res = await Auth.authFetch(`${this.API_BASE}/wallet`);
+      const res = await Auth.authFetch(`${API_BASE}/wallet`);
 
       if (!res.ok) throw new Error("Wallet not found");
 
@@ -233,7 +234,7 @@ class ValueWallet {
      WALLET ACTIONS
   --------------------------*/
   async payBill({ category, provider_code, reference, amount, allow_loan = false }) {
-    const res = await Auth.authFetch(`${this.API_BASE}/payments`, {
+    const res = await Auth.authFetch(`${API_BASE}/payments`, {
       method: "POST",
       body: JSON.stringify({
         payment: {

@@ -1,5 +1,7 @@
 // js/transaction-history.js
 
+import { API_BASE, authHeaders } from '../js/config.js';
+
 let allTransactions = [];
 let filteredTransactions = [];
 let visibleCount = 10;
@@ -21,7 +23,7 @@ async function loadTransactions() {
     toggleLoading(true);
 
     const response = await fetch(
-      `http://localhost:3000/api/v1/users/${userId}/transaction_logs`,
+      `${API_BASE}/users/${userId}/transaction_logs`,
       {
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -186,7 +188,7 @@ async function releaseEscrow(event, reference) {
     console.log(`Attempting to release escrow with reference: ${reference}`);
     
     const res = await fetch(
-      `http://localhost:3000/api/v1/escrow_transactions/${reference}/release`,
+      `${API_BASE}/escrow_transactions/${reference}/release`,
       {
         method: "POST",
         headers: {

@@ -1,6 +1,5 @@
-/* payments.js
-   Handles bill, exam, and school fee payments
-*/
+
+import { API_BASE, authHeaders } from '../js/config.js';
 
 /* -------------------------
    Payment engine

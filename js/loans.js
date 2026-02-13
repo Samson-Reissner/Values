@@ -2,6 +2,8 @@
    Handles ACTIVE LOANS retrieval for wallet dashboard
 */
 
+import { API_BASE, authHeaders } from './js/config.js';
+
 class LoanService {
   constructor() {
     this.loans = [];
@@ -17,7 +19,7 @@ class LoanService {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/api/v1/loans", {
+      const res = await fetch(`${API_BASE}/loans`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"

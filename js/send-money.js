@@ -1,9 +1,6 @@
-/**
- * Send Money Modal Loader & Logic
- * Works with:
- *  - /partials/send-money-modal.html
- *  - wallet-dashboard.html
- */
+
+
+import { API_BASE, authHeaders } from './js/config.js';
 
 document.addEventListener("DOMContentLoaded", function () {
   loadSendMoneyModal();
@@ -41,7 +38,6 @@ async function fetchRealBalanceFromAPI() {
       return 0;
     }
 
-    const API_BASE = "http://localhost:3000/api/v1";
     const response = await fetch(`${API_BASE}/wallet`, {
       headers: {
         "Authorization": `Bearer ${token}`
@@ -258,7 +254,6 @@ async function handleSendMoney() {
   }
 
   const token = localStorage.getItem("authToken");
-  const API_BASE = "http://localhost:3000/api/v1";
 
   // Show processing state
   const confirmBtn = document.getElementById("confirmSendBtn");

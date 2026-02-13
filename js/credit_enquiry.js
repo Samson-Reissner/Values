@@ -1,4 +1,6 @@
 // --- AUTH GUARD ---
+import { API_BASE, authHeaders } from './js/config.js';
+
 const token = localStorage.getItem("authToken");
 if (!token) window.location.replace("login.html");
 
@@ -114,7 +116,7 @@ document.getElementById("submit_enquiry").addEventListener("click", async () => 
   }
 
   try {
-    const res = await fetch("http://localhost:3000/api/v1/credit_enquiries", {
+    const res = await fetch(`${API_BASE}/credit_enquiries`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

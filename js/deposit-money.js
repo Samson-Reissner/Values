@@ -3,6 +3,8 @@
    Version: 2.0
 */
 
+import { API_BASE, authHeaders } from './js/config.js';
+
 class DepositManager {
     constructor() {
         this.selectedMethod = null;
@@ -205,84 +207,84 @@ class DepositManager {
         
         this.processDeposit();
     }
-   async initiateDeposit() {
-    const token = localStorage.getItem('authToken');
+    
+    async initiateDeposit() {
+        const token = localStorage.getItem('authToken');
 
-    const response = await fetch('/api/v1/deposits', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            ...(token && { 'Authorization': `Bearer ${token}` })
-        },
-        body: JSON.stringify({
-            amount: this.selectedAmount,
-            method: this.selectedMethod
-        })
-    });
+        const response = await fetch(`${API_BASE}/deposits`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token && { 'Authorization': `Bearer ${token}` })
+            },
+            body: JSON.stringify({
+                amount: this.selectedAmount,
+                method: this.selectedMethod
+            })
+        });
 
-    let data = null;
+        let data = null;
 
-    try {
-        data = await response.json();
-    } catch (e) {
-        throw new Error(
-            `Server error (${response.status}). Invalid JSON response.`
-        );
+        try {
+            data = await response.json();
+        } catch (e) {
+            throw new Error(
+                `Server error (${response.status}). Invalid JSON response.`
+            );
+        }
+
+        if (!response.ok) {
+            throw new Error(data?.error || `Request failed (${response.status})`);
+        }
+
+        if (!data.success) {
+            throw new Error(data.error || 'Deposit initiation failed');
+        }
+
+        return data;
     }
-
-    if (!response.ok) {
-        throw new Error(data?.error || `Request failed (${response.status})`);
-    }
-
-    if (!data.success) {
-        throw new Error(data.error || 'Deposit initiation failed');
-    }
-
-    return data;
-}
 
     async processDeposit() {
-    try {
-        this.showNotification('Sending payment request to your phone...', 'info');
+        try {
+            this.showNotification('Sending payment request to your phone...', 'info');
 
-        // Close amount modal
-        this.closeAmountModal();
+            // Close amount modal
+            this.closeAmountModal();
 
-        // 🔥 REAL API CALL
-        const result = await this.initiateDeposit();
+            // 🔥 REAL API CALL
+            const result = await this.initiateDeposit();
 
-        this.showNotification(
-            `Payment request sent successfully.<br>
-             Please approve the MWK ${this.selectedAmount.toLocaleString()} payment on your phone.`,
-            'success'
-        );
+            this.showNotification(
+                `Payment request sent successfully.<br>
+                 Please approve the MWK ${this.selectedAmount.toLocaleString()} payment on your phone.`,
+                'success'
+            );
 
-        // Dispatch event for dashboards / listeners
-        this.dispatchDepositEvent('deposit:initiated', {
-            reference: result.reference,
-            amount: this.selectedAmount,
-            method: this.selectedMethod
-        });
+            // Dispatch event for dashboards / listeners
+            this.dispatchDepositEvent('deposit:initiated', {
+                reference: result.reference,
+                amount: this.selectedAmount,
+                method: this.selectedMethod
+            });
 
-    } catch (error) {
-        console.error('Deposit error:', error);
+        } catch (error) {
+            console.error('Deposit error:', error);
 
-        this.showNotification(
-            error.message || 'Deposit failed. Please try again.',
-            'error'
-        );
+            this.showNotification(
+                error.message || 'Deposit failed. Please try again.',
+                'error'
+            );
 
-        this.dispatchDepositEvent('deposit:error', {
-            error: error.message,
-            amount: this.selectedAmount,
-            method: this.selectedMethod
-        });
+            this.dispatchDepositEvent('deposit:error', {
+                error: error.message,
+                amount: this.selectedAmount,
+                method: this.selectedMethod
+            });
 
-    } finally {
-        this.resetProcessingState();
+        } finally {
+            this.resetProcessingState();
+        }
     }
-}
-
 
     resetProcessingState() {
         this.isProcessing = false;
@@ -469,7 +471,6 @@ class DepositManager {
         
         document.head.appendChild(styles);
     }
-
     showInputError(message) {
         if (!this.depositAmountInput) return;
         
@@ -491,7 +492,6 @@ class DepositManager {
         
         this.depositAmountInput.parentNode.appendChild(errorElement);
     }
-
     clearInputError() {
         if (!this.depositAmountInput) return;
         
@@ -505,7 +505,6 @@ class DepositManager {
     }
 
     /* ========== EVENT HANDLERS ========== */
-    
     handleKeyboard(e) {
         // Escape key closes modals
         if (e.key === 'Escape') {
@@ -532,7 +531,6 @@ class DepositManager {
             e.target === this.methodModal) {
             this.closeMethodModal();
         }
-        
         // Close amount modal when clicking outside
         if (this.amountModal && 
             !this.amountModal.classList.contains('hidden') && 
@@ -542,7 +540,6 @@ class DepositManager {
     }
 
     /* ========== UTILITY METHODS ========== */
-    
     delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -556,17 +553,15 @@ class DepositManager {
     }
 
     /* ========== PUBLIC METHODS ========== */
-    
-   showDepositModal() {
+    showDepositModal() {
         this.openMethodModal();
-   }
+    }
     // Optional: Public method to trigger deposit from other components
     triggerDeposit(method, amount) {
         this.selectedMethod = method;
         this.selectedAmount = amount;
         this.processDeposit();
     }
-    
     // Optional: Reset everything
     reset() {
         this.selectedMethod = null;

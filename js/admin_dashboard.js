@@ -1,4 +1,6 @@
 // Global data store
+import { API_BASE, authHeaders } from './js/config.js';
+
 let dashboardData = {
     system_account: { balance: 0, email: 'system@value.mw' },
     loans: {
@@ -83,7 +85,7 @@ async function loadDashboardData() {
         balanceElement.classList.add('updating');
 
         // Load dashboard summary
-        const summaryRes = await fetch("http://localhost:3000/api/v1/admin/dashboard/summary", {
+        const summaryRes = await fetch(`${API_BASE}/admin/dashboard/summary`, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
@@ -130,7 +132,7 @@ async function loadDashboardData() {
 // Load loans data
 async function loadLoans(token) {
     try {
-        const loansRes = await fetch("http://localhost:3000/api/v1/admin/loans?status=all", {
+        const loansRes = await fetch(`${API_BASE}/admin/loans?status=all`, {
             headers: {
                 "Authorization": `Bearer ${token}`
             }
@@ -540,7 +542,7 @@ async function approveLoan(loanId) {
     }
     
     try {
-        const res = await fetch(`http://localhost:3000/api/v1/admin/loans/${loanId}/approve`, {
+        const res = await fetch(`${API_BASE}/admin/loans/${loanId}/approve`, {
             method: 'POST',
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -621,7 +623,7 @@ async function rejectLoan(loanId) {
     if (rejectBtn) rejectBtn.textContent = 'Processing...';
     
     try {
-        const res = await fetch(`http://localhost:3000/api/v1/admin/loans/${loanId}/reject`, {
+        const res = await fetch(`${API_BASE}/admin/loans/${loanId}/reject`, {
             method: 'POST',
             headers: {
                 "Authorization": `Bearer ${token}`,

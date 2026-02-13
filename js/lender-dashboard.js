@@ -1,7 +1,5 @@
 // js/lender-dashboard.js
-
-// Base URL for API
-const API_BASE_URL = 'http://localhost:3000/api/v1';
+import { API_BASE, authHeaders } from '..js/config.js';
 
 // Get auth token
 const token = localStorage.getItem("authToken");
@@ -37,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function fetchDashboardData() {
     showLoadingAll();
     
-    fetch(`${API_BASE_URL}/lenders_dashboard`, {
+    fetch(`${API_BASE}/lenders_dashboard`, {
         headers: { 
             'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
@@ -69,7 +67,7 @@ function fetchDashboardData() {
 
 // Fetch user data
 function fetchUserData() {
-    fetch(`${API_BASE_URL}/me`, {
+    fetch(`${API_BASE}/me`, {
         headers: { 
             'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
@@ -499,7 +497,7 @@ function refreshDashboard() {
 
 function acceptBorrowerRequest(offerId) {
     if (confirm('Accept this borrower\'s request and transfer funds?')) {
-        fetch(`${API_BASE_URL}/p2p_investments/${offerId}/accept`, {
+        fetch(`${API_BASE}/p2p_investments/${offerId}/accept`, {
             method: 'POST',
             headers: { 
                 'Authorization': 'Bearer ' + token,
@@ -528,7 +526,7 @@ function acceptBorrowerRequest(offerId) {
 // Update declineBorrowerRequest function
 function declineBorrowerRequest(offerId) {
     if (confirm('Decline this borrower\'s request?')) {
-        fetch(`${API_BASE_URL}/p2p_investments/${offerId}/decline`, {
+        fetch(`${API_BASE}/p2p_investments/${offerId}/decline`, {
             method: 'POST',
             headers: { 
                 'Authorization': 'Bearer ' + token,
@@ -567,7 +565,7 @@ function editOffer(offerId) {
 
 function withdrawOffer(offerId) {
     if (confirm('Are you sure you want to withdraw this offer?')) {
-        fetch(`${API_BASE_URL}/p2p_investments/${offerId}/withdraw`, {
+        fetch(`${API_BASE}/p2p_investments/${offerId}/withdraw`, {
             method: 'POST',
             headers: { 
                 'Authorization': 'Bearer ' + token,
