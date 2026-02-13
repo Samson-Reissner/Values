@@ -53,7 +53,7 @@ const Auth = (() => {
   /* =========================
      AUTH GUARD
   ========================= */
-  function requireAuth(redirect = "auth-landing.html") {
+  function requireAuth(redirect = "login.html") {
     if (!isLoggedIn()) {
       alert("Please login to continue.");
       window.location.href = redirect;
@@ -102,7 +102,7 @@ const Auth = (() => {
     localStorage.removeItem(USER_EMAIL_KEY);
     localStorage.removeItem(USER_ROLES_KEY);
 
-    window.location.href = "auth-landing.html";
+    window.location.href = "login.html";
   }
 
   /* =========================
