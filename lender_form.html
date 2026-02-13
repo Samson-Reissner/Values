@@ -425,8 +425,10 @@
     </div>
   </div>
 
+  <!-- 📦 GLOBAL CONFIG - Must load first -->
+  <script src="js/config.global.js"></script>
+
   <script>
-    const BACKEND_URL = "http://localhost:3000";
     const $ = (id) => document.getElementById(id);
     const SERVICE_FEE_RATE = 0.03;
 
@@ -484,7 +486,7 @@
       };
 
       try {
-        const response = await fetch(`${BACKEND_URL}/api/v1/p2p_investments`, {
+        const response = await fetch(`${window.API_BASE}/p2p_investments`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

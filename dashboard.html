@@ -113,6 +113,9 @@
     </div>
 </div>
 
+<!-- 📦 GLOBAL CONFIG - Must load first -->
+<script src="../js/config.global.js"></script>
+
 <script>
     // --- CHECK TOKEN ---
     const token = localStorage.getItem("authToken");
@@ -122,49 +125,57 @@
     }
 
     // --- FETCH DASHBOARD DATA ---
-fetch("http://localhost:3000/api/v1/borrower/dashboard",{
-    headers: {
-        "Authorization": "Bearer " + token
-    }
-})
-.then(res => {
-    if (res.status === 401) window.location.href = "login.html";
-    return res.json();
-})
-.then(investments => {
-    const container = document.getElementById("bidders-list");
-    container.innerHTML = "";
+    fetch(`${window.API_BASE}/borrower/dashboard`, {
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    })
+    .then(res => {
+        if (res.status === 401) window.location.href = "login.html";
+        return res.json();
+    })
+    .then(investments => {
+        const container = document.getElementById("bidders-list");
+        container.innerHTML = "";
 
-    if (!investments || investments.length === 0) {
-        container.innerHTML = "<p>No lenders available yet.</p>";
-        return;
-    }
+        if (!investments || investments.length === 0) {
+            container.innerHTML = "<p>No lenders available yet.</p>";
+            return;
+        }
 
-    investments.forEach((inv, index) => {
-        container.innerHTML += `
-            <div class="bid-card">
-                <div class="bid-details">
-                    <h3>Lender #${index + 1} (${inv.lender_name})</h3>
-                    <p><strong>Amount:</strong> MWK ${inv.amount}</p>
-                    <p><strong>Interest:</strong> ${inv.interest_rate}% per month</p>
-                    <p><strong>Tenure:</strong> ${inv.tenure_months} months</p>
-                    <p><strong>Contact:</strong> ${inv.masked_contact}</p>
+        investments.forEach((inv, index) => {
+            // Format amount with commas
+            const formattedAmount = Number(inv.amount).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            container.innerHTML += `
+                <div class="bid-card">
+                    <div class="bid-details">
+                        <h3>Lender #${index + 1} (${inv.lender_name || 'Anonymous'})</h3>
+                        <p><strong>Amount:</strong> MWK ${formattedAmount}</p>
+                        <p><strong>Interest:</strong> ${inv.interest_rate}% per month</p>
+                        <p><strong>Tenure:</strong> ${inv.tenure_months} months</p>
+                        <p><strong>Contact:</strong> ${inv.masked_contact || 'N/A'}</p>
+                    </div>
+                    <button class="borrow-btn" onclick="borrow(${inv.id})">Borrow</button>
                 </div>
-                <button class="borrow-btn" onclick="borrow(${inv.id})">Borrow</button>
-            </div>
-        `;
+            `;
+        });
+    })
+    .catch(err => {
+        console.error(err);
+        document.getElementById("bidders-list").innerHTML = "<p>Error loading lenders. Please try again.</p>";
     });
-})
-.catch(err => {
-    console.error(err);
-    document.getElementById("bidders-list").innerHTML = "<p>Error loading lenders.</p>";
-});
-function borrow(investmentId) {
-    window.location.href = `borrow_options.html?investment_id=${investmentId}`;
-}
+
+    function borrow(investmentId) {
+        window.location.href = `borrow_options.html?investment_id=${investmentId}`;
+    }
+    
     // --- LOGOUT FUNCTION ---
     function logout() {
-        localStorage.removeItem("token");
+        localStorage.removeItem("authToken");
         window.location.href = "login.html";
     }
 </script>

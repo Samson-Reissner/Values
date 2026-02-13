@@ -490,117 +490,119 @@
         </div>
     </footer>
 
+    <!-- 📦 GLOBAL CONFIG - Must load first -->
+    <script src="js/config.global.js"></script>
+
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const faqItems = document.querySelectorAll('.faq-item');
-    
-    faqItems.forEach(item => {
-        const question = item.querySelector('.faq-question');
-        
-        question.addEventListener('click', () => {
-            // Close all other FAQ items
-            faqItems.forEach(otherItem => {
-                if (otherItem !== item) {
-                    otherItem.classList.remove('active');
-                }
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
             
-            // Toggle current item
-            item.classList.toggle('active');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    // Close all other FAQ items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                    
+                    // Toggle current item
+                    item.classList.toggle('active');
+                });
+            });
         });
-    });
-});
-</script>
-<script>
-const BACKEND_URL = "http://localhost:3000";
+    </script>
 
-async function testBackendConnection() {
-  const token = localStorage.getItem("authToken");
+    <script>
+        async function testBackendConnection() {
+            const token = localStorage.getItem("authToken");
 
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/test`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+            try {
+                const response = await fetch(`${window.API_BASE}/test`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
 
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-    console.log("%cBackend Connected ✔", "color: green; font-weight: bold;");
-  } catch (error) {
-    console.log("%cBackend NOT Connected ✖", "color: red; font-weight: bold;");
-    console.error(error);
-  }
-}
+                console.log("%cBackend Connected ✔", "color: green; font-weight: bold;");
+            } catch (error) {
+                console.log("%cBackend NOT Connected ✖", "color: red; font-weight: bold;");
+                console.error(error);
+            }
+        }
 
+        document.addEventListener('DOMContentLoaded', testBackendConnection);
+    </script>
 
-document.addEventListener('DOMContentLoaded', testBackendConnection);
-</script>
-<script>
-const API_BASE = "http://localhost:3000/api/v1";
+    <script>
+        async function loadUserProfile() {
+            const token = localStorage.getItem("authToken");
+            if (!token) return;
 
-async function loadUserProfile() {
-  const token = localStorage.getItem("authToken");
-  if (!token) return;
+            try {
+                const res = await fetch(`${window.API_BASE}/me`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
 
-  try {
-    const res = await fetch(`${API_BASE}/me`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+                if (!res.ok) throw new Error("Not authenticated");
 
-    if (!res.ok) throw new Error("Not authenticated");
+                const user = await res.json();
 
-    const user = await res.json();
+                // 🔹 NAV USER MENU
+                document.getElementById("authArea").innerHTML = `
+                    <div class="user-menu dropdown">
+                        <span class="nav-link dropdown-toggle">
+                            Hi, ${user.first_name || user.email}
+                        </span>
+                        <div class="dropdown-menu">
+                            <a href="wallet-dashboard.html">My Wallet</a>
+                            <a href="peer-to-peer.html">Peer to Peer</a>
 
-    // 🔹 NAV USER MENU (you already had this)
-    document.getElementById("authArea").innerHTML = `
-  <div class="user-menu dropdown">
-    <span class="nav-link dropdown-toggle">
-      Hi, ${user.first_name || user.email}
-    </span>
-    <div class="dropdown-menu">
-      <a href="wallet-dashboard.html">My Wallet</a>
-      <a href="peer-to-peer.html">Peer to Peer</a>
+                            ${user.is_admin ? `
+                                <a href="admin/dashboard.html" style="font-weight:600;color:#c62828">
+                                    Admin Dashboard
+                                </a>
+                            ` : ""}
 
-      ${user.is_admin ? `
-        <a href="admin/dashboard.html" style="font-weight:600;color:#c62828">
-          Admin Dashboard
-        </a>
-      ` : ""}
+                            <a href="#" onclick="logout()">Logout</a>
+                        </div>
+                    </div>
+                `;
 
-      <a href="#" onclick="logout()">Logout</a>
-    </div>
-  </div>
-`;
+                // KYC CHECK
+                if (user.kyc_status !== "verified") {
+                    showKycReminder(user.kyc_percentage);
+                }
 
-    //  KYC CHECK
-    if (user.kyc_status !== "verified") {
-      showKycReminder(user.kyc_percentage);
-    }
+            } catch (e) {
+                console.log("User not logged in");
+            }
+        }
 
-  } catch (e) {
-    console.log("User not logged in");
-  }
-}
+        function showKycReminder(percentage) {
+            const kycReminder = document.getElementById("kycReminder");
+            if (kycReminder) {
+                kycReminder.innerHTML = `
+                    <div class="kyc-reminder">
+                        <span class="kyc-badge">Your account is <strong>${percentage}% verified</strong></span>
+                        <a href="kyc.html" class="kyc-link">
+                            Complete verification 
+                        </a>
+                    </div>
+                `;
+            }
+        }
 
-function showKycReminder(percentage) {
-  document.getElementById("kycReminder").innerHTML = `
-    <div class="kyc-reminder">
-      <span class="kyc-badge">Your account is <strong>${percentage}% verified</span>
+        function logout() {
+            localStorage.removeItem("authToken");
+            window.location.href = "index.html";
+        }
 
-      <a href="kyc.html" class="kyc-link">
-        Complete verification 
-      </a>
-    </div>
-  `;
-}
-
-function logout() {
-  localStorage.removeItem("authToken");
-  window.location.href = "index.html";
-}
-
-document.addEventListener("DOMContentLoaded", loadUserProfile);
-</script>
+        document.addEventListener("DOMContentLoaded", loadUserProfile);
+    </script>
 </body>
 </html>
