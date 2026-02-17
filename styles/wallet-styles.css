@@ -54,8 +54,8 @@
 
 .wallet-id {
     font-size: 0.9rem;
-    opacity: 0.9;
-    color: rgba(255, 255, 255, 0.8);
+    opacity: 1;
+    color: white;
     background: rgba(255, 255, 255, 0.1);
     padding: 0.5rem 1rem;
     border-radius: 50px;
@@ -122,7 +122,7 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 .detail-item.loan-highlight {
-  background: rgba(255, 193, 7, 0.15); /* soft warning yellow */
+  background: transparent; /* soft warning yellow */
   border: 1px solid rgba(255, 193, 7, 0.4);
   border-radius: 10px;
   padding: 0.75rem;
@@ -132,7 +132,7 @@
 .detail-item.loan-highlight span {
   display: block;
   font-size: 0.85rem;
-  color: #856404;
+  color: white;
 }
 
 .detail-item.loan-highlight strong {
@@ -140,9 +140,13 @@
   margin-top: 0.25rem;
   font-size: 1.2rem;
   font-weight: 700;
-  color: #d39e00;
+  color: white;
 }
-
+/* Make deposit and withdrawal labels white */
+.wallet-balance-card .detail-item span {
+    color: white !important;
+    opacity: 1;
+}
 
 .detail-item:last-child {
     border-bottom: none;
@@ -152,9 +156,9 @@
 .detail-item span {
     display: block;
     font-size: 0.9rem;
-    opacity: 0.9;
+    opacity: 1;
     margin-bottom: var(--spacing-xs);
-    color: rgba(255, 255, 255, 0.9);
+    color: white;
     font-weight: var(--font-weight-medium);
 }
 
@@ -2848,7 +2852,6 @@ textarea:focus {
 
 /* Ensure proper contrast for text */
 .balance-label,
-.wallet-id,
 .detail-item span,
 .stat-label,
 .transaction-date,
