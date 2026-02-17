@@ -1,6 +1,6 @@
 // js/simple-signup.js
 
-import { API_BASE } from './js/config.js';
+import { API_BASE } from './config.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signupForm");

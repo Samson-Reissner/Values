@@ -16,7 +16,7 @@
     <a href="index.html" class="logo">
       <img src="images/Value-logo.png" alt="Value Financial Services" class="logo-image">
     </a>
-
+    <div class="menu-toggle" id="menuToggle">&#9776;</div>
     <!-- CENTER: Navigation Links -->
     <div class="nav-menu">
 
@@ -492,6 +492,11 @@
 
     <!-- 📦 GLOBAL CONFIG - Must load first -->
     <script src="js/config.global.js"></script>
+   <script>
+document.getElementById("menuToggle").addEventListener("click", function() {
+    document.querySelector(".nav-menu").classList.toggle("active");
+});
+</script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
