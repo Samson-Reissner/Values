@@ -1,5 +1,5 @@
 // Global data store
-import { API_BASE, authHeaders } from './js/config.js';
+import { API_BASE, authHeaders } from './config.js';
 
 let dashboardData = {
     system_account: { balance: 0, email: 'system@value.mw' },

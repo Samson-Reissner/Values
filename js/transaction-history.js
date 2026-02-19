@@ -1,6 +1,6 @@
 // js/transaction-history.js
 
-import { API_BASE, authHeaders } from '../js/config.js';
+import { API_BASE, authHeaders } from './config.js';
 
 let allTransactions = [];
 let filteredTransactions = [];

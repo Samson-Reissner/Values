@@ -1,5 +1,5 @@
 // js/lender-dashboard.js
-import { API_BASE, authHeaders } from '..js/config.js';
+import { API_BASE, authHeaders } from './config.js';
 
 // Get auth token
 const token = localStorage.getItem("authToken");

@@ -1,11 +1,11 @@
 // app.js
-import { API_BASE } from './js/config.js';
+import { API_BASE } from './config.js';
 
 async function testBackendConnection() {
   try {
     // Extract base URL from API_BASE (remove /api/v1)
     const baseUrl = API_BASE.replace('/api/v1', '');
-    const response = await fetch(`${baseUrl}/api/test`);
+    const response = await fetch(`${baseUrl}/api/v1`);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     console.log("%cBackend Connected ✔", "color: green; font-weight: bold;");

@@ -181,35 +181,41 @@
 <div id="sendMoneyModalContainer"></div>
 <div id="modalContainer"></div>
 <div id="addCash"></div>
-<script type="module" src="../js/auth.js"></script>
+<script type="module" src="js/auth.js"></script>
 <script type="module" src="js/navbar-auth.js"></script>
-<script type="module" src="../js/wallet.js"></script>
-<script type="module" src="../js/payments.js"></script>
-<script type="module" src="../js/send-money.js"></script>
-<script type="module" src="../js/loans.js"></script>
-<script type="module" src="../js/deposit-money.js"></script>
+<script type="module" src="js/wallet.js"></script>
+<script type="module" src="js/payments.js"></script>
+<script type="module" src="js/send-money.js"></script>
+<script type="module" src="js/loans.js"></script>
+<script type="module" src="js/deposit-money.js"></script>
 
-<script>
-fetch('../partials/deposit-money-modal.html')
+<script type="module">
+
+import { DepositManager } from '../js/deposit-money.js';
+import { initPayBillsModal } from '../js/payments.js';
+
+// Load Deposit Modal
+fetch('partials/deposit-money-modal.html')
   .then(res => res.text())
   .then(html => {
-    document.getElementById("addCash").innerHTML += html;
+    document.getElementById("addCash").innerHTML = html;
 
-    // ✅ NOW class exists AND modal exists
     window.depositManager = new DepositManager();
   });
-  fetch('../partials/pay-bills-modal.html')
+
+// Load Pay Bills Modal
+fetch('partials/pay-bills-modal.html')
   .then(res => res.text())
   .then(html => {
-    document.getElementById("modalContainer").innerHTML += html;
-    // Initialize the modal after it's loaded
+    document.getElementById("modalContainer").innerHTML = html;
+
     initPayBillsModal();
   })
   .catch(err => {
     console.error("Failed to load pay bills modal:", err);
   });
-</script>
 
+</script>
 
 <style>
 /* Modal overlay */

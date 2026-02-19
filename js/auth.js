@@ -120,3 +120,4 @@ const Auth = (() => {
     logout
   };
 })();
+export { Auth };

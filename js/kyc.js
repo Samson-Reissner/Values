@@ -1,5 +1,5 @@
 // js/kyc.js
-import { API_BASE, authHeaders } from '../js/config.js';
+import { API_BASE, authHeaders } from './config.js';
 
 let currentStep = 1;
 const totalSteps = 3;

@@ -2,7 +2,7 @@
    Handles ACTIVE LOANS retrieval for wallet dashboard
 */
 
-import { API_BASE, authHeaders } from './js/config.js';
+import { API_BASE, authHeaders } from './config.js';
 
 class LoanService {
   constructor() {

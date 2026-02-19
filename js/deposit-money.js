@@ -3,7 +3,7 @@
    Version: 2.0
 */
 
-import { API_BASE, authHeaders } from './js/config.js';
+import { API_BASE, authHeaders } from './config.js';
 
 class DepositManager {
     constructor() {
@@ -572,3 +572,4 @@ class DepositManager {
         this.resetProcessingState();
     }
 }
+export { DepositManager };

@@ -1,5 +1,5 @@
 
-import { API_BASE, authHeaders } from '../js/config.js';
+import { API_BASE, authHeaders } from './config.js';
 
 /* -------------------------
    Payment engine
@@ -44,7 +44,7 @@ async function initiatePayment({ category, provider_code, reference, amount }) {
    Modal initializer
    (CALL THIS AFTER PARTIAL LOAD)
 --------------------------*/
-function initPayBillsModal() {
+export function initPayBillsModal() {
   console.log("✅ Initializing Pay Bills modal");
 
   const modal = document.getElementById("paymentModal");

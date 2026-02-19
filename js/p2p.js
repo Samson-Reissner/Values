@@ -1,5 +1,5 @@
 // Wait for DOM to be fully loaded
-import { API_BASE, authHeaders } from './js/config.js';
+import { API_BASE, authHeaders } from './config.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Lending card click handler

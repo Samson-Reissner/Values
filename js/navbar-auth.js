@@ -1,4 +1,5 @@
-import { API_BASE, authHeaders } from '../js/config.js';
+import { API_BASE, authHeaders } from './config.js';
+import { Auth } from './auth.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
   const authArea = document.getElementById("authArea");

@@ -1,7 +1,7 @@
 // js/lending-activity.js
 // Enhanced Lending Activity Notifications for Peer-to-Peer Lending Dashboard
 
-import { API_BASE, authHeaders } from '../js/config.js';
+import { API_BASE, authHeaders } from './config.js';
 
 (function() {
     'use strict';
