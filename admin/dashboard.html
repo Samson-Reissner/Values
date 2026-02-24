@@ -388,6 +388,36 @@
             background-color: #17a2b8 !important;
             cursor: wait !important;
         }
+        .manage-users-btn {
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s, transform 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .manage-users-btn:hover {
+           background-color: #138496;
+           transform: translateY(-2px);
+           box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .manage-users-btn:active {
+           transform: translateY(0);
+       }
+
+        .manage-users-btn::before {
+            content: "";
+             font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -395,13 +425,10 @@
     <div class="header-container">
         <h1>Admin Dashboard</h1>
         <div class="system-info">
+            <button id="manageUsersBtn" class="manage-users-btn"> Manage Users </button>
             <div class="system-balance">
                 <div class="balance-label">System Account Balance</div>
                 <div id="system-balance" class="balance-amount">Loading...</div>
-            </div>
-            <div class="system-account">
-                <div class="account-label">System Account</div>
-                <div id="system-email" class="account-email">system@value.mw</div>
             </div>
         </div>
     </div>
@@ -482,6 +509,6 @@
     </table>
 
     <!-- Reference to external JavaScript file -->
-    <script src="../js/admin_dashboard.js"></script>
+    <script type="module" src="../js/admin_dashboard.js"></script>
 </body>
 </html>
